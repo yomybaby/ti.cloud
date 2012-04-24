@@ -4,3 +4,4 @@ tmp
 */build/
 .DS_Store
 build.log
+commonjs/drillbit/tests/cloud/tiapp.xml
