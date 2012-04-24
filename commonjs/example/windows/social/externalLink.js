@@ -8,7 +8,8 @@ windowFunctions['External Link'] = function (evt) {
     });
     win.add(content);
 
-    Ti.Facebook.appid = '161127393988605';
+    // TODO: Get your own App ID from Facebook: https://developers.facebook.com/docs/opengraph/tutorial/#create-app
+    Ti.Facebook.appid = '<<YOUR FACEBOOK APPID HERE>>';
     Ti.Facebook.permissions = ['publish_stream', 'read_stream'];
 
     var label = Ti.UI.createLabel({
