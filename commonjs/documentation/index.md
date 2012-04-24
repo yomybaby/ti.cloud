@@ -3,7 +3,7 @@
 ## Documentation
 
 Please refer to the documentation available here:
-[http://developer.appcelerator.com/apidoc/mobile/latest/Titanium.Cloud-module](http://developer.appcelerator.com/apidoc/mobile/latest/Titanium.Cloud-module)
+[http://docs.appcelerator.com/titanium/2.0/#!/api/Titanium.Cloud](http://docs.appcelerator.com/titanium/2.0/#!/api/Titanium.Cloud)
 
 ## Author
 
