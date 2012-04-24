@@ -1,5 +1,7 @@
 # Change Log
 <pre>
+v2.0.4	Added Cloud.Users.hasStoredSession() and Cloud.Users.retrieveStoredSession().
+
 v2.0.3	Fixed URL encoding in Mobile Web [MOD-651].
 
 v2.0.2	Fixed boolean parameter coercion corrupting computed Oauth signatures [MOD-609].

@@ -20,7 +20,7 @@ else {
 
 function defineCloud(Cloud) {
     /*!
-     * BedFrame v0.3 by Dawson Toth
+     * BedFrame v0.4 by Dawson Toth
      * A framework for exposing RESTful APIs to Appcelerator Titanium Mobile.
      * 
      * This framework is designed for REST APIs with the following characteristics:
@@ -114,7 +114,7 @@ function defineCloud(Cloud) {
                     return function () {
                         // Executors are designed to work based off of their context. Act upon the child, which is a mixed
                         // down result of its parent, and its parent's parent, and so on.
-                        child.executor.apply(child, arguments);
+                        return child.executor.apply(child, arguments);
                     };
                 })(child);
             }
@@ -186,6 +186,14 @@ function defineCloud(Cloud) {
                 callback(response);
             }
         );
+    }
+    
+    function hasStoredSession() {
+        return ACS.hasStoredSession();
+    }
+    
+    function retrieveStoredSession() {
+        return ACS.retrieveStoredSession();
     }
 
     function dataOptionalExecutor() {
@@ -366,6 +374,8 @@ function defineCloud(Cloud) {
             {
                 property: 'Users',
                 children: [
+                    { method: 'hasStoredSession', executor: hasStoredSession },
+                    { method: 'retrieveStoredSession', executor: retrieveStoredSession },
                     { method: 'create', verb: 'POST' },
                     { method: 'login', verb: 'POST' },
                     { method: 'show' },
@@ -1500,6 +1510,14 @@ function defineCloud(Cloud) {
                 session = fetchSession();
             }
             session.sendRequest(url, method, data, useSecure, callback);
+        };
+        
+        ACS.hasStoredSession = function() {
+            return !!(com.acs.js.sdk.utils.retrieveSessionId());
+        };
+        
+        ACS.retrieveStoredSession = function() {
+            return com.acs.js.sdk.utils.retrieveSessionId();
         };
 
         ACS.reset = function () {
