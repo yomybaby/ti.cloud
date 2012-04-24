@@ -97,8 +97,7 @@ function checkPushNotifications() {
             }
         }
         if (pushNotificationsEnabled) {
-            androidPushModule.enabled = true;
-            androidPushModule.addEventListener('callback', receivePush);
+            // Need to retrieve the device token before enabling push
             androidPushModule.retrieveDeviceToken({
                 success: deviceTokenSuccess,
                 error: deviceTokenError
@@ -114,6 +113,8 @@ function checkPushNotifications() {
 
 function deviceTokenSuccess(e) {
     pushDeviceToken = e.deviceToken;
+    androidPushModule.enabled = true;
+    androidPushModule.addEventListener('callback', receivePush);
 }
 
 function deviceTokenError(e) {
