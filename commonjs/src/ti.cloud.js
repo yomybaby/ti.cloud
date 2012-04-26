@@ -235,6 +235,8 @@ function defineCloud(Cloud) {
         verb: 'GET',
         executor: defaultExecutor,
         children: [
+            { method: 'hasStoredSession', executor: hasStoredSession },
+            { method: 'retrieveStoredSession', executor: retrieveStoredSession },
             {
                 property: 'Chats',
                 children: [
@@ -374,8 +376,6 @@ function defineCloud(Cloud) {
             {
                 property: 'Users',
                 children: [
-                    { method: 'hasStoredSession', executor: hasStoredSession },
-                    { method: 'retrieveStoredSession', executor: retrieveStoredSession },
                     { method: 'create', verb: 'POST' },
                     { method: 'login', verb: 'POST' },
                     { method: 'show' },

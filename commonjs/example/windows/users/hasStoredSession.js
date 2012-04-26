@@ -1,3 +1,3 @@
 windowFunctions['Has Stored Session'] = function () {
-    alert(Cloud.Users.hasStoredSession() ? 'Yes!' : 'No.');
+    alert(Cloud.hasStoredSession() ? 'Yes! ' + Cloud.retrieveStoredSession() : 'No.');
 };

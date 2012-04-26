@@ -1,6 +1,6 @@
 # Change Log
 <pre>
-v2.0.4	Added Cloud.Users.hasStoredSession() and Cloud.Users.retrieveStoredSession().
+v2.0.4	Added Cloud.hasStoredSession() and Cloud.retrieveStoredSession().
 
 v2.0.3	Fixed URL encoding in Mobile Web [MOD-651].
 
