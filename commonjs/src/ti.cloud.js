@@ -1427,7 +1427,7 @@ function defineCloud(Cloud) {
                         if (!data.hasOwnProperty(prop)) {
                             continue;
                         }
-                        params += '&' + prop + '=' + encodeURI(data[prop]);
+                        params += '&' + prop + '=' + OAuth.percentEncode(data[prop]);
                     }
                     if (params.length > 0) {
                         if (url.indexOf('?') > 0) {
