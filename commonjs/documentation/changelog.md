@@ -1,5 +1,7 @@
 # Change Log
 <pre>
+v2.0.5  Fixed issue with some parameters not being url encoded properly [MOD-752]
+
 v2.0.4	Added Cloud.hasStoredSession() and Cloud.retrieveStoredSession().
 
 v2.0.3	Fixed URL encoding in Mobile Web [MOD-651].
