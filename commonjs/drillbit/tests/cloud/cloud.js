@@ -264,12 +264,17 @@ describe("Cloud tests", {
                 password_confirmation: 'password',
                 tags: 'hiking, swimming'
             };
-   			Cloud.Users.create(data,
-   				this.async(function(e) {
-   					valueOf(e.success).shouldBeTrue();
-   					valueOf(e.error).shouldBeFalse();
+            this.sequence.push(function() { Cloud.Users.create(data,
+                this.async(function(e) {
+                    valueOf(e.success).shouldBeTrue();
+                    valueOf(e.error).shouldBeFalse();
                 })
-            );
+            )});
+            this.sequence.push(function() { Cloud.Users.logout(
+                this.async(function(e) {
+            		valueOf(e.success).shouldBeTrue();
+           		})
+  			)});
    		},
    		timeout: 30000,
    		timeoutError: 'Timed out waiting for create response'
@@ -284,13 +289,18 @@ describe("Cloud tests", {
                 first_name: 'test',
                 last_name: 'user'
    			};
-   			Cloud.Users.create(data,
+   			this.sequence.push(function() { Cloud.Users.create(data,
    				this.async(function(e) {
    					valueOf(e.success).shouldBeTrue();
    					valueOf(e.error).shouldBeFalse();
    			    })
-            );
-   		},
+            )});
+            this.sequence.push(function() { Cloud.Users.logout(
+                this.async(function(e) {
+                    valueOf(e.success).shouldBeTrue();
+                })
+            )});
+        },
    		timeout: 30000,
    		timeoutError: 'Timed out waiting for create response'
    	}),
@@ -1097,6 +1107,34 @@ describe("Cloud tests", {
                     valueOf(e.chats[1].chat_group.id).shouldBe(callback.Chats.groupId);
                 })
            )});
+           this.sequence.push(function() { Cloud.Users.logout(
+                this.async(function(e) {
+                    valueOf(e.success).shouldBeTrue();
+                })
+           )});
+        },
+   		timeout: 30000,
+   		timeoutError: 'Timed out waiting for query response'
+   	}),
+
+    cloudChatsMOD752: asyncTest({
+   	    start: function(callback) {
+            this.sequence.push(function() { Cloud.Users.login({ login: 'chatuser', password: 'password'},
+                this.async(function(e) {
+                    valueOf(e.success).shouldBeTrue();
+                    callback.Chats.chatUserId = e.users[0].id;
+                })
+            )});
+            // Issue query with '$gt' and '+' characters, using OAuth
+            this.sequence.push(function() { Cloud.Chats.query({
+                    chat_group_id: callback.Chats.groupId,
+                    where: { updated_at: { '$gt': '2020-05-28T12:50:00+0000' } }
+                },
+                this.async(function(e) {
+                    valueOf(e.success).shouldBeTrue();
+                    valueOf(e.chats.length).shouldBe(0);
+                 })
+            )});
            this.sequence.push(function() { Cloud.Users.logout(
                 this.async(function(e) {
                     valueOf(e.success).shouldBeTrue();
@@ -2442,8 +2480,7 @@ describe("Cloud tests", {
    					valueOf(e.success).shouldBeTrue();
    					valueOf(e.error).shouldBeFalse();
                     valueOf(e.ip_address).shouldBe('184.72.37.109');
-                    valueOf(e.location.city).shouldBe('Seattle');
-                    valueOf(e.location.postal_code).shouldBe('98144');
+                    valueOf(e.location.city).shouldBe('San Jose');
                 })
             );
    		},
