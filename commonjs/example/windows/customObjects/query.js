@@ -68,17 +68,17 @@ windowFunctions['Query Objects'] = function (evt) {
                                 borderColor: '#ccc', borderWeight: 1
                             });
                             var idLabel = Ti.UI.createLabel({
-                        		text: 'id: ' + objects[i].id,
-                        		height: 'auto', left: 20 + u, right: 20 + u,
-                        		color: 'black'
-                        	});
-                        	var infoLabel = Ti.UI.createLabel({
-                        		text: 'Click to update',
-                        		height: 'auto', left: 20 + u, right: 20 + u,
-                        		color: 'gray'
-                        	});
-                        	wrapper.add(idLabel);
-                        	wrapper.add(infoLabel);
+                                text: 'id: ' + objects[i].id,
+                                height: 'auto', left: 20 + u, right: 20 + u,
+                                color: 'black'
+                            });
+                            var infoLabel = Ti.UI.createLabel({
+                                text: 'Click to update',
+                                height: 'auto', left: 20 + u, right: 20 + u,
+                                color: 'gray'
+                            });
+                            wrapper.add(idLabel);
+                            wrapper.add(infoLabel);
                             wrapper.addEventListener('click', function () {
                                 handleOpenWindow({ target: 'Update Object', id: objects[i].id, classname: val });
                             });
