@@ -71,7 +71,7 @@ windowFunctions['Update Review'] = function (evt) {
             if (e.success) {
                 var review = e.reviews[0];
                 contentText.value = review.content;
-                rating.value = review.value;
+                rating.value = review.rating;
                 contentText.focus();
             }
             else {
