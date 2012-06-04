@@ -87,7 +87,9 @@ windowFunctions['Update Object'] = function (evt) {
                 }
 
                 content.add(button);
-                fields[0].focus();
+                if (fields.length > 0) {
+                	fields[0].focus();
+                }
             }
             else {
                 error(e);
