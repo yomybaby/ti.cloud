@@ -80,7 +80,12 @@ function enumerateProperties(container, obj, offset) {
 }
 
 function error(e) {
-    alert((e.error && e.message) || JSON.stringify(e));
+    var msg = (e.error && e.message) || JSON.stringify(e);
+    if (e.code) {
+        alert(msg);
+    } else {
+        Ti.API.error(msg);
+    }
 }
 
 // Include the window hierarchy.
