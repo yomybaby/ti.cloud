@@ -1,5 +1,8 @@
 # Change Log
 <pre>
+v2.0.6  Fixed several issues with example application related to chat, custom objects, key values, photos, reviews,
+        social, user, and connection notifications.
+
 v2.0.5  Fixed issue with some parameters not being url encoded properly [MOD-752]
 
 v2.0.4	Added Cloud.hasStoredSession() and Cloud.retrieveStoredSession().
