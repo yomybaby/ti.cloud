@@ -81,28 +81,32 @@ windowFunctions['Update Current User'] = function (evt) {
     var fields = [ username, email, password, confirmPassword, firstName, lastName, tags ];
 
     function submitForm() {
-        for (var i = 0; i < fields.length; i++) {
-            if (fields[i].hintText.split('Password').length == 1 && !fields[i].value.length) {
-                fields[i].focus();
-                return;
-            }
-            fields[i].blur();
-        }
-        if (password.value != confirmPassword.value) {
+    	if (password.value != confirmPassword.value) {
+    		alert('Password and Confirm Password do not match.');
             confirmPassword.focus();
             return;
         }
+
+        for (var i = 0; i < fields.length; i++) {
+            fields[i].blur();
+        }
+
         button.hide();
 
-        Cloud.Users.update({
-            username: username.value,
-            email: email.value,
-            password: password.value,
-            password_confirmation: confirmPassword.value,
-            first_name: firstName.value,
-            last_name: lastName.value,
-            tags: tags.value
-        }, function (e) {
+    	var data = {
+    		username: username.value,
+    		email: email.value,
+    		first_name: firstName.value,
+    		last_name: lastName.value,
+    		tags: tags.value
+    	};
+    	if (password.value.length > 0) {
+    		data.password = password.value;
+    		data.password_confirmation = confirmPassword.value;
+    		password.value = confirmPassword.value = '';
+    	} 
+    	
+        Cloud.Users.update(data, function (e) {
             if (e.success) {
                 alert('Updated!');
             }
