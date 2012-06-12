@@ -157,7 +157,8 @@ windowFunctions['Update Photo'] = function (evt) {
         Cloud.Photos.update({
             photo_id: evt.id,
             photo: replacement,
-            tags: tags.value
+            tags: tags.value,
+            collection_id: collectionID
         }, function (e) {
             if (replacement) {
                 Cloud.onsendstream = Cloud.ondatastream = null;
@@ -192,7 +193,9 @@ windowFunctions['Update Photo'] = function (evt) {
             status.hide();
             if (e.success) {
                 var photo = e.photos[0];
-                collectionID = photo.collection_id;
+                if (photo.collections && photo.collections.length > 0) {
+                	collectionID = photo.collections[0].id;
+                }
                 tags.value = photo.tags && photo.tags.join(',');
                 tags.focus();
             }
