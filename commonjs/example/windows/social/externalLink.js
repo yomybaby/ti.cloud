@@ -39,9 +39,6 @@ windowFunctions['External Link'] = function (evt) {
         }
     }
 
-    Ti.Facebook.addEventListener('login', updateLoginStatus);
-    Ti.Facebook.addEventListener('logout', updateLoginStatus);
-
     content.add(Ti.Facebook.createLoginButton({
         top: 10 + u,
         style: Ti.Platform.name == 'iPhone OS'
@@ -50,7 +47,13 @@ windowFunctions['External Link'] = function (evt) {
     }));
 
     win.addEventListener('open', function (evt) {
+   		Ti.Facebook.addEventListener('login', updateLoginStatus);
+    	Ti.Facebook.addEventListener('logout', updateLoginStatus);    
         updateLoginStatus();
+    });
+    win.addEventListener('close', function (evt) {
+   		Ti.Facebook.removeEventListener('login', updateLoginStatus);
+    	Ti.Facebook.removeEventListener('logout', updateLoginStatus);       	
     });
 
     win.open();

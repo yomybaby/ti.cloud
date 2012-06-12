@@ -40,8 +40,7 @@ windowFunctions['External Login'] = function (evt) {
         }
     }
 
-    Ti.Facebook.addEventListener('login', updateLoginStatus);
-    Ti.Facebook.addEventListener('logout', updateLoginStatus);
+
 
     content.add(Ti.Facebook.createLoginButton({
         top: 10 + u,
@@ -51,7 +50,13 @@ windowFunctions['External Login'] = function (evt) {
     }));
 
     win.addEventListener('open', function (evt) {
+   		Ti.Facebook.addEventListener('login', updateLoginStatus);
+    	Ti.Facebook.addEventListener('logout', updateLoginStatus);    
         updateLoginStatus();
+    });
+    win.addEventListener('close', function (evt) {
+   		Ti.Facebook.removeEventListener('login', updateLoginStatus);
+    	Ti.Facebook.removeEventListener('logout', updateLoginStatus);       	
     });
 
     win.open();
