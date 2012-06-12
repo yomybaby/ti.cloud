@@ -7,7 +7,7 @@ Please refer to the documentation available here:
 
 ## Author
 
-Dawson Toth
+Dawson Toth and Jeff English
 
 ## License
 
