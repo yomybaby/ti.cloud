@@ -89,13 +89,18 @@ windowFunctions['Create Photo'] = function (evt) {
                             id: '',
                             hasCheck: !collectionID
                         }));
-                        for (var i = 0, l = e.collections.length; i < l; i++) {
-                            data.push(Ti.UI.createTableViewRow({
-                                title: e.collections[i].name,
-                                id: e.collections[i].id,
-                                hasCheck: collectionID == e.collections[i].id
-                            }));
-                        }
+                        (function enumCollection(collections, prefix) {
+                        	for (var i = 0, l = collections.length; i < l; i++) {
+                        		data.push(Ti.UI.createTableViewRow({
+                        			title: prefix + collections[i].name,
+                        			id: collections[i].id,
+                        			hasCheck: collectionID == collections[i].id
+                        		}));
+                        		if (collections[i].subcollections) {
+                        			enumCollection(collections[i].subcollections, collections[i].name + ":");
+                        		}
+                        	}
+                        })(e.collections, '');
                         table.setData(data);
                     }
                 }
