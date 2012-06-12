@@ -35,16 +35,20 @@ windowFunctions['External Unlink'] = function (evt) {
             status.hide();
             if (e.success) {
                 var user = e.users[0];
-                for (var i = 0; i < user.external_accounts.length; i++) {
-                    var button = Ti.UI.createButton({
-                        title: 'Unlink from ' + user.external_accounts[i].external_type,
-                        top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-                        height: 40 + u,
-                        accountType: user.external_accounts[i].external_type,
-                        accountID: user.external_accounts[i].external_id
-                    });
-                    button.addEventListener('click', unlinkAccount);
-                    content.add(button);
+                if (user.external_accounts.length == 0) {
+                	alert('No linked accounts');
+                } else {
+	                for (var i = 0; i < user.external_accounts.length; i++) {
+	                    var button = Ti.UI.createButton({
+	                        title: 'Unlink from ' + user.external_accounts[i].external_type,
+	                        top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
+	                        height: 40 + u,
+	                        accountType: user.external_accounts[i].external_type,
+	                        accountID: user.external_accounts[i].external_id
+	                    });
+	                    button.addEventListener('click', unlinkAccount);
+	                    content.add(button);
+	                }
                 }
             }
             else {
