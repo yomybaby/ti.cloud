@@ -9,14 +9,7 @@
  * and licensed under the Apache Public License (version 2)
  */
 
-if (Ti.Platform.osname == 'mobileweb') {
-    define([], function () {
-        return defineCloud({});
-    });
-}
-else {
-    defineCloud(exports);
-}
+defineCloud(exports);
 
 function defineCloud(Cloud) {
     /*!
@@ -467,7 +460,7 @@ function defineCloud(Cloud) {
         /* An OAuth message is represented as an object like this:
          {method: "GET", action: "http://server.com/path", parameters: ...}
 
-         The parameters may be either a map {method: value, name2: value2}
+         The parameters may be either a map {name: value, name2: value2}
          or an Array of name-value pairs [[name, value], [name2, value2]].
          The latter representation is more powerful: it supports parameters
          in a specific sequence, or several parameters with the same name;
@@ -1131,6 +1124,12 @@ function defineCloud(Cloud) {
 
             var apiMethod = method ? method.toUpperCase() : com.acs.constants.get_method;
 
+            data[com.acs.constants.suppressCode] = 'true';
+            var sessionId = com.acs.js.sdk.utils.retrieveSessionId();
+            if (sessionId) {
+                reqURL += formatParam(reqUrl, com.acs.constants.sessionId, sessionId);
+            }
+
             injectAnalytics(data, url);
             data = com.acs.js.sdk.utils.cleanInvalidData(data);
 
@@ -1163,6 +1162,8 @@ function defineCloud(Cloud) {
                 }
                 var header = {};
                 if (authType == com.acs.constants.oauth) {
+                    reqURL += formatParam(reqURL, com.acs.constants.oauth_consumer_key, this.oauthKey);
+
                     var message = {
                         method: apiMethod,
                         action: reqURL,
@@ -1170,12 +1171,7 @@ function defineCloud(Cloud) {
                     };
                     com.acs.js.sdk.utils.populateOAuthParameters(message.parameters, this.oauthKey);
                     OAuth.completeRequest(message, {consumerSecret: this.oauthSecret});
-                    if (Ti.Platform.osname == 'mobileweb') {
-                        reqURL += '?' + com.acs.js.sdk.utils.getOAuthParameters(message.parameters);
-                    }
-                    else {
-                        header['Authorization'] = OAuth.getAuthorizationHeader("", message.parameters);
-                    }
+                    header['Authorization'] = OAuth.getAuthorizationHeader("", message.parameters);
                 }
                 //send request
                 com.acs.js.sdk.utils.sendAppceleratorRequest(reqURL, apiMethod, data, header, callback);
@@ -1183,6 +1179,8 @@ function defineCloud(Cloud) {
                 //send request without file
                 var header = {};
                 if (authType == com.acs.constants.oauth) {
+                    reqURL += formatParam(reqURL, com.acs.constants.oauth_consumer_key, this.oauthKey);
+
                     var message = {
                         method: apiMethod,
                         action: reqURL,
@@ -1196,26 +1194,20 @@ function defineCloud(Cloud) {
                     }
                     com.acs.js.sdk.utils.populateOAuthParameters(message.parameters, this.oauthKey);
                     OAuth.completeRequest(message, {consumerSecret: this.oauthSecret});
-                    if (Ti.Platform.osname == 'mobileweb') {
-                        reqURL += '?' + com.acs.js.sdk.utils.getOAuthParameters(message.parameters);
-                    }
-                    else {
-                        header['Authorization'] = OAuth.getAuthorizationHeader("", message.parameters);
-                    }
+                    header['Authorization'] = OAuth.getAuthorizationHeader("", message.parameters);
                 }
                 com.acs.js.sdk.utils.sendAppceleratorRequest(reqURL, apiMethod, data, header, callback);
             }
         };
-        var com;
-        if (!com) com = {};
-        if (!com.acs) com.acs = {};
-        if (!com.acs.constants) com.acs.constants = {};
-        if (!com.acs.js) com.acs.js = {};
-        if (!com.acs.js.sdk) com.acs.js.sdk = {};
-        if (!com.acs.js.sdk.utils) com.acs.js.sdk.utils = {};
+        var com = {};
+        com.acs = {};
+        com.acs.constants = {};
+        com.acs.js = {};
+        com.acs.js.sdk = {};
+        com.acs.js.sdk.utils = {};
 
-        if (!com.acs.sdk) com.acs.sdk = {};
-        if (!com.acs.sdk.url) com.acs.sdk.url = {};//REST APIs
+        com.acs.sdk = {};
+        com.acs.sdk.url = {};//REST APIs
 
         //Protocols
         com.acs.sdk.url.http = 'http://';
@@ -1234,6 +1226,9 @@ function defineCloud(Cloud) {
         com.acs.constants.keyParam = '?key=';
         com.acs.constants.file = 'file';
         com.acs.constants.photo = 'photo';
+        com.acs.constants.suppressCode = 'suppress_response_codes';
+        com.acs.constants.sessionId = '_session_id';
+        com.acs.constants.oauth_consumer_key = 'oauth_consumer_key';
         com.acs.constants.noAppKeyError = {'meta': {'status': 'fail', 'code': 409, 'message': 'Application key is not provided.'}};
         com.acs.constants.fileLoadError = {'meta': {'status': 'fail', 'code': 400, 'message': 'Unable to load file'}};
 
@@ -1371,6 +1366,11 @@ function defineCloud(Cloud) {
             return str.slice(0, i + 1);
         }
 
+        function formatParam(url, name, value) {
+            var sep = (url.indexOf("?") != -1) ? "&" : "?";
+            return sep + name + "=" + value;
+        }
+
         com.acs.js.sdk.utils.sendAppceleratorRequest = function (url, method, data, header, callback) {
             var xhr = Ti.Network.createHTTPClient({
                 timeout: 60 * 1000,
@@ -1447,16 +1447,7 @@ function defineCloud(Cloud) {
             }
 
             // open the client
-            if (Ti.Platform.osname == 'mobileweb') {
-                // HACK: Manually open the underlying XHR request. Until the MobileWeb team deals with PR-1519, we have
-                // no choice in the matter.
-                // https://github.com/appcelerator/titanium_mobile/pull/1519
-                xhr._xhr.open(xhr.constants.connectionType = method, xhr.constants.location = requestURL, false);
-                xhr._xhr.withCredentials = 'true';
-            }
-            else {
-                xhr.open(method, requestURL);
-            }
+            xhr.open(method, requestURL);
 
             // set headers
             xhr.setRequestHeader('Accept-Encoding', 'gzip,deflate');
@@ -1467,10 +1458,6 @@ function defineCloud(Cloud) {
                     }
                     xhr.setRequestHeader(prop, header[prop]);
                 }
-            }
-            var sessionId = com.acs.js.sdk.utils.retrieveSessionId();
-            if (sessionId) {
-                xhr.setRequestHeader("Cookie", "_session_id=" + sessionId);
             }
 
             // send the data
