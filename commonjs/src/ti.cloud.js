@@ -1127,7 +1127,7 @@ function defineCloud(Cloud) {
             data[com.acs.constants.suppressCode] = 'true';
             var sessionId = com.acs.js.sdk.utils.retrieveSessionId();
             if (sessionId) {
-                reqURL += formatParam(reqUrl, com.acs.constants.sessionId, sessionId);
+                reqURL += formatParam(reqURL, com.acs.constants.sessionId, sessionId);
             }
 
             injectAnalytics(data, url);
