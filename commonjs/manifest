@@ -14,4 +14,4 @@ name: ti.cloud
 moduleid: ti.cloud
 guid: 1056b5d2-2bb5-4339-b930-297637aeec4e
 platform: commonjs
-minsdk: 2.0.0
+minsdk: 2.1.0
