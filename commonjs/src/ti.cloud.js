@@ -231,6 +231,18 @@ function defineCloud(Cloud) {
             { method: 'hasStoredSession', executor: hasStoredSession },
             { method: 'retrieveStoredSession', executor: retrieveStoredSession },
             {
+                property: 'ACLs',
+                children: [
+                    { method: 'create', verb: 'POST' },
+                    { method: 'update',  verb: 'PUT' },
+                    { method: 'show' },
+                    { method: 'remove', restMethod: 'delete', verb: 'DELETE' },
+                    { method: 'addUser', restMethod: 'add', verb: 'POST' },
+                    { method: 'removeUser', restMethod: 'remove', verb: 'DELETE' },
+                    { method: 'checkUser', restMethod: 'check' }
+                ]
+            },
+            {
                 property: 'Chats',
                 children: [
                     { method: 'create', verb: 'POST' },

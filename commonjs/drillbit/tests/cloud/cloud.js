@@ -74,6 +74,7 @@ describe("Cloud tests", {
         this.Posts = { ids: [] };
         this.Reviews = { postId: '', ids: [] };
         this.PhotoCollections = { ids: [], photoIds: [], subIds: [] };
+        this.ACLs = { chatUserId: '' };
 
         this.verifyAPIs = function(namespace,functions) {
             for (var i = 0; i < functions.length; i++) {
@@ -2902,5 +2903,213 @@ describe("Cloud tests", {
    		timeoutError: 'Timed out waiting for remove response'
    	}),
 
-    cloudPhotoCollectionsLogoutDrillbitUser: Utils.logout
+    cloudPhotoCollectionsLogoutDrillbitUser: Utils.logout,
+
+    // ---------------------------------------------------------------
+    // Cloud.ACLs
+    // ---------------------------------------------------------------
+
+    // Test that all of the namespace APIs are available
+    cloudACLsApi: function() {
+        // Verify that all of the methods are exposed
+        this.verifyAPIs('ACLs', [
+            'create',
+            'update',
+            'show',
+            'remove',
+            'addUser',
+            'removeUser',
+            'checkUser'
+        ]);
+    },
+
+    // Log in for the following tests
+    cloudACLsLoginDrillbitUser: Utils.loginAsDrillbitUser,
+
+    cloudACLsCreate: asyncTest({
+   	    start: function(callback) {
+   			var data = {
+                name: 'testACL'
+            };
+   			Cloud.ACLs.create(data,
+   				this.async(function(e) {
+   					valueOf(e.success).shouldBeTrue();
+   					valueOf(e.error).shouldBeFalse();
+                    valueOf(e.acls[0].public_read).shouldBeFalse();
+                    valueOf(e.acls[0].public_write).shouldBeFalse();
+                    valueOf(e.acls[0].readers.length).shouldBe(1);
+                    valueOf(e.acls[0].writers.length).shouldBe(1);
+                })
+            );
+   		},
+   		timeout: 30000,
+   		timeoutError: 'Timed out waiting for create response'
+   	}),
+
+    cloudACLsShow: asyncTest({
+   	    start: function(callback) {
+            var data = {
+                name: 'testACL'
+            };
+            Cloud.ACLs.show(data,
+                this.async(function(e) {
+                    valueOf(e.success).shouldBeTrue();
+               	    valueOf(e.error).shouldBeFalse();
+                    valueOf(e.acls[0].public_read).shouldBeFalse();
+                    valueOf(e.acls[0].public_write).shouldBeFalse();
+                    valueOf(e.acls[0].readers.length).shouldBe(1);
+                    valueOf(e.acls[0].writers.length).shouldBe(1);
+                })
+            );
+   		},
+   		timeout: 30000,
+   		timeoutError: 'Timed out waiting for show response'
+   	}),
+
+    cloudACLsUpdate: asyncTest({
+   	    start: function(callback) {
+            var data = {
+                name: 'testACL',
+                public_read: true,
+                public_write: true
+            };
+            Cloud.ACLs.update(data,
+                this.async(function(e) {
+                    valueOf(e.success).shouldBeTrue();
+               	    valueOf(e.error).shouldBeFalse();
+                    valueOf(e.acls[0].public_read).shouldBeTrue();
+                    valueOf(e.acls[0].public_write).shouldBeTrue();
+                    valueOf(e.acls[0].readers).shouldBeUndefined();
+                    valueOf(e.acls[0].writers).shouldBeUndefined();
+
+                })
+            );
+   		},
+   		timeout: 30000,
+   		timeoutError: 'Timed out waiting for update response'
+   	}),
+
+    cloudACLsAddRemoveUsers: asyncTest({
+   	    start: function(callback) {
+               var data = {
+                   name: 'testACL',
+                   public_read: false,
+                   public_write: false
+               }
+            this.sequence.push(function() { Cloud.ACLs.update(data,
+               this.async(function(e) {
+                   valueOf(e.success).shouldBeTrue();
+                   valueOf(e.error).shouldBeFalse();
+                   valueOf(e.acls[0].public_read).shouldBeFalse();
+                   valueOf(e.acls[0].public_write).shouldBeFalse();
+                   valueOf(e.acls[0].readers.length).shouldBe(1);
+                   valueOf(e.acls[0].writers.length).shouldBe(1);
+               })
+            )});
+            this.sequence.push(function() { Cloud.Users.query(
+                this.async(function(e) {
+                    valueOf(e.success).shouldBeTrue();
+                    valueOf(e.error).shouldBeFalse();
+                    valueOf(e.users.length).shouldBe(2);
+                    callback.ACLs.chatUserId = (e.users[0].id == callback.Utils.userId) ? e.users[1].id : e.users[0].id;
+                })
+            )});
+            this.sequence.push(function() {	Cloud.ACLs.addUser({
+                    name: 'testACL',
+                    reader_ids: callback.ACLs.chatUserId,
+                    writer_ids: callback.ACLs.chatUserId
+                },
+   				this.async(function(e) {
+   					valueOf(e.success).shouldBeTrue();
+   					valueOf(e.error).shouldBeFalse();
+                })
+            )});
+            this.sequence.push(function() { Cloud.ACLs.show({
+                    name: 'testACL'
+                },
+                this.async(function(e) {
+                    valueOf(e.success).shouldBeTrue();
+                  	valueOf(e.error).shouldBeFalse();
+                    valueOf(e.acls[0].public_read).shouldBeFalse();
+                    valueOf(e.acls[0].public_write).shouldBeFalse();
+                    valueOf(e.acls[0].readers.length).shouldBe(2);
+                    valueOf(e.acls[0].writers.length).shouldBe(2);
+                })
+            )});
+            this.sequence.push(function() {	Cloud.ACLs.removeUser({
+                    name: 'testACL',
+                    reader_ids: callback.ACLs.chatUserId,
+                    writer_ids: ''
+                },
+                this.async(function(e) {
+                    valueOf(e.success).shouldBeTrue();
+                    valueOf(e.error).shouldBeFalse();
+               })
+            )});
+            this.sequence.push(function() { Cloud.ACLs.show({
+                    name: 'testACL'
+               },
+               this.async(function(e) {
+                   valueOf(e.success).shouldBeTrue();
+                   valueOf(e.error).shouldBeFalse();
+                   valueOf(e.acls[0].public_read).shouldBeFalse();
+                   valueOf(e.acls[0].public_write).shouldBeFalse();
+                   valueOf(e.acls[0].readers.length).shouldBe(1);
+                   valueOf(e.acls[0].writers.length).shouldBe(2);
+                   valueOf(e.acls[0].readers[0]).shouldBe(callback.Utils.userId);
+               })
+            )});
+        },
+   		timeout: 30000,
+   		timeoutError: 'Timed out waiting for add/remove response'
+   	}),
+
+    cloudACLsCheckUser: asyncTest({
+   	    start: function(callback) {
+            var data = {
+               name: 'testACL',
+               user_id: callback.Utils.userId
+            }
+            this.sequence.push(function() { Cloud.ACLs.checkUser({
+                    name: 'testACL',
+                    user_id: callback.Utils.userId
+                },
+                this.async(function(e) {
+                    valueOf(e.success).shouldBeTrue();
+                    valueOf(e.error).shouldBeFalse();
+                    valueOf(e.permission['read permission']).shouldBe('yes');
+                    valueOf(e.permission['write permission']).shouldBe('yes');
+                })
+            )});
+            this.sequence.push(function() { Cloud.ACLs.checkUser({
+                   name: 'testACL',
+                   user_id: callback.ACLs.chatUserId
+               },
+               this.async(function(e) {
+                   valueOf(e.success).shouldBeTrue();
+                   valueOf(e.error).shouldBeFalse();
+                   valueOf(e.permission['read permission']).shouldBe('no');
+                   valueOf(e.permission['write permission']).shouldBe('yes');
+               })
+            )});
+        },
+   		timeout: 30000,
+   		timeoutError: 'Timed out waiting for checkUser response'
+   	}),
+
+    cloudACLsCleanup: asyncTest({
+        start: function(callback) {
+            var data = {
+                name: 'testACL'
+            };
+            Cloud.ACLs.remove( data,
+                this.async(function(e) {
+                    valueOf(e.success).shouldBeTrue();
+                    valueOf(e.error).shouldBeFalse();
+                })
+            );
+   		},
+   		timeout: 30000,
+   		timeoutError: 'Timed out waiting for remove response'
+   	})
 });

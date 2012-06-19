@@ -1,5 +1,7 @@
 # Change Log
 <pre>
+v2.1.0  Added Access Control Lists namespace and methods
+
 v2.0.6  Fixed several issues with example application related to chat, custom objects, key values, photos, reviews,
         social, user, and connection notifications.
         Module updated to work with MobileWeb on Chrome, Firefox, and Safari browsers (requires TiSDK 2.1.0)
