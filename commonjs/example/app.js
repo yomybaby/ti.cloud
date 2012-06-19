@@ -104,7 +104,8 @@ Ti.include(
     'windows/reviews/table.js',
     'windows/social/table.js',
     'windows/status/table.js',
-    'windows/users/table.js'
+    'windows/users/table.js',
+    'windows/accessControlLists/table.js'
 );
 
 // Define our main window.
@@ -117,6 +118,7 @@ var table = Ti.UI.createTableView({
     backgroundColor: '#fff',
     data: createRows([
         'Users',
+        'Access Control Lists',
         'Chats',
         'Checkins',
         'Clients',
