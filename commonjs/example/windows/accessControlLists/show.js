@@ -23,7 +23,7 @@ windowFunctions['Show ACL'] = function (evt) {
 		ids: []
 	};
     var readersButton = Ti.UI.createButton({
-        title: 'Readers',
+        title: 'Select Readers',
         top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
         height: 40 + u
     });
@@ -37,7 +37,7 @@ windowFunctions['Show ACL'] = function (evt) {
 		ids: []
 	};
     var writersButton = Ti.UI.createButton({
-        title: 'Writers',
+        title: 'Select Writers',
         top: 0, left: 10 + u, right: 10 + u, bottom: 10 + u,
         height: 40 + u
     });
