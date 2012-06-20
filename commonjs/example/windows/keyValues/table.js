@@ -94,9 +94,15 @@ windowFunctions['Key Values'] = function (evt) {
         height: 40 + u
     });
     incrementButton.addEventListener('click', function (evt) {
+    	var incrby = parseInt(value.value, 10);
+    	if (isNaN(incrby)) {
+    		alert('Enter a valid number for the increment');
+    		value.focus();
+    		return;
+    	}
         Cloud.KeyValues.increment({
             name: name.value,
-            value: parseInt(value.value, 10)
+            value: incrby
         }, function (e) {
             if (e.success) {
                 alert('Incremented!');
