@@ -63,7 +63,7 @@ windowFunctions['Query Objects'] = function (evt) {
                     for (var i = 0; i < objects.length; i++) {
                         (function (i) {
                             var wrapper = Ti.UI.createView({
-                                layout: 'vertical', height: 50,
+                                layout: 'vertical', height: 50 + u,
                                 top: 5 + u, right: 5 + u, bottom: 5 + u, left: 5 + u,
                                 borderColor: '#ccc', borderWeight: 1
                             });
