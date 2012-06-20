@@ -1,5 +1,8 @@
 # Change Log
 <pre>
+v2.1.1  Fixed display issue with custom objects in example application [MOD-770]
+        Add check for valid numeric data for key-value increment call in example application [MOD-682]
+
 v2.1.0  Added Access Control Lists namespace and methods
 
 v2.0.6  Fixed several issues with example application related to chat, custom objects, key values, photos, reviews,
