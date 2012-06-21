@@ -1431,25 +1431,22 @@ function defineCloud(Cloud) {
 
             // for GET request only
             var requestURL = url;
-            switch (method.toUpperCase()) {
-                case 'DELETE':
-                case 'GET':
-                    var params = '';
-                    for (var prop in data) {
-                        if (!data.hasOwnProperty(prop)) {
-                            continue;
-                        }
-                        params += '&' + prop + '=' + OAuth.percentEncode(data[prop]);
+            if ((method == 'GET') || (method == 'DELETE')) {
+                var params = '';
+                for (var prop in data) {
+                    if (!data.hasOwnProperty(prop)) {
+                        continue;
                     }
-                    if (params.length > 0) {
-                        if (url.indexOf('?') > 0) {
-                            requestURL += params;
-                        } else {
-                            requestURL += '?' + params.substring(1);
-                        }
-                        data = {};
+                    params += '&' + prop + '=' + OAuth.percentEncode(data[prop]);
+                }
+                if (params.length > 0) {
+                    if (url.indexOf('?') > 0) {
+                        requestURL += params;
+                    } else {
+                        requestURL += '?' + params.substring(1);
                     }
-                    break;
+                    data = {};
+                }
             }
 
             if (Cloud.debug) {
