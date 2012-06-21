@@ -1367,17 +1367,6 @@ function defineCloud(Cloud) {
             }
         };
 
-        // http://blog.stevenlevithan.com/archives/faster-trim-javascript
-        function trim12(str) {
-            if (!str || str.length <= 0)
-                return false;
-            var str = str.replace(/^\s\s*/, ''),
-                ws = /\s/,
-                i = str.length;
-            while (ws.test(str.charAt(--i))) {}
-            return str.slice(0, i + 1);
-        }
-
         function formatParam(url, name, value) {
             var sep = (url.indexOf("?") != -1) ? "&" : "?";
             return sep + name + "=" + value;
@@ -1402,7 +1391,7 @@ function defineCloud(Cloud) {
                     var retVal = {};
                     var json = this.responseText;
                     try {
-                        json = trim12(json);
+                        json = json.trim();
                         if (json && json.length > 0) {
                             retVal = JSON.parse(json);
                         }
@@ -1431,25 +1420,22 @@ function defineCloud(Cloud) {
 
             // for GET request only
             var requestURL = url;
-            switch (method.toUpperCase()) {
-                case 'DELETE':
-                case 'GET':
-                    var params = '';
-                    for (var prop in data) {
-                        if (!data.hasOwnProperty(prop)) {
-                            continue;
-                        }
-                        params += '&' + prop + '=' + OAuth.percentEncode(data[prop]);
+            if ((method == 'GET') || (method == 'DELETE')) {
+                var params = '';
+                for (var prop in data) {
+                    if (!data.hasOwnProperty(prop)) {
+                        continue;
                     }
-                    if (params.length > 0) {
-                        if (url.indexOf('?') > 0) {
-                            requestURL += params;
-                        } else {
-                            requestURL += '?' + params.substring(1);
-                        }
-                        data = {};
+                    params += '&' + prop + '=' + OAuth.percentEncode(data[prop]);
+                }
+                if (params.length > 0) {
+                    if (url.indexOf('?') > 0) {
+                        requestURL += params;
+                    } else {
+                        requestURL += '?' + params.substring(1);
                     }
-                    break;
+                    data = {};
+                }
             }
 
             if (Cloud.debug) {
