@@ -4,20 +4,20 @@
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  */
- 
+
 module.exports = new function() {
     var finish;
-   	var valueOf;
+    var valueOf;
     var Cloud;
-   	this.init = function(testUtils) {
-   		finish = testUtils.finish;
-   		valueOf = testUtils.valueOf;
+    this.init = function(testUtils) {
+        finish = testUtils.finish;
+        valueOf = testUtils.valueOf;
         Cloud = require('ti.cloud');
-   	};
+    };
 
-	this.name = "cloud push notifications";
-	this.tests = [
-		{name: "Api"},
+    this.name = "cloud push notifications";
+    this.tests = [
+        {name: "Api"},
         {name: "LoginDrillbitUser", timeout: 30000 },
         {name: "Notify", timeout: 30000 },
         {name: "LogoutDrillbitUser", timeout: 30000 }
@@ -46,7 +46,7 @@ module.exports = new function() {
         finish(testRun);
     },
 
-	// Log in for the following tests
+    // Log in for the following tests
     this.LoginDrillbitUser = function(testRun) {
         var data = {
             login: 'drillbitUser',

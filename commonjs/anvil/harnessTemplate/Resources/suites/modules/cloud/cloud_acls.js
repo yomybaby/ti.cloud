@@ -4,21 +4,21 @@
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  */
- 
+
 module.exports = new function() {
     var finish;
-   	var valueOf;
+    var valueOf;
     var Cloud;
-   	this.init = function(testUtils) {
-   		finish = testUtils.finish;
-   		valueOf = testUtils.valueOf;
+    this.init = function(testUtils) {
+        finish = testUtils.finish;
+        valueOf = testUtils.valueOf;
         Cloud = require('ti.cloud');
-   	};
+    };
 
-	this.name = "cloud ACLs";
-	this.tests = [
-		{name: "Api"},
-		{name: "LoginDrillbitUser", timeout: 30000},
+    this.name = "cloud ACLs";
+    this.tests = [
+        {name: "Api"},
+        {name: "LoginDrillbitUser", timeout: 30000},
         {name: "Create", timeout:30000},
         {name: "Show", timeout:30000},
         {name: "Update", timeout:30000},
@@ -56,7 +56,7 @@ module.exports = new function() {
         finish(testRun);
     },
 
-	// Log in for the following tests
+    // Log in for the following tests
     this.LoginDrillbitUser = function(testRun) {
         var data = {
             login: 'drillbitUser',
@@ -101,7 +101,7 @@ module.exports = new function() {
     },
 
     this.Update = function(testRun) {
-   	    var data = {
+        var data = {
             name: 'testACL',
             public_read: true,
             public_write: true
@@ -191,7 +191,7 @@ module.exports = new function() {
     },
 
     this.CheckUser= function(testRun) {
-   	    var data = {
+        var data = {
            name: 'testACL',
            user_id: drillbitUserId
         }

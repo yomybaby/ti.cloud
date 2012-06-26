@@ -4,21 +4,21 @@
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  */
- 
+
 module.exports = new function() {
     var finish;
-   	var valueOf;
+    var valueOf;
     var Cloud;
-   	this.init = function(testUtils) {
-   		finish = testUtils.finish;
-   		valueOf = testUtils.valueOf;
+    this.init = function(testUtils) {
+        finish = testUtils.finish;
+        valueOf = testUtils.valueOf;
         Cloud = require('ti.cloud');
-   	};
+    };
 
-	this.name = "cloud photo collections";
-	this.tests = [
-		{name: "Api"},
-		{name: "LoginDrillbitUser", timeout: 30000},
+    this.name = "cloud photo collections";
+    this.tests = [
+        {name: "Api"},
+        {name: "LoginDrillbitUser", timeout: 30000},
         {name: "Create", timeout: 30000},
         {name: "Show", timeout: 30000},
         {name: "Update", timeout: 30000},
@@ -64,7 +64,7 @@ module.exports = new function() {
         finish(testRun);
     },
 
-	// Log in for the following tests
+    // Log in for the following tests
     this.LoginDrillbitUser = function(testRun) {
         var data = {
             login: 'drillbitUser',
@@ -77,7 +77,7 @@ module.exports = new function() {
             finish(testRun);
         });
     },
-        
+
     this.Create = function(testRun) {
         var data = {
             name: 'collection1'
@@ -114,7 +114,7 @@ module.exports = new function() {
     },
 
     this.Update= function(testRun) {
-   	    var data = {
+        var data = {
             photo: Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, 'suites/modules/cloud/apple_logo.jpg'),
             tags: 'apple, logo',
             'photo_sizes[preview]': '100x100#',
@@ -347,9 +347,9 @@ module.exports = new function() {
         var subIds = [];
 
         var searchResult =  function(e) {
-		    valueOf(testRun, e.success).shouldBeTrue();
-			valueOf(testRun, e.error).shouldBeFalse();
-			for (var i = 0; i < e.collections.length; i++) {
+            valueOf(testRun, e.success).shouldBeTrue();
+            valueOf(testRun, e.error).shouldBeFalse();
+            for (var i = 0; i < e.collections.length; i++) {
                 collectionIds.push(e.collections[i].id);
                 if (e.collections[i].counts.subcollections > 0) {
                     subIds.push(e.collections[i].id);
@@ -380,10 +380,10 @@ module.exports = new function() {
             } else {
                 Cloud.PhotoCollections.remove({ collection_id: collectionIds.pop() }, removeCollection);
             }
-   		}
+        }
 
         // Delete all of the photo collections
-	    Cloud.PhotoCollections.search({ user_id: drillbitUserId }, searchResult);
+        Cloud.PhotoCollections.search({ user_id: drillbitUserId }, searchResult);
     },
 
     // Done with the tests -- log out

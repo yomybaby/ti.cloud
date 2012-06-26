@@ -4,31 +4,31 @@
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  */
- 
-module.exports = new function() {
-	var finish;
-	var valueOf;
-    var Cloud;
-	this.init = function(testUtils) {
-		finish = testUtils.finish;
-		valueOf = testUtils.valueOf;
-        Cloud = require('ti.cloud');
-	};
 
-	this.name = "cloud";
-	this.tests = [
-		{name: "cloudModule"},
-		{name: "cloudUseSecure"}
-	];
+module.exports = new function() {
+    var finish;
+    var valueOf;
+    var Cloud;
+    this.init = function(testUtils) {
+        finish = testUtils.finish;
+        valueOf = testUtils.valueOf;
+        Cloud = require('ti.cloud');
+    };
+
+    this.name = "cloud";
+    this.tests = [
+        {name: "cloudModule"},
+        {name: "cloudUseSecure"}
+    ];
 
     // ---------------------------------------------------------------
     // Cloud
     // ---------------------------------------------------------------
 
     // Test that cloud module is part of TiSDK
-	this.cloudModule = function(testRun) {
+    this.cloudModule = function(testRun) {
         // Verify that the module is defined
-		valueOf(testRun, Cloud).shouldBeObject();
+        valueOf(testRun, Cloud).shouldBeObject();
         finish(testRun);
     },
 

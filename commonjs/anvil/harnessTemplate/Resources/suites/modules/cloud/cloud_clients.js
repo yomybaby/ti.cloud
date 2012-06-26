@@ -4,21 +4,21 @@
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  */
- 
+
 module.exports = new function() {
     var finish;
-   	var valueOf;
+    var valueOf;
     var Cloud;
-   	this.init = function(testUtils) {
-   		finish = testUtils.finish;
-   		valueOf = testUtils.valueOf;
+    this.init = function(testUtils) {
+        finish = testUtils.finish;
+        valueOf = testUtils.valueOf;
         Cloud = require('ti.cloud');
-   	};
+    };
 
-	this.name = "cloud clients";
-	this.tests = [
-		{name: "Api"},
-		{name: "Locate", timeout: 30000},
+    this.name = "cloud clients";
+    this.tests = [
+        {name: "Api"},
+        {name: "Locate", timeout: 30000},
         {name: "LocateAppcelerator", timeout: 30000}
     ];
 
@@ -50,7 +50,7 @@ module.exports = new function() {
     };
 
     this.LocateAppcelerator= function(testRun) {
-   	    var data = {
+        var data = {
             ip_address: '184.72.37.109'
         };
         Cloud.Clients.geolocate(data, function(e) {

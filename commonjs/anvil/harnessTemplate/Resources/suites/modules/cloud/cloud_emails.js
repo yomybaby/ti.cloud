@@ -7,16 +7,16 @@
 
 module.exports = new function() {
     var finish;
-   	var valueOf;
+    var valueOf;
     var Cloud;
-   	this.init = function(testUtils) {
-   		finish = testUtils.finish;
-   		valueOf = testUtils.valueOf;
+    this.init = function(testUtils) {
+        finish = testUtils.finish;
+        valueOf = testUtils.valueOf;
         Cloud = require('ti.cloud');
-   	};
-	this.name = "cloud emails";
-	this.tests = [
-		{name: "Api"},
+    };
+    this.name = "cloud emails";
+    this.tests = [
+        {name: "Api"},
         {name: "Send", timeout:30000}
     ];
 
@@ -40,7 +40,7 @@ module.exports = new function() {
     },
 
     this.Send= function(testRun) {
-   	    var data = {
+        var data = {
             template: 'DrillbitTest',
             name: 'John Smith',
             subject: 'cloudEmailsSend Drillbit test',

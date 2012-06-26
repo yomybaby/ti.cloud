@@ -4,21 +4,21 @@
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  */
- 
+
 module.exports = new function() {
     var finish;
-   	var valueOf;
+    var valueOf;
     var Cloud;
-   	this.init = function(testUtils) {
-   		finish = testUtils.finish;
-   		valueOf = testUtils.valueOf;
+    this.init = function(testUtils) {
+        finish = testUtils.finish;
+        valueOf = testUtils.valueOf;
         Cloud = require('ti.cloud');
-   	};
+    };
 
-	this.name = "cloud checkins";
-	this.tests = [
-		{name: "Api"},
-		{name: "LoginDrillbitUser", timeout: 30000},
+    this.name = "cloud checkins";
+    this.tests = [
+        {name: "Api"},
+        {name: "LoginDrillbitUser", timeout: 30000},
         {name: "Create", timeout: 30000},
         {name: "Show", timeout: 30000},
         {name: "DeleteCheckin", timeout: 30000},
@@ -126,7 +126,7 @@ module.exports = new function() {
     },
 
     this.Show = function(testRun) {
-   	    var data = {
+        var data = {
             checkin_id: checkinId
         };
         Cloud.Checkins.show(data, function(e) {

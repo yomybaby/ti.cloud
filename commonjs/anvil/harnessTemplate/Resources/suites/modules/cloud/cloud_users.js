@@ -4,20 +4,20 @@
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  */
- 
+
 module.exports = new function() {
     var finish;
-   	var valueOf;
+    var valueOf;
     var Cloud;
-   	this.init = function(testUtils) {
-   		finish = testUtils.finish;
-   		valueOf = testUtils.valueOf;
+    this.init = function(testUtils) {
+        finish = testUtils.finish;
+        valueOf = testUtils.valueOf;
         Cloud = require('ti.cloud');
-   	};
+    };
 
-	this.name = "cloud users";
-	this.tests = [
-		{name: "Api"},
+    this.name = "cloud users";
+    this.tests = [
+        {name: "Api"},
         {name: "CreateInvalidArguments", timeout: 30000},
         {name: "CreateEmptyUser", timeout: 30000},
         {name: "CreateNoPassword", timeout: 30000},
@@ -44,7 +44,7 @@ module.exports = new function() {
         {name: "QueryOneUserIn", timeout: 30000},
         {name: "DeleteOneUser", timeout: 30000},
         {name: "DeleteAllUsers", timeout: 30000}
-	];
+    ];
 
     function verifyAPIs(testRun, namespace, functions) {
         for (var i = 0; i < functions.length; i++) {
@@ -83,7 +83,7 @@ module.exports = new function() {
         ]);
         finish(testRun);
     },
-        
+
     // Cloud.Users.create
     this.CreateInvalidArguments = function(testRun) {
         valueOf(testRun, function() {
@@ -102,75 +102,75 @@ module.exports = new function() {
     },
 
     this.CreateEmptyUser = function(testRun) {
-   		var data = {};
-        
-   		Cloud.Users.create(data, function(e) {
-   			valueOf(testRun, e.success).shouldBeFalse();
-   			valueOf(testRun, e.error).shouldBeTrue();
-            finish(testRun);
-   		});
-   	},
+        var data = {};
 
-    this.CreateNoPassword = function(testRun) {
-		var data = {
-            username: 'testuser'
-        };
-        
-    	Cloud.Users.create(data, function(e) {
-   			valueOf(testRun, e.success).shouldBeFalse();
-   			valueOf(testRun, e.error).shouldBeTrue();
+        Cloud.Users.create(data, function(e) {
+            valueOf(testRun, e.success).shouldBeFalse();
+            valueOf(testRun, e.error).shouldBeTrue();
             finish(testRun);
         });
-   	},
+    },
+
+    this.CreateNoPassword = function(testRun) {
+        var data = {
+            username: 'testuser'
+        };
+
+        Cloud.Users.create(data, function(e) {
+            valueOf(testRun, e.success).shouldBeFalse();
+            valueOf(testRun, e.error).shouldBeTrue();
+            finish(testRun);
+        });
+    },
 
     this.CreateNoConfirmation = function(testRun) {
-		var data = {
+        var data = {
             username: 'testuser',
             password: 'password'
         };
-        
-		Cloud.Users.create(data, function(e) {
-   			valueOf(testRun, e.success).shouldBeFalse();
-   			valueOf(testRun, e.error).shouldBeTrue();
+
+        Cloud.Users.create(data, function(e) {
+            valueOf(testRun, e.success).shouldBeFalse();
+            valueOf(testRun, e.error).shouldBeTrue();
             finish(testRun);
         });
-   	},
+    },
 
     this.CreateMismatchedPassword = function(testRun) {
-   		var data = {
+        var data = {
             username: 'testuser',
             password: 'password',
             password_confirmation: 'bad'
         };
-        
-   		Cloud.Users.create(data, function(e) {
-   			valueOf(testRun, e.success).shouldBeFalse();
-   			valueOf(testRun, e.error).shouldBeTrue();
+
+        Cloud.Users.create(data, function(e) {
+            valueOf(testRun, e.success).shouldBeFalse();
+            valueOf(testRun, e.error).shouldBeTrue();
             finish(testRun);
         });
     },
 
     this.CreateNoUsername = function(testRun) {
-		var data = {
+        var data = {
             password: 'password',
             password_confirmation: 'password'
         };
-        
-   		Cloud.Users.create(data, function(e) {
-   			valueOf(testRun, e.success).shouldBeFalse();
-   			valueOf(testRun, e.error).shouldBeTrue();
+
+        Cloud.Users.create(data, function(e) {
+            valueOf(testRun, e.success).shouldBeFalse();
+            valueOf(testRun, e.error).shouldBeTrue();
             finish(testRun);
         });
     },
 
     this.CreateEmailNoName = function(testRun) {
-   	    var data = {
+        var data = {
             email: 'testuser@appcelerator.com',
             password: 'password',
             password_confirmation: 'password'
         };
-        
-   		Cloud.Users.create(data, function(e) {
+
+        Cloud.Users.create(data, function(e) {
             valueOf(testRun, e.success).shouldBeFalse();
             valueOf(testRun, e.error).shouldBeTrue();
             finish(testRun);
@@ -178,7 +178,7 @@ module.exports = new function() {
     },
 
     this.CreateUserWithUserName = function(testRun) {
-   	    var data = {
+        var data = {
             username: 'testuser1',
             password: 'password',
             password_confirmation: 'password',
@@ -197,10 +197,10 @@ module.exports = new function() {
         };
 
         Cloud.Users.create(data, created);
-   	},
+    },
 
     this.CreateUserWithEMail = function(testRun) {
-   	    var data = {
+        var data = {
             email: 'testuser2@appcelerator.com',
             password: 'password',
             password_confirmation: 'password',
@@ -210,7 +210,7 @@ module.exports = new function() {
 
         var created = function(e) {
             valueOf(testRun, e.success).shouldBeTrue();
-        	valueOf(testRun, e.error).shouldBeFalse();
+            valueOf(testRun, e.error).shouldBeFalse();
             Cloud.Users.logout(loggedOut);
         };
 
@@ -218,43 +218,43 @@ module.exports = new function() {
             valueOf(testRun, e.success).shouldBeTrue();
             finish(testRun);
         };
-        
+
         Cloud.Users.create(data, created);
-   	},
+    },
 
     // Cloud.Users.login and Cloud.Users.logout
     this.LoginUserUnknownUser = function(testRun) {
-   	    var data = {
+        var data = {
             login: 'tttt',
             password: 'password'
         };
-        
+
         Cloud.Users.login(data, function(e) {
             valueOf(testRun, e.success).shouldBeFalse();
             valueOf(testRun, e.error).shouldBeTrue();
             finish(testRun);
         });
-   	},
+    },
 
     this.LoginUserBadPassword = function(testRun) {
-   	    var data = {
+        var data = {
             login: 'testuser1',
             password: 'tttt'
         };
-        
+
         Cloud.Users.login(data, function(e) {
             valueOf(testRun, e.success).shouldBeFalse();
             valueOf(testRun, e.error).shouldBeTrue();
             finish(testRun);
         });
-   	},
-        
+    },
+
     this.LoginUser1 = function(testRun) {
         var data = {
                 login: 'testuser1',
                 password: 'password'
         };
-        
+
         Cloud.Users.login(data, function(e) {
             valueOf(testRun, e.success).shouldBeTrue();
             valueOf(testRun, e.error).shouldBeFalse();
@@ -267,7 +267,7 @@ module.exports = new function() {
             finish(testRun);
         });
     },
-        
+
     this.LogoutUser1 = function(testRun) {
         Cloud.Users.logout( function(e) {
             valueOf(testRun, e.success).shouldBeTrue();
@@ -500,14 +500,14 @@ module.exports = new function() {
 
         var finished = function(e) {
             valueOf(testRun, e.success).shouldBeTrue();
-       		valueOf(testRun, e.users.length).shouldBe(0);
+            valueOf(testRun, e.users.length).shouldBe(0);
             finish(testRun);
         };
 
         // Must be logged in in order to delete
         Cloud.Users.login({ login: 'testuser2@appcelerator.com', password: 'password'}, loggedIn);
     },
-	
+
     // Remove any users that we added to the database so it is back in its original state
     this.DeleteAllUsers = function(testRun) {
         var loggedIn1 = function(e) {

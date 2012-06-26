@@ -4,21 +4,21 @@
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  */
- 
+
 module.exports = new function() {
     var finish;
-   	var valueOf;
+    var valueOf;
     var Cloud;
-   	this.init = function(testUtils) {
-   		finish = testUtils.finish;
-   		valueOf = testUtils.valueOf;
+    this.init = function(testUtils) {
+        finish = testUtils.finish;
+        valueOf = testUtils.valueOf;
         Cloud = require('ti.cloud');
-   	};
+    };
 
-	this.name = "cloud reviews";
-	this.tests = [
-		{name: "Api"},
-		{name: "LoginDrillbitUser", timeout: 30000},
+    this.name = "cloud reviews";
+    this.tests = [
+        {name: "Api"},
+        {name: "LoginDrillbitUser", timeout: 30000},
         {name: "Create", timeout: 30000},
         {name: "CreateAndShow", timeout: 30000},
         {name: "Show", timeout: 30000},
@@ -55,8 +55,8 @@ module.exports = new function() {
         ]);
         finish(testRun);
     },
-        
-	// Log in for the following tests
+
+    // Log in for the following tests
     this.LoginDrillbitUser = function(testRun) {
         var data = {
             login: 'drillbitUser',
@@ -90,7 +90,7 @@ module.exports = new function() {
     },
 
     this.CreateAndShow= function(testRun) {
-   	    var data = {
+        var data = {
             content: 'Welcome to Hawaii',
             title: 'Aloha'
         };
@@ -153,7 +153,7 @@ module.exports = new function() {
     },
 
     this.Show= function(testRun) {
-   	    var data = {
+        var data = {
             user_id: drillbitUserId,
             review_id: ids[0]
         };
@@ -169,7 +169,7 @@ module.exports = new function() {
     },
 
     this.Update= function(testRun) {
-   	    var data = {
+        var data = {
             post_id: postId,
             review_id: ids[1],
             content: 'It is a great day in Hawaii',

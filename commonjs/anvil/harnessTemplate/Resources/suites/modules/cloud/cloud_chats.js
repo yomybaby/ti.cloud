@@ -4,21 +4,21 @@
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  */
- 
+
 module.exports = new function() {
     var finish;
-   	var valueOf;
+    var valueOf;
     var Cloud;
-   	this.init = function(testUtils) {
-   		finish = testUtils.finish;
-   		valueOf = testUtils.valueOf;
+    this.init = function(testUtils) {
+        finish = testUtils.finish;
+        valueOf = testUtils.valueOf;
         Cloud = require('ti.cloud');
-   	};
+    };
 
-	this.name = "cloud chats";
-	this.tests = [
-		{name: "Api"},
-		{name: "Create", timeout: 30000},
+    this.name = "cloud chats";
+    this.tests = [
+        {name: "Api"},
+        {name: "Create", timeout: 30000},
         {name: "Query", timeout: 30000},
         {name: "MOD752", timeout: 30000},
         {name: "GetChatGroups", timeout: 30000}

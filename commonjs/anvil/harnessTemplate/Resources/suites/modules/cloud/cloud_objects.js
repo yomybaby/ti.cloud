@@ -4,20 +4,20 @@
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  */
- 
+
 module.exports = new function() {
     var finish;
-   	var valueOf;
+    var valueOf;
     var Cloud;
-   	this.init = function(testUtils) {
-   		finish = testUtils.finish;
-   		valueOf = testUtils.valueOf;
+    this.init = function(testUtils) {
+        finish = testUtils.finish;
+        valueOf = testUtils.valueOf;
         Cloud = require('ti.cloud');
-   	};
+    };
 
-	this.name = "cloud objects";
-	this.tests = [
-		{name: "Api"},
+    this.name = "cloud objects";
+    this.tests = [
+        {name: "Api"},
         {name: "CreateObjectNotLoggedIn", timeout: 30000},
         {name: "LoginDrillbitUser", timeout: 30000},
         {name: "CreateObjectLoggedIn", timeout: 30000},
@@ -47,7 +47,7 @@ module.exports = new function() {
     //    username: 'chatuser'
     //    password: 'password'
     // 3. There should not be any other users defined in the application
- 
+
     // ---------------------------------------------------------------
     // Cloud.Objects
     // ---------------------------------------------------------------
@@ -65,7 +65,7 @@ module.exports = new function() {
         finish(testRun);
     },
 
-	// Test that an object cannot be created when not logged in
+    // Test that an object cannot be created when not logged in
     this.CreateObjectNotLoggedIn = function(testRun) {
         var data = {
             classname: 'cars',
@@ -79,9 +79,9 @@ module.exports = new function() {
             valueOf(testRun, e.error).shouldBeTrue();
             finish(testRun);
         });
-	},
+    },
 
-	// Log in for the following tests
+    // Log in for the following tests
     this.LoginDrillbitUser = function(testRun) {
         var data = {
             login: 'drillbitUser',
@@ -95,8 +95,8 @@ module.exports = new function() {
         });
     },
 
-	// Cloud.Objects.create
-	// Test that an object can be created when logged in
+    // Cloud.Objects.create
+    // Test that an object can be created when logged in
     this.CreateObjectLoggedIn = function(testRun) {
         var data = {
             classname: 'cars',
@@ -122,7 +122,7 @@ module.exports = new function() {
         });
     },
 
-	// Test the creation of multiple objects in one pass
+    // Test the creation of multiple objects in one pass
     this.CreateMultipleObjects = function(testRun) {
         var count = 0;
         var cb = function(e) {
@@ -136,7 +136,7 @@ module.exports = new function() {
         }
     },
 
-	// Cloud.Objects.show
+    // Cloud.Objects.show
     this.ShowObject = function(testRun) {
         var data = {
             classname: 'cars',
@@ -161,7 +161,7 @@ module.exports = new function() {
         });
     },
 
-	// Cloud.Objects.update
+    // Cloud.Objects.update
     this.UpdateObject = function(testRun) {
         var data = {
             classname: 'cars',
@@ -201,7 +201,7 @@ module.exports = new function() {
         });
     },
 
-	// Cloud.Objects.query
+    // Cloud.Objects.query
     this.QueryOneObject = function(testRun) {
         var data = {
             classname: 'cars',
@@ -278,7 +278,7 @@ module.exports = new function() {
         var testIds = [];
         var testsQueried = function(e) {
             valueOf(testRun, e.success).shouldBeTrue();
-       		valueOf(testRun, e.error).shouldBeFalse();
+            valueOf(testRun, e.error).shouldBeFalse();
             for (var i = 0; i < e.test.length; i++) {
                 testIds.push(e.test[i].id);
             }
@@ -287,7 +287,7 @@ module.exports = new function() {
 
         var testsRemoved = function(e) {
             valueOf(testRun, e.success).shouldBeTrue();
-       		valueOf(testRun, e.error).shouldBeFalse();
+            valueOf(testRun, e.error).shouldBeFalse();
             Cloud.Objects.query({ classname: 'test' }, finished);
         };
 

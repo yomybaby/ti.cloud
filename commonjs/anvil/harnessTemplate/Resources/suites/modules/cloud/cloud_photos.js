@@ -4,21 +4,21 @@
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  */
- 
+
 module.exports = new function() {
     var finish;
-   	var valueOf;
+    var valueOf;
     var Cloud;
-   	this.init = function(testUtils) {
-   		finish = testUtils.finish;
-   		valueOf = testUtils.valueOf;
+    this.init = function(testUtils) {
+        finish = testUtils.finish;
+        valueOf = testUtils.valueOf;
         Cloud = require('ti.cloud');
-   	};
+    };
 
-	this.name = "cloud photos";
-	this.tests = [
-		{name: "Api"},
-		{name: "LoginDrillbitUser", timeout: 30000},
+    this.name = "cloud photos";
+    this.tests = [
+        {name: "Api"},
+        {name: "LoginDrillbitUser", timeout: 30000},
         {name: "Create", timeout: 30000},
         {name: "CreateAndSearch", timeout: 30000},
         {name: "Show", timeout: 30000},
@@ -114,7 +114,7 @@ module.exports = new function() {
     },
 
     this.Show = function(testRun) {
-   	    var data = {
+        var data = {
             photo_id: ids[0]
         };
         Cloud.Photos.show(data, function(e) {
@@ -127,7 +127,7 @@ module.exports = new function() {
     },
 
     this.Update= function(testRun) {
-   	    var data = {
+        var data = {
             photo_id: ids[0],
             tags: 'appcelerator, logo, test',
             custom_data_fields: {
