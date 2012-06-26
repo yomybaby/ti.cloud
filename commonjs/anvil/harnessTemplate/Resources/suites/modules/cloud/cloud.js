@@ -8,9 +8,11 @@
 module.exports = new function() {
 	var finish;
 	var valueOf;
+    var Cloud;
 	this.init = function(testUtils) {
 		finish = testUtils.finish;
 		valueOf = testUtils.valueOf;
+        Cloud = require('ti.cloud');
 	};
 
 	this.name = "cloud";
@@ -18,9 +20,6 @@ module.exports = new function() {
 		{name: "cloudModule"},
 		{name: "cloudUseSecure"}
 	];
-
-    var Cloud = require('ti.cloud');
-    //Cloud && (Cloud.debug = true);
 
     // ---------------------------------------------------------------
     // Cloud

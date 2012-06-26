@@ -6,12 +6,14 @@
  */
  
 module.exports = new function() {
-	var finish;
-	var valueOf;
-	this.init = function(testUtils) {
-		finish = testUtils.finish;
-		valueOf = testUtils.valueOf;
-	};
+    var finish;
+   	var valueOf;
+    var Cloud;
+   	this.init = function(testUtils) {
+   		finish = testUtils.finish;
+   		valueOf = testUtils.valueOf;
+        Cloud = require('ti.cloud');
+   	};
 
 	this.name = "cloud photo collections";
 	this.tests = [
@@ -31,9 +33,6 @@ module.exports = new function() {
         {name: "QueryAndDeleteAllCollections", timeout:30000},
         {name: "LogoutDrillbitUser", timeout: 30000}
     ];
-
-    var Cloud = require('ti.cloud');
-    //Cloud && (Cloud.debug = true);
 
     function verifyAPIs(testRun, namespace, functions) {
         for (var i = 0; i < functions.length; i++) {

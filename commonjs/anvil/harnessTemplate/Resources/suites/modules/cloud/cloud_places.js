@@ -6,29 +6,28 @@
  */
  
 module.exports = new function() {
-	var finish;
-	var valueOf;
-	this.init = function(testUtils) {
-		finish = testUtils.finish;
-		valueOf = testUtils.valueOf;
-	};
+    var finish;
+   	var valueOf;
+    var Cloud;
+   	this.init = function(testUtils) {
+   		finish = testUtils.finish;
+   		valueOf = testUtils.valueOf;
+        Cloud = require('ti.cloud');
+   	};
 
 	this.name = "cloud places";
 	this.tests = [
 		{name: "Api"},
 		{name: "LoginDrillbitUser", timeout: 30000},
         {name: "Create", timeout: 30000},
-        {name: "CreateAndSearch", timeout: 30000},
-        {name: "SearchByKeyword", timeout: 30000},
-        {name: "Show", timeout: 30000},
-        {name: "Update", timeout: 30000},
-        {name: "Query", timeout: 30000},
-        {name: "QueryAndDeleteAll", timeout: 30000},
+        //{name: "CreateAndSearch", timeout: 30000},
+        //{name: "SearchByKeyword", timeout: 30000},
+        //{name: "Show", timeout: 30000},
+        //{name: "Update", timeout: 30000},
+        //{name: "Query", timeout: 30000},
+        //{name: "QueryAndDeleteAll", timeout: 30000},
         {name: "LogoutDrillbitUser", timeout: 30000}
     ];
-
-    var Cloud = require('ti.cloud');
-    //Cloud && (Cloud.debug = true);
 
     function verifyAPIs(testRun, namespace, functions) {
         for (var i = 0; i < functions.length; i++) {

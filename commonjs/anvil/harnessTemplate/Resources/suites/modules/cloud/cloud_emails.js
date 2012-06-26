@@ -4,23 +4,21 @@
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  */
- 
-module.exports = new function() {
-	var finish;
-	var valueOf;
-	this.init = function(testUtils) {
-		finish = testUtils.finish;
-		valueOf = testUtils.valueOf;
-	};
 
+module.exports = new function() {
+    var finish;
+   	var valueOf;
+    var Cloud;
+   	this.init = function(testUtils) {
+   		finish = testUtils.finish;
+   		valueOf = testUtils.valueOf;
+        Cloud = require('ti.cloud');
+   	};
 	this.name = "cloud emails";
 	this.tests = [
 		{name: "Api"},
         {name: "Send", timeout:30000}
     ];
-
-    var Cloud = require('ti.cloud');
-    //Cloud && (Cloud.debug = true);
 
     function verifyAPIs(testRun, namespace, functions) {
         for (var i = 0; i < functions.length; i++) {
