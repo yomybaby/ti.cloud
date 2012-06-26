@@ -30,16 +30,6 @@
 	</iphone>
 	<android xmlns:android="http://schemas.android.com/apk/res/android">
 	</android>
-	<!--property name="acs-oauth-key" type="string">VxXEiV5fzMvP9pCO1lt9yZrBbNWwroQw</property-->
-	<!--property name="acs-oauth-secret" type="string">KI2R8vUzyOTYZTrkCZKQc3HwTxsCPTs2</property-->
-    <property name="acs-api-key" type="string">Vlppkt2F5CZsoW4gZrzHZtNv85oAi7Vd</property>
-
-    <!-- STAGING -->
-    <!--property name="acs-oauth-key" type="string">Kdliz1mAtOd5KepY92qyhYISM9Cg4ExU</property-->
-   	<!--property name="acs-oauth-secret" type="string">YoPuVALztPsHiGcNq7Y5HoLxDkVoOpFp</property-->
-    <!--property name="acs-api-key" type="string">ARVQ6CeDzth6auLUQaSKaCPGUpQdxXhi</property-->
-
-	<property name="acs-base-url" type="string">api.cloud.appcelerator.com</property>
     <modules>
         <modules platform="commonjs" version="2.1.0">ti.cloud</modules>
     </modules>
