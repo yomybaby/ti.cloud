@@ -19,7 +19,7 @@ windowFunctions['Create ACL'] = function (evt) {
     content.add(name);
 
 	var readers = { 
-		public: false,
+		publicAccess: false,
 		ids: []
 	};
     var readersButton = Ti.UI.createButton({
@@ -33,7 +33,7 @@ windowFunctions['Create ACL'] = function (evt) {
     content.add(readersButton);
 
 	var writers = {
-		public: false,
+		publicAccess: false,
 		ids: []
 	};
     var writersButton = Ti.UI.createButton({
@@ -61,8 +61,8 @@ windowFunctions['Create ACL'] = function (evt) {
             name: name.value,
             reader_ids: readers.ids.join(','),
             writer_ids: writers.ids.join(','),
-            public_read: readers.public,
-            public_write: writers.public
+            public_read: readers.publicAccess,
+            public_write: writers.publicAccess
         }, function (e) {
             if (e.success) {
                 alert('Created!');

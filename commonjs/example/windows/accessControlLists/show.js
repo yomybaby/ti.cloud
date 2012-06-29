@@ -19,7 +19,7 @@ windowFunctions['Show ACL'] = function (evt) {
     content.add(name);
 
 	var readers = { 
-		public: false,
+		publicAccess: false,
 		ids: []
 	};
     var readersButton = Ti.UI.createButton({
@@ -33,7 +33,7 @@ windowFunctions['Show ACL'] = function (evt) {
     content.add(readersButton);
 
 	var writers = {
-		public: false,
+		publicAccess: false,
 		ids: []
 	};
     var writersButton = Ti.UI.createButton({
@@ -61,9 +61,9 @@ windowFunctions['Show ACL'] = function (evt) {
         }, function (e) {
             if (e.success) {
             	var acls = e.acls[0];
-            	readers.public = acls.public_read || false;
+            	readers.publicAccess = acls.public_read || false;
             	readers.ids = acls.readers || [];
-            	writers.public = acls.public_write || false;
+            	writers.publicAccess = acls.public_write || false;
             	writers.ids = acls.writers || [];
             	alert('Shown!');
             } else {
@@ -83,8 +83,8 @@ windowFunctions['Show ACL'] = function (evt) {
             name: name.value,
             reader_ids: readers.ids.join(','),
             writer_ids: writers.ids.join(','),
-            public_read: readers.public,
-            public_write: writers.public
+            public_read: readers.publicAccess,
+            public_write: writers.publicAccess
         }, function (e) {
             if (e.success) {
                 alert('Updated!');

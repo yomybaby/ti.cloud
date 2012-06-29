@@ -13,8 +13,8 @@ windowFunctions['Select Users for ACL'] = function (evt) {
     table.addEventListener('click', function (evt) {
         if (evt.row.id) {
             evt.row.hasCheck = !evt.row.hasCheck;
-            if (evt.row.id === 'public') {
-            	access.public = evt.row.hasCheck;
+            if (evt.row.id === 'publicAccess') {
+            	access.publicAccess = evt.row.hasCheck;
             } else if (evt.row.hasCheck) {
             	access.ids.push(evt.row.id);
             } else {
@@ -34,8 +34,8 @@ windowFunctions['Select Users for ACL'] = function (evt) {
                 }
                 else {
                     var data = [];
-                    if (typeof access.public != 'undefined') {
-                    	data.push({ title: '<Public Access>', id: 'public', hasCheck: access.public || false });
+                    if (typeof access.publicAccess != 'undefined') {
+                    	data.push({ title: '<Public Access>', id: 'publicAccess', hasCheck: access.publicAccess || false });
                     }    
                     for (var i = 0, l = e.users.length; i < l; i++) {
                         var user = e.users[i];
