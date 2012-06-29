@@ -2,6 +2,7 @@
 <pre>
 v2.1.1  Fixed display issue with custom objects in example application [MOD-770]
         Add check for valid numeric data for key-value increment call in example application [MOD-682]
+        Fixed issue in example application with reserved name 'public' [MOD-786]
 
 v2.1.0  Added Access Control Lists namespace and methods
 
