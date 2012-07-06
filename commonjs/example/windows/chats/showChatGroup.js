@@ -62,7 +62,7 @@ windowFunctions['Show Chat Group'] = function (evt) {
         var row = Ti.UI.createTableViewRow({
         });
         var container = Ti.UI.createView({
-            height: 'auto',
+            height: Ti.UI.SIZE || 'auto',
             backgroundColor: '#fff',
             borderColor: '#ccc', borderWeight: 1
         });

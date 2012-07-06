@@ -19,7 +19,6 @@ windowFunctions['Select Users for Group'] = function (evt) {
             checked[evt.row.id] = evt.row.hasCheck;
             if (!evt.row.hasCheck) {
                 delete checked[evt.row.id];
-                delete evt.row.hasCheck;
             }
         }
         else {
