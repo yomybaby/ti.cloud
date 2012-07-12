@@ -283,6 +283,40 @@ function defineCloud(Cloud) {
                     { method: 'send', verb: 'POST', restMethod: 'email_from_template' }
                 ]
             },
+	        {
+		        property: 'Events',
+		        children: [
+			        { method: 'create', verb: 'POST' },
+			        { method: 'show' },
+			        { method: 'showOccurrences', restMethod: 'show/occurrences' },
+			        { method: 'query', executor: dataOptionalExecutor },
+			        { method: 'queryOccurrences', restMethod: 'query/occurrences', executor: dataOptionalExecutor },
+			        { method: 'search', executor: dataOptionalExecutor},
+			        { method: 'searchOccurrences', restMethod: 'search/occurrences', executor: dataOptionalExecutor },
+			        { method: 'update', verb: 'PUT' },
+			        { method: 'remove', restMethod: 'delete', verb: 'DELETE' }
+		        ]
+	        },
+	        {
+		        property: 'Files',
+		        children: [
+			        { method: 'create', verb: 'POST' },
+			        { method: 'query', executor: dataOptionalExecutor },
+			        { method: 'show' },
+			        { method: 'update', verb: 'PUT' },
+			        { method: 'remove', restMethod: 'delete', verb: 'DELETE' }
+		        ]
+	        },
+	        {
+		        property: "Friends",
+		        children: [
+			        { method: 'add', verb: 'POST' },
+			        { method: 'requests', executor: dataOptionalExecutor },
+			        { method: 'approve', verb: 'PUT'},
+			        { method: 'remove', verb: 'DELETE'},
+			        { method: 'search' }
+		        ]
+	        },
             {
                 property: 'KeyValues',
                 children: [
@@ -293,6 +327,20 @@ function defineCloud(Cloud) {
                     { method: 'remove', restMethod: 'delete', verb: 'DELETE' }
                 ]
             },
+	        {
+		        property: 'Messages',
+		        children: [
+			        { method: 'create', verb: 'POST' },
+			        { method: 'reply', verb: 'POST' },
+			        { method: 'show' },
+			        { method: 'showInbox', restMethod: 'show/inbox', executor: dataOptionalExecutor },
+			        { method: 'showSent', restMethod: 'show/sent', executor: dataOptionalExecutor },
+			        { method: 'showThreads', restMethod: 'show/threads', executor: dataOptionalExecutor },
+			        { method: 'showThread', restMethod: 'show/thread' },
+			        { method: 'remove', restMethod: 'delete', verb: 'DELETE' },
+			        { method: 'removeThread', restMethod: 'delete/thread', verb: 'DELETE' }
+		        ]
+	        },
             {
                 property: 'Photos',
                 children: [

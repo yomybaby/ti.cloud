@@ -72,7 +72,7 @@ module.exports = new function() {
         var data = {
             content: 'Welcome to Drillbit',
             title: 'Welcome',
-            photo: Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, 'suites/modules/cloud/appcelerator.jpg')
+            photo: Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, 'appcelerator.jpg')
         };
         Cloud.Posts.create(data, function(e) {
             valueOf(testRun, e.success).shouldBeTrue();

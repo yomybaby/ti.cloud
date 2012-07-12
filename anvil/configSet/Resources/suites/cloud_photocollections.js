@@ -115,7 +115,7 @@ module.exports = new function() {
 
     this.Update= function(testRun) {
         var data = {
-            photo: Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, 'suites/modules/cloud/apple_logo.jpg'),
+            photo: Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, 'apple_logo.jpg'),
             tags: 'apple, logo',
             'photo_sizes[preview]': '100x100#',
             'photo_sync_sizes[]': 'preview'
@@ -188,7 +188,7 @@ module.exports = new function() {
             valueOf(testRun, e.collections[0].counts.subcollections).shouldBe(0);
             ids.push(e.collections[0].id);
             Cloud.Photos.create({
-                    photo: Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, 'suites/modules/cloud/appcelerator.jpg'),
+                    photo: Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, 'appcelerator.jpg'),
                     tags: 'appcelerator, logo',
                     'photo_sizes[preview]': '100x100#',
                     'photo_sync_sizes[]': 'preview',

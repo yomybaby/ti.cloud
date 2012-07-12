@@ -75,7 +75,7 @@ module.exports = new function() {
             country: 'USA',
             website: 'http://www.appcelerator.com',
             phone_number: '650.200.4255',
-            photo: Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, 'suites/modules/cloud/appcelerator.jpg'),
+            photo: Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, 'appcelerator.jpg'),
             tags: 'appcelerator, hq'
         };
 

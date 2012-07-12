@@ -1,0 +1,14 @@
+<element>
+    <users>
+        <user>
+            <firstname>Joe</firstname>
+            <lastname>User</lastname>
+            <details>test</details>
+        </user>
+        <user>
+            <firstname>Bob</firstname>
+            <lastname>Builder</lastname>
+            <details>test</details>
+        </user>
+    </users>
+</element>

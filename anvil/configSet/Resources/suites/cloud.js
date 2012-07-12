@@ -30,7 +30,7 @@ module.exports = new function() {
         // Verify that the module is defined
         valueOf(testRun, Cloud).shouldBeObject();
         finish(testRun);
-    },
+    };
 
     // Test the usage of the useSecure property
     this.cloudUseSecure = function(testRun) {
@@ -43,5 +43,5 @@ module.exports = new function() {
         Cloud.useSecure = true;
         valueOf(testRun, Cloud.useSecure).shouldBeTrue();
         finish(testRun);
-    }
+    };
 }

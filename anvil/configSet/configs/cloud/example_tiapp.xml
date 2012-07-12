@@ -30,7 +30,15 @@
 	</iphone>
 	<android xmlns:android="http://schemas.android.com/apk/res/android">
 	</android>
+
+    <!--- INSERT YOUR ACS KEYS IN THE FOLLOWING PROPERTIES --->
+
+	<property name="acs-oauth-key" type="string"></property>
+	<property name="acs-oauth-secret" type="string"></property>
+    <property name="acs-api-key" type="string"></property>
+
+	<property name="acs-base-url" type="string">api.cloud.appcelerator.com</property>
     <modules>
-        <modules platform="commonjs" version="2.1.0">ti.cloud</modules>
+        <modules platform="commonjs" version="2.2.0">ti.cloud</modules>
     </modules>
 </ti:app>

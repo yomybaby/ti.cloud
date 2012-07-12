@@ -80,7 +80,7 @@ module.exports = new function() {
             country: 'USA',
             website: 'http://www.appcelerator.com',
             phone_number: '650.200.4255',
-            photo: Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, 'suites/modules/cloud/appcelerator.jpg'),
+            photo: Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, 'appcelerator.jpg'),
             tags: 'appcelerator, hq'
         };
         Cloud.Places.create(data, function(e) {
@@ -104,7 +104,7 @@ module.exports = new function() {
             country: 'USA',
             website: 'http://www.apple.com',
             phone_number: '408-996-1010',
-            photo: Titanium.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, 'suites/modules/cloud/apple_logo.jpg'),
+            photo: Titanium.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, 'apple_logo.jpg'),
             tags: 'apple, hq'
         };
 
