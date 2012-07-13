@@ -45,7 +45,8 @@ windowFunctions['Update Event'] = function (evt) {
 		hintText: 'Recurring',
 		top: 10 + u, left: 10 + u, right: 10 + u,
 		height: 40 + u,
-		borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED
+		borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
+		autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE
 	});
 	content.add(recurring);
 
