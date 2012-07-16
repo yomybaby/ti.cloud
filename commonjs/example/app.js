@@ -88,6 +88,13 @@ function error(e) {
     }
 }
 
+function convertISOToDate(isoDate) {
+    isoDate = isoDate.replace(/\D/g," ");
+    var dtcomps = isoDate.split(" ");
+    dtcomps[1]--;
+    return new Date(Date.UTC(dtcomps[0],dtcomps[1],dtcomps[2],dtcomps[3],dtcomps[4],dtcomps[5]));
+};
+
 // Include the window hierarchy.
 Ti.include(
     'windows/chats/table.js',
@@ -95,11 +102,15 @@ Ti.include(
     'windows/clients/table.js',
     'windows/customObjects/table.js',
     'windows/emails/table.js',
+	'windows/events/table.js',
+	'windows/files/table.js',
+	'windows/friends/table.js',
     'windows/photoCollections/table.js',
     'windows/photos/table.js',
     'windows/places/table.js',
     'windows/posts/table.js',
     'windows/keyValues/table.js',
+	'windows/messages/table.js',
     'windows/pushNotifications/table.js',
     'windows/reviews/table.js',
     'windows/social/table.js',
@@ -124,7 +135,11 @@ var table = Ti.UI.createTableView({
         'Clients',
         'Custom Objects',
         'Emails',
+	    'Events',
+	    'Files',
+	    'Friends',
         'Key Values',
+	    'Messages',
         'Photo Collections',
         'Photos',
         'Places',

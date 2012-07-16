@@ -1,5 +1,7 @@
 # Change Log
 <pre>
+v2.2.0  Added Friends, Messages, Events, Files namespaces and methods [MOD-772]
+
 v2.1.1  Fixed display issue with custom objects in example application [MOD-770]
         Add check for valid numeric data for key-value increment call in example application [MOD-682]
         Fixed issue in example application with reserved name 'public' [MOD-786]
