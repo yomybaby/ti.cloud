@@ -199,8 +199,8 @@ module.exports = new function() {
         var checkResult1 = function(e) {
             valueOf(testRun, e.success).shouldBeTrue();
             valueOf(testRun, e.error).shouldBeFalse();
-            valueOf(testRun, e.permission['read permission']).shouldBe('yes');
-            valueOf(testRun, e.permission['write permission']).shouldBe('yes');
+            valueOf(testRun, e.permission['read_permission']).shouldBeTrue();
+            valueOf(testRun, e.permission['write_permission']).shouldBeTrue();
             Cloud.ACLs.checkUser({
                name: 'testACL',
                user_id: chatUserId
@@ -210,8 +210,8 @@ module.exports = new function() {
         var checkResult2 = function(e) {
             valueOf(testRun, e.success).shouldBeTrue();
             valueOf(testRun, e.error).shouldBeFalse();
-            valueOf(testRun, e.permission['read permission']).shouldBe('no');
-            valueOf(testRun, e.permission['write permission']).shouldBe('yes');
+            valueOf(testRun, e.permission['read_permission']).shouldBeFalse();
+            valueOf(testRun, e.permission['write_permission']).shouldBeTrue();
             finish(testRun);
         }
 
