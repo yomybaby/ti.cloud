@@ -20,12 +20,12 @@ module.exports = new function() {
         {name: "Api"},
         {name: "LoginDrillbitUser", timeout: 30000},
         {name: "Create", timeout: 30000},
-        //{name: "CreateAndSearch", timeout: 30000},
-        //{name: "SearchByKeyword", timeout: 30000},
-        //{name: "Show", timeout: 30000},
-        //{name: "Update", timeout: 30000},
-        //{name: "Query", timeout: 30000},
-        //{name: "QueryAndDeleteAll", timeout: 30000},
+        {name: "CreateAndSearch", timeout: 30000},
+        {name: "SearchByKeyword", timeout: 30000},
+        {name: "Show", timeout: 30000},
+        {name: "Update", timeout: 30000},
+        {name: "Query", timeout: 30000},
+        {name: "QueryAndDeleteAll", timeout: 30000},
         {name: "LogoutDrillbitUser", timeout: 30000}
     ];
 
