@@ -14,17 +14,17 @@ function shouldRunOnPlatform(prop) {
 //    { name: suite2 },                                             // valid on all platforms
 //    { name: suite3, platforms: { android:1, mobileweb:1 }         // valid on android and mobileweb
 
-hammer.populateSuites = function(testSuites) {
+hammer.populateSuites = function (testSuites) {
 	var result = [];
 	var len = testSuites.length;
 	for (var i = 0; i < len; i++) {
 		if (shouldRunOnPlatform(testSuites[i])) {
-			result.push({ name: testSuites[i].name });
+			result.push({ name:testSuites[i].name });
 		}
 	}
 
 	return result;
-}
+};
 
 
 // Convention: A recognized test method starts with 'test' and is followed by an uppercase character, a number, or an
@@ -43,14 +43,14 @@ hammer.populateSuites = function(testSuites) {
 //  this.testModule.platforms = { android:1, iphone:1, ipad:1 };    // only run on android and iOS
 //  this.testModule.platforms = { mobileweb:1 };                    // only run on mobileweb
 
-hammer.populateTests = function(obj, timeout) {
+hammer.populateTests = function (obj, timeout) {
 	var result = [];
 	var re = new RegExp("^test[A-Z_0-9]");
 	for (var key in obj) {
 		if ((typeof obj[key] === "function") &&
 			re.test(key) &&
 			shouldRunOnPlatform(obj[key])) {
-			var test = { name: key };
+			var test = { name:key };
 			if (timeout) {
 				test.timeout = timeout;
 			}
@@ -59,4 +59,4 @@ hammer.populateTests = function(obj, timeout) {
 	}
 
 	return result;
-}
+};

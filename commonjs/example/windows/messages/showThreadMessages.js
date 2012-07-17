@@ -31,7 +31,7 @@ windowFunctions['Show Messages In Thread'] = function (evt) {
                     ]);
                 } else {
 	                var data = [];
-		            data.push({ title: 'Remove all messages' })
+		            data.push({ title:'Remove all messages' });
 		            for (var i = 0, l = e.messages.length; i < l; i++) {
               	        var message = e.messages[i];
                         var row = Ti.UI.createTableViewRow({

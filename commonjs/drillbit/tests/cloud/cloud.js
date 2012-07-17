@@ -531,7 +531,7 @@ describe("Cloud tests", {
                     valueOf(e.error).shouldBeFalse();
                     valueOf(e.users[0].tags).shouldContain('golf');
                     valueOf(e.users[0].tags).shouldContain('snowboarding');
-                    valueOf(e.users[0].first_name).shouldBe('joe')
+                    valueOf(e.users[0].first_name).shouldBe('joe');
                     valueOf(e.users[0].last_name).shouldBe('user');
                     valueOf(e.users[0].custom_fields.color).shouldBe('red');
                     valueOf(e.users[0].custom_fields.number).shouldBe(5);
@@ -2992,10 +2992,10 @@ describe("Cloud tests", {
     cloudACLsAddRemoveUsers: asyncTest({
    	    start: function(callback) {
                var data = {
-                   name: 'testACL',
-                   public_read: false,
-                   public_write: false
-               }
+	               name:'testACL',
+	               public_read:false,
+	               public_write:false
+               };
             this.sequence.push(function() { Cloud.ACLs.update(data,
                this.async(function(e) {
                    valueOf(e.success).shouldBeTrue();
@@ -3067,9 +3067,9 @@ describe("Cloud tests", {
     cloudACLsCheckUser: asyncTest({
    	    start: function(callback) {
             var data = {
-               name: 'testACL',
-               user_id: callback.Utils.userId
-            }
+	            name:'testACL',
+	            user_id:callback.Utils.userId
+            };
             this.sequence.push(function() { Cloud.ACLs.checkUser({
                     name: 'testACL',
                     user_id: callback.Utils.userId
