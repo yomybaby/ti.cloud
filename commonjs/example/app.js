@@ -93,7 +93,7 @@ function convertISOToDate(isoDate) {
     var dtcomps = isoDate.split(" ");
     dtcomps[1]--;
     return new Date(Date.UTC(dtcomps[0],dtcomps[1],dtcomps[2],dtcomps[3],dtcomps[4],dtcomps[5]));
-};
+}
 
 // Include the window hierarchy.
 Ti.include(

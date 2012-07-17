@@ -28,10 +28,11 @@
 			<orientation>Ti.UI.LANDSCAPE_RIGHT</orientation>
 		</orientations>
 	</iphone>
+    <property name="ti.android.fastdev" type="bool">false</property>
 	<android xmlns:android="http://schemas.android.com/apk/res/android">
 	</android>
 
-    <!--- INSERT YOUR ACS KEYS IN THE FOLLOWING PROPERTIES --->
+    <!-- INSERT YOUR ACS KEYS IN THE FOLLOWING PROPERTIES -->
 
 	<property name="acs-oauth-key" type="string"></property>
 	<property name="acs-oauth-secret" type="string"></property>
