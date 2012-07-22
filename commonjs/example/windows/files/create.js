@@ -56,7 +56,8 @@ windowFunctions['Create File'] = function (evt) {
         Cloud.Files.create({
 	        name: name.value,
 	        // The example file is located in the windows/files subfolder of the project resources
-	        file: Titanium.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, 'windows/files/' + fileName.value)        }, function (e) {
+	        file: Titanium.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, 'windows/files/' + fileName.value)
+        }, function (e) {
 	        Cloud.onsendstream = Cloud.ondatastream = null;
             if (e.success) {
                 alert('Created!');

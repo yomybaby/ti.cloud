@@ -133,9 +133,13 @@ windowFunctions['Update Event'] = function (evt) {
 	             name.value = event.name;
 		         date.value = datetime.toLocaleDateString();
 		         time.value = datetime.toLocaleTimeString();
-		         duration.value = event.duration || "";
+		         if (event.duration) {
+			         duration.value = event.duration.toString();
+		         }
 	             recurring.value = event.recurring || "";
-		         recurringCount.value = event.recurring_count || "";
+		         if (event.recurring_count) {
+		            recurringCount.value = event.recurring_count.toString();
+		         }
 	             name.focus();
 	         } else {
 	             error(e);
