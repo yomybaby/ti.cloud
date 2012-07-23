@@ -58,16 +58,16 @@ module.exports = new function () {
 	// Cloud.Users.create
 	this.testCreateInvalidArguments = function (testRun) {
 		valueOf(testRun,function () {
-			Cloud.Users.create()
+			Cloud.Users.create();
 		}).shouldThrowException();
 		valueOf(testRun,function () {
-			Cloud.Users.create(0, 0)
+			Cloud.Users.create(0, 0);
 		}).shouldThrowException();
 		valueOf(testRun,function () {
-			Cloud.Users.create({}, 0)
+			Cloud.Users.create({}, 0);
 		}).shouldThrowException();
 		valueOf(testRun,function () {
-			Cloud.Users.create({})
+			Cloud.Users.create({});
 		}).shouldThrowException();
 		finish(testRun);
 	};
