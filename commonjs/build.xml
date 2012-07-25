@@ -1,0 +1,25 @@
+<project name="ti.cloud module" default="dist" basedir=".">
+	<description>ti.cloud module</description>
+	<target name="appcelerator">
+		<concat destfile="src/ti.cloud.js" encoding="utf-8" outputencoding="utf-8">
+            <filelist dir="src/sdk">
+                <file name="appcelerator.js"/>
+                <file name="bedframe.js"/>
+                <file name="cloudapi.js"/>
+                <file name="analytics.js"/>
+
+            </filelist>
+			<filelist dir="src/oauth">
+				<file name="oauth.js"/>
+				<file name="sha1.js"/>
+			</filelist>
+			<filelist dir="src/sdk">
+                <file name="api.js"/>
+				<file name="namespace.js"/>
+				<file name="constants.js"/>
+				<file name="utils.js"/>
+                <file name="acs.js"/>
+			</filelist>
+		</concat>
+	</target>
+</project>

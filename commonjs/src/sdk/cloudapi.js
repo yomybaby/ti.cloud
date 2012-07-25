@@ -1,0 +1,333 @@
+/**
+ * Throws an exception if an argument has not been provided, or is not of the expected type.
+ * @param name The string display name of the argument (such as 'data')
+ * @param arg The actual provided argument
+ * @param type The string value of the expected argument type (such as 'object' or 'string').
+ */
+function requireArgument(name, arg, type) {
+    if (arg === undefined)
+        throw 'Argument ' + name + ' was not provided!';
+    if (typeof(arg) != type)
+        throw 'Argument ' + name + ' was an unexpected type! Expected: ' + type + ', Received: ' + typeof(arg);
+}
+
+/**
+ * Calls the ACS REST API with the provided data, executing the provided callback when we get a response.
+ * @param data
+ * @param callback
+ */
+function defaultExecutor(data, callback) {
+    requireArgument('data', data, 'object');
+    requireArgument('callback', callback, 'function');
+    propagateRestNames(this);
+    if (!this.url) {
+        this.url = this.restNamespace + '/' + this.restMethod + '.json';
+    }
+    var secure = Cloud.useSecure == undefined ? true : Cloud.useSecure;
+    if (Cloud.debug) {
+        Ti.API.info('ACS Request: { ' +
+            'url: "' + this.url + '", ' +
+            'verb: "' + this.verb + '", ' +
+            'secure: ' + (secure ? 'YES' : 'NO') + ', ' +
+            'data: ' + JSON.stringify(data) + ' ' +
+            '})');
+    }
+    ACS.send(this.url, this.verb, data, secure,
+        function handleResponse(evt) {
+            if (!callback)
+                return;
+            var response = evt.response;
+            if (!response)
+                response = {};
+            if (evt.meta && evt.meta.status == 'ok') {
+                response.success = true;
+                response.error = false;
+                response.meta = evt.meta;
+                if (Cloud.debug) {
+                    Ti.API.info(JSON.stringify(response));
+                }
+            }
+            else {
+                response.success = false;
+                response.error = true;
+                response.code = evt.meta ? evt.meta.code : evt.statusCode;
+                response.message = evt.meta ? evt.meta.message : (evt.message || evt.statusText);
+                if (Cloud.debug) {
+                    Ti.API.error(response.code + ': ' + response.message);
+                }
+            }
+            callback(response);
+        }
+    );
+}
+
+function dataOptionalExecutor() {
+    defaultExecutor.call(this,
+        arguments.length == 2 ? arguments[0] : {},
+        arguments.length == 2 ? arguments[1] : arguments[0]
+    );
+}
+
+function dataExcludedExecutor(callback) {
+    defaultExecutor.call(this, {}, callback);
+}
+
+function classnameRequiredExecutor(data, callback) {
+    var savedClassName;
+    if (data && typeof(data) == 'object') {
+        requireArgument('data.classname', data.classname, 'string');
+        propagateRestNames(this);
+        this.url = this.restNamespace + '/' + data.classname + '/' + this.restMethod + '.json';
+        // We don't want the class name passed as a variable, so delete it from data.
+        savedClassName = data.classname;
+        delete data.classname;
+    }
+    defaultExecutor.call(this, data, callback);
+    // Now restore it to the data object so that we don't corrupt the object for subsequent calls.
+    data.classname = savedClassName;
+}
+
+function propagateRestNames(context) {
+    if (!context.restNamespace) {
+        context.restNamespace = context.property.toLowerCase();
+    }
+    if (!context.restMethod) {
+        context.restMethod = context.method.toLowerCase();
+    }
+}
+
+BedFrame.build(Cloud, {
+    verb: 'GET',
+    executor: defaultExecutor,
+    children: [
+        {
+            property: 'ACLs',
+            children: [
+                { method: 'create', verb: 'POST' },
+                { method: 'update',  verb: 'PUT' },
+                { method: 'show' },
+                { method: 'remove', restMethod: 'delete', verb: 'DELETE' },
+                { method: 'addUser', restMethod: 'add', verb: 'POST' },
+                { method: 'removeUser', restMethod: 'remove', verb: 'DELETE' },
+                { method: 'checkUser', restMethod: 'check' }
+            ]
+        },
+        {
+            property: 'Chats',
+            children: [
+                { method: 'create', verb: 'POST' },
+                { method: 'query' },
+                { method: 'getChatGroups', restMethod: 'get_chat_groups', executor: dataOptionalExecutor }
+            ]
+        },
+        {
+            property: 'Checkins',
+            children: [
+                { method: 'create', verb: 'POST' },
+                { method: 'query', executor: dataOptionalExecutor },
+                { method: 'show' },
+                { method: 'remove', restMethod: 'delete', verb: 'DELETE' }
+            ]
+        },
+        {
+            property: 'Clients',
+            children: [
+                { method: 'geolocate', executor: dataOptionalExecutor }
+            ]
+        },
+        {
+            property: 'Objects',
+            executor: classnameRequiredExecutor,
+            children: [
+                { method: 'create', verb: 'POST' },
+                { method: 'show' },
+                { method: 'update', verb: 'PUT' },
+                { method: 'remove', restMethod: 'delete', verb: 'DELETE' },
+                { method: 'query' }
+            ]
+        },
+        {
+            property: 'Emails',
+            restNamespace: 'custom_mailer',
+            children: [
+                { method: 'send', verb: 'POST', restMethod: 'email_from_template' }
+            ]
+        },
+        {
+	        property: 'Events',
+	        children: [
+		        { method: 'create', verb: 'POST' },
+		        { method: 'show' },
+		        { method: 'showOccurrences', restMethod: 'show/occurrences' },
+		        { method: 'query', executor: dataOptionalExecutor },
+		        { method: 'queryOccurrences', restMethod: 'query/occurrences', executor: dataOptionalExecutor },
+		        { method: 'search', executor: dataOptionalExecutor},
+		        { method: 'searchOccurrences', restMethod: 'search/occurrences', executor: dataOptionalExecutor },
+		        { method: 'update', verb: 'PUT' },
+		        { method: 'remove', restMethod: 'delete', verb: 'DELETE' }
+	        ]
+        },
+        {
+	        property: 'Files',
+	        children: [
+		        { method: 'create', verb: 'POST' },
+		        { method: 'query', executor: dataOptionalExecutor },
+		        { method: 'show' },
+		        { method: 'update', verb: 'PUT' },
+		        { method: 'remove', restMethod: 'delete', verb: 'DELETE' }
+	        ]
+        },
+        {
+	        property: "Friends",
+	        children: [
+		        { method: 'add', verb: 'POST' },
+		        { method: 'requests', executor: dataOptionalExecutor },
+		        { method: 'approve', verb: 'PUT'},
+		        { method: 'remove', verb: 'DELETE'},
+		        { method: 'search' }
+	        ]
+        },
+        {
+            property: 'KeyValues',
+            children: [
+                { method: 'set', verb: 'PUT' },
+                { method: 'get' },
+                { method: 'append', verb: 'PUT' },
+                { method: 'increment', restMethod: 'incrby', verb: 'PUT' },
+                { method: 'remove', restMethod: 'delete', verb: 'DELETE' }
+            ]
+        },
+        {
+	        property: 'Messages',
+	        children: [
+		        { method: 'create', verb: 'POST' },
+		        { method: 'reply', verb: 'POST' },
+		        { method: 'show' },
+		        { method: 'showInbox', restMethod: 'show/inbox', executor: dataOptionalExecutor },
+		        { method: 'showSent', restMethod: 'show/sent', executor: dataOptionalExecutor },
+		        { method: 'showThreads', restMethod: 'show/threads', executor: dataOptionalExecutor },
+		        { method: 'showThread', restMethod: 'show/thread' },
+		        { method: 'remove', restMethod: 'delete', verb: 'DELETE' },
+		        { method: 'removeThread', restMethod: 'delete/thread', verb: 'DELETE' }
+	        ]
+        },
+        {
+            property: 'Photos',
+            children: [
+                { method: 'create', verb: 'POST' },
+                { method: 'show' },
+                { method: 'search' },
+                { method: 'query', executor: dataOptionalExecutor },
+                { method: 'update', verb: 'PUT' },
+                { method: 'remove', restMethod: 'delete', verb: 'DELETE' }
+            ]
+        },
+        {
+            property: 'PhotoCollections',
+            restNamespace: 'collections',
+            children: [
+                { method: 'create', verb: 'POST' },
+                { method: 'show' },
+                { method: 'update', verb: 'PUT' },
+                { method: 'search' },
+                { method: 'showSubcollections', restMethod: 'show/subcollections' },
+                { method: 'showPhotos', restMethod: 'show/photos' },
+                { method: 'remove', restMethod: 'delete', verb: 'DELETE' }
+            ]
+        },
+        {
+            property: 'Places',
+            children: [
+                { method: 'create', verb: 'POST' },
+                { method: 'search', executor: dataOptionalExecutor },
+                { method: 'show' },
+                { method: 'update', verb: 'PUT' },
+                { method: 'remove', restMethod: 'delete', verb: 'DELETE' },
+                { method: 'query', executor: dataOptionalExecutor }
+            ]
+        },
+        {
+            property: 'Posts',
+            children: [
+                { method: 'create', verb: 'POST' },
+                { method: 'show' },
+                { method: 'query', executor: dataOptionalExecutor },
+                { method: 'update', verb: 'PUT' },
+                { method: 'remove', restMethod: 'delete', verb: 'DELETE' }
+            ]
+        },
+        {
+            property: 'PushNotifications',
+            restNamespace: 'push_notification',
+            verb: 'POST',
+            children: [
+                { method: 'subscribe' },
+                { method: 'unsubscribe', verb: 'DELETE' },
+                { method: 'notify' }
+            ]
+        },
+        {
+            property: 'Reviews',
+            children: [
+                { method: 'create', verb: 'POST' },
+                { method: 'show' },
+                { method: 'query' },
+                { method: 'update', verb: 'PUT' },
+                { method: 'remove', restMethod: 'delete', verb: 'DELETE' }
+            ]
+        },
+        {
+            property: 'SocialIntegrations',
+            restNamespace: 'users',
+            children: [
+                { method: 'externalAccountLogin', restMethod: 'external_account_login', verb: 'POST' },
+                { method: 'externalAccountLink', restMethod: 'external_account_link', verb: 'POST' },
+                { method: 'externalAccountUnlink', restMethod: 'external_account_unlink', verb: 'DELETE' },
+                { method: 'searchFacebookFriends', restNamespace: 'social', restMethod: 'facebook/search_friends',
+                    executor: dataExcludedExecutor
+                }
+            ]
+        },
+        {
+            property: 'Statuses',
+            children: [
+                { method: 'create', verb: 'POST' },
+                { method: 'search' },
+                { method: 'query', executor: dataOptionalExecutor }
+            ]
+        },
+        {
+            property: 'Users',
+            children: [
+                { method: 'create', verb: 'POST' },
+                { method: 'login', verb: 'POST' },
+                { method: 'show' },
+                { method: 'showMe', restMethod: 'show/me', executor: dataExcludedExecutor },
+                { method: 'search', executor: dataOptionalExecutor },
+                { method: 'query', executor: dataOptionalExecutor },
+                { method: 'update', verb: 'PUT' },
+                { method: 'logout',
+                    executor: function (callback) {
+                        defaultExecutor.call(this, {}, function (evt) {
+                            ACS.reset();
+                            callback(evt);
+                        });
+                    }
+                },
+                { method: 'remove', restMethod: 'delete', verb: 'DELETE',
+                    executor: function () {
+                        var orig = arguments;
+                        defaultExecutor.call(this,
+                            orig.length == 2 ? orig[0] : {},
+                            function (evt) {
+                                ACS.reset();
+                                (orig.length == 2 ? orig[1] : orig[0])(evt);
+                            }
+                        );
+                    }
+                },
+                { method: 'requestResetPassword', restMethod: 'request_reset_password' }
+            ]
+        }
+    ]
+});
