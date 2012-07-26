@@ -96,10 +96,32 @@ function propagateRestNames(context) {
     }
 }
 
+function hasStoredSession() {
+	return ACS.hasStoredSession();
+}
+
+function retrieveStoredSession() {
+	return ACS.retrieveStoredSession();
+}
+
+function signUpRequest(options) {
+	return ACS.signUpRequest(options);
+}
+
+function sendAuthRequest(options) {
+	Ti.API.error("<<<"+JSON.stringify(options));
+	return ACS.sendAuthRequest(options);
+}
+
 BedFrame.build(Cloud, {
     verb: 'GET',
     executor: defaultExecutor,
     children: [
+	    // Top level methods not associated with a namespace
+	    { method: 'hasStoredSession', executor: hasStoredSession },
+	    { method: 'retrieveStoredSession', executor: retrieveStoredSession },
+	    { method: 'signUpRequest', executor: signUpRequest },
+	    { method: 'sendAuthRequest', executor: sendAuthRequest },
         {
             property: 'ACLs',
             children: [

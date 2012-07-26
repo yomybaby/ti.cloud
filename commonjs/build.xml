@@ -19,6 +19,7 @@
 				<file name="constants.js"/>
 				<file name="utils.js"/>
                 <file name="acs.js"/>
+                <file name="ui.js"/>
 			</filelist>
 		</concat>
 	</target>

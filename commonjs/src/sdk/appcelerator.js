@@ -12,10 +12,4 @@
 var Cloud = exports || {};
 var ACS = {};
 
-Cloud.hasStoredSession = function() {
-	return ACS.hasStoredSession();
-}
 
-Cloud.retrieveStoredSession = function() {
-	return ACS.retrieveStoredSession();
-}

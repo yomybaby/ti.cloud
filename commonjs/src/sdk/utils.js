@@ -1,35 +1,37 @@
-//SessionId
-com.cocoafish.js.sdk.utils.sessionId = null;
-com.cocoafish.js.sdk.utils.retrieveSessionId = function () {
-    // have we initialized the store yet?
-    if (com.cocoafish.js.sdk.utils.sessionId === null) {
-        com.cocoafish.js.sdk.utils.sessionId = Ti.App.Properties.getString('ACS-StoredSessionId');
-    }
-    // have we retrieved it before?
-    if (com.cocoafish.js.sdk.utils.sessionId && (com.cocoafish.js.sdk.utils.sessionId != 'undefined')) {
-        return com.cocoafish.js.sdk.utils.sessionId;
-    }
-    // otherwise, return null
-    return null;
-};
-com.cocoafish.js.sdk.utils.storeSessionId = function (sessionId) {
-    // did we get a valid argument?
-    if (!sessionId)
-        return;
-    // save our results temporarily...
-    com.cocoafish.js.sdk.utils.sessionId = sessionId;
-    // ... and long term!
-    Ti.App.Properties.setString('ACS-StoredSessionId', sessionId);
+com.cocoafish.js.sdk.utils.getSessionParams = function() {
+	var sessionParam = null;
+	var sessionId = com.cocoafish.js.sdk.utils.getCookie(com.cocoafish.constants.sessionId);
+	if (sessionId) {
+		sessionParam = com.cocoafish.constants.sessionId + '=' + sessionId;
+	}
+	return sessionParam;
 };
 
-com.cocoafish.js.sdk.utils.clearSessionId = function () {
-    com.cocoafish.js.sdk.utils.sessionId = false;
-    Ti.App.Properties.setString('ACS-StoredSessionId', '');
+com.cocoafish.js.sdk.utils.getCookie = function( name ) {
+	if (Ti.App.Properties.hasProperty(name)) {
+		return (Ti.App.Properties.getString(name));
+	}
+	// otherwise, return null
+	return null;
+};
+
+com.cocoafish.js.sdk.utils.setCookie = function( name, value, expires, path, domain, secure ) {
+	if (value === '') {
+		Ti.App.Properties.removeProperty(name);
+	} else {
+		Ti.App.Properties.setString(name, value);
+	}
+};
+
+com.cocoafish.js.sdk.utils.deleteCookie = function( name, path, domain ) {
+	Ti.App.Properties.removeProperty(name);
 };
 
 com.cocoafish.js.sdk.utils.getAuthType = function (obj) {
     if (obj) {
-        if (obj.appKey) {
+        if(obj.isThreeLegged()) {
+            return com.cocoafish.constants.three_legged_oauth;
+        } else if(obj.appKey) {
             return com.cocoafish.constants.app_key;
         } else if (obj.oauthKey && obj.oauthSecret) {
             return com.cocoafish.constants.oauth;
@@ -124,7 +126,7 @@ function formatParam(url, name, value) {
     return sep + name + "=" + value;
 }
 
-com.cocoafish.js.sdk.utils.sendAppceleratorRequest = function (url, method, data, header, callback) {
+com.cocoafish.js.sdk.utils.sendAppceleratorRequest = function (url, method, data, header, callback, sdk) {
     var xhr = Ti.Network.createHTTPClient({
         timeout: 60 * 1000,
         onsendstream: function (e) {
@@ -164,7 +166,11 @@ com.cocoafish.js.sdk.utils.sendAppceleratorRequest = function (url, method, data
             var data = JSON.parse(json);
             if (data && data.meta) {
                 data.metaString = JSON.stringify(data.meta);
-                com.cocoafish.js.sdk.utils.storeSessionId(data.meta.session_id);
+	            if(data.meta.session_id) {
+		            var sessionId = data.meta.session_id;
+	                com.cocoafish.js.sdk.utils.setCookie(com.cocoafish.constants.sessionId, sessionId);
+		            sdk.session_id = sessionId;
+	            }
             }
             callback(data);
         }
@@ -200,7 +206,10 @@ com.cocoafish.js.sdk.utils.sendAppceleratorRequest = function (url, method, data
     xhr.open(method, requestURL);
 
     // set headers
-    xhr.setRequestHeader('Accept-Encoding', 'gzip,deflate');
+	// MOD-831 -- MobileWeb does not support setting request headers
+	if (Ti.Platform.osname != 'mobileweb') {
+        xhr.setRequestHeader('Accept-Encoding', 'gzip,deflate');
+	}
     if (header) {
         for (var prop in header) {
             if (!header.hasOwnProperty(prop)) {
@@ -212,4 +221,61 @@ com.cocoafish.js.sdk.utils.sendAppceleratorRequest = function (url, method, data
 
     // send the data
     xhr.send(data);
+};
+
+/**
+ * Decode a query string into a parameters object.
+ *
+ * @access private
+ * @param   str {String} the query string
+ * @return     {Object} the parameters to encode
+ */
+com.cocoafish.js.sdk.utils.decodeQS = function(str) {
+    var
+        decode = decodeURIComponent,
+        params = {},
+        parts  = str.split('&'),
+        i,
+        pair;
+
+    for (i=0; i<parts.length; i++) {
+        pair = parts[i].split('=', 2);
+        if (pair && pair[0]) {
+            params[decode(pair[0])] = decode(pair[1]);
+        }
+    }
+
+    return params;
+};
+
+/**
+ * Generates a weak random ID.
+ *
+ * @access private
+ * @return {String} a random ID
+ */
+com.cocoafish.js.sdk.utils.guid = function() {
+    return 'f' + (Math.random() * (1<<30)).toString(16).replace('.', '');
+};
+
+/**
+ * Copies things from source into target.
+ *
+ * @access private
+ * @param target    {Object}  the target object where things will be copied
+ *                            into
+ * @param source    {Object}  the source object where things will be copied
+ *                            from
+ * @param overwrite {Boolean} indicate if existing items should be
+ *                            overwritten
+ * @param tranform  {function} [Optional], transformation function for
+ *        each item
+ */
+com.cocoafish.js.sdk.utils.copy = function(target, source, overwrite, transform) {
+  for (var key in source) {
+    if (overwrite || typeof target[key] === 'undefined') {
+      target[key] = transform ? transform(source[key]) :  source[key];
+    }
+  }
+  return target;
 };
