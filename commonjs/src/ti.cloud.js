@@ -1926,15 +1926,9 @@ com.cocoafish.js.sdk.UIManager = {
             Ti.API.info('ThreeLegged Request url: ' + call.url);
 		}
 
-		//var w = Ti.Platform.displayCaps.platformWidth > call.params.size.width ? call.params.size.width : Ti.UI.FILL;
-		//var h = Ti.Platform.displayCaps.platformHeight > call.params.size.height ? call.params.size.height : Ti.UI.FILL;
-
 		var modal = Ti.UI.createWindow({
 			modal: true,
 			title: call.params.title || "Appcelerator Cloud Service"
-			//,
-			//width: w,
-			//height: h
 		});
 
 		var webView = Ti.UI.createWebView({
@@ -1984,14 +1978,9 @@ com.cocoafish.js.sdk.UIManager = {
 	},
 
 	processParams: function(params, cb) {
-		var action = com.cocoafish.js.sdk.UIManager.Actions[params.action.toLowerCase()];
-
-		com.cocoafish.js.sdk.utils.copy(params, action, false);
-
 		// the basic call data
 		var call = {
 			cb     : cb,
-			size   : params.size || {},
 			url    : params.url + com.cocoafish.constants.redirectUriParam + com.cocoafish.js.sdk.UIManager.redirect_uri,
 			params : params
 		};
@@ -2000,25 +1989,15 @@ com.cocoafish.js.sdk.UIManager = {
 	}
 };
 
-com.cocoafish.js.sdk.UIManager.Actions = {
-	login: {
-		size: {
-			width: 515,
-			height: 380
-		}
-	},
-	signup: {
-		size: {
-			width: 515,
-			height: 650
-		}
-	}
-};
-
 /**
  * Method for triggering UI interaction with Authorization Server.
  */
 com.cocoafish.js.sdk.ui = function(params, cb) {
+	if (Ti.Platform.osname === "mobileweb") {
+		// We are not supporting MobileWeb at this time.
+		alert("Three Legged OAuth is not currently supported on MobileWeb");
+		return;
+	}
 	if (!params.action) {
         alert('"action" is a required parameter for com.cocoafish.js.sdk.ui().');
         return;
