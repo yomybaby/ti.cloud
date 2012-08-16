@@ -1,50 +1,52 @@
-var redirectUrl = 'about:blank';
+/**
+ * Internal UI functions.
+ *
+ * @static
+ * @access private
+ */
 
 com.cocoafish.js.sdk.UIManager = {
-	getData: function(uri) {
-		var s = decodeURIComponent(uri).split(redirectUrl + "#");
-		if (s.length > 1) {
-			return com.cocoafish.js.sdk.utils.decodeQS(s[1]);
-		}
-		return null;
-	},
+	redirect_uri: 'acsconnect://success',
 
 	displayModal: function(call) {
-		var modal = Ti.UI.createWindow({
-			modal: true
-			//BUGBUG: DOES THIS MESS UP IOS AND ANDROID AND IPAD???
-			//,
-			// width: call.size.width,
-			// height: call.size.height
-		});
 		if (Cloud.debug) {
             Ti.API.info('ThreeLegged Request url: ' + call.url);
 		}
+
+		var modal = Ti.UI.createWindow({
+			modal: true,
+			title: call.params.title || "Appcelerator Cloud Service"
+		});
+
 		var webView = Ti.UI.createWebView({
 			url: call.url,
 			scalesPageToFit: false,
 			showScrollbars: true
 		});
-		webView.addEventListener('load', function(e){
-			if (Cloud.debug) {
-				Ti.API.info('ThreeLegged Response: ' + JSON.stringify(e));
-			}
-			var data = com.cocoafish.js.sdk.UIManager.getData(e.url);
-			if (data != null) {
-				modal.close();
+
+		function checkResponse(e) {
+			var re = /^acsconnect:\/\/([^#]*)#(.*)/;
+			var result = re.exec(decodeURIComponent(e.url));
+			if (result && result.length == 3) {
+				var data = null;
+				if (result[1] == 'success') {
+					data = com.cocoafish.js.sdk.utils.decodeQS(result[2]);
+				} else if (result[1] != 'cancel') {
+					return;
+				}
+				// We received either a 'success' or 'cancel' response
+				webView.removeEventListener('beforeload', checkResponse);
+				webView.removeEventListener('load', checkResponse);
+
+				modal && modal.close();
 				call.cb && call.cb(data);
+				webView = modal = call = null;
 			}
-		});
-		webView.addEventListener('error', function(e){
-			if (Cloud.debug) {
-				Ti.API.info('ThreeLegged Response: ' + JSON.stringify(e));
-			}
-			var data = com.cocoafish.js.sdk.UIManager.getData(e.url);
-			if (data != null) {
-				modal.close();
-				call.cb && call.cb(data);
-			}
-		});
+		}
+
+		webView.addEventListener('beforeload', checkResponse);
+		webView.addEventListener('load', checkResponse);
+
 		var closeButton = Ti.UI.createButton({
 			title: 'close',
 			width: '50%',
@@ -52,6 +54,8 @@ com.cocoafish.js.sdk.UIManager = {
 		});
 		closeButton.addEventListener('click', function(){
 			modal.close();
+			call.cb && call.cb();
+			webView = modal = call = null;
 		});
 
 		modal.add(webView);
@@ -69,7 +73,7 @@ com.cocoafish.js.sdk.UIManager = {
 		var call = {
 			cb     : cb,
 			size   : params.size || {},
-			url    : params.url + com.cocoafish.constants.redirectUriParam + redirectUrl,
+			url    : params.url + com.cocoafish.constants.redirectUriParam + com.cocoafish.js.sdk.UIManager.redirect_uri,
 			params : params
 		};
 
@@ -79,23 +83,14 @@ com.cocoafish.js.sdk.UIManager = {
 
 com.cocoafish.js.sdk.UIManager.Actions = {
 	login: {
-		display:'popup',
 		size: {
-			width: 500,
-			height: 350
-		}
-	},
-	logout: {
-		display:'hidden',
-		size: {
-			width: 0,
-			height: 0
+			width: 515,
+			height: 380
 		}
 	},
 	signup: {
-		display:'popup',
 		size: {
-			width: 500,
+			width: 515,
 			height: 650
 		}
 	}

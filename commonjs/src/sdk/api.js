@@ -57,10 +57,10 @@ Cocoafish.prototype.sendRequest = function (url, method, data, useSecure, callba
         reqURL += com.cocoafish.constants.oauthKeyParam + this.oauthKey;
 	}
 
-	if (!data)
+	if (data == null)
 	    data = {};
 
-	var apiMethod = method ? method.toUpperCase() : 'GET';
+	var apiMethod = method ? method.toUpperCase() : com.cocoafish.constants.get_method;
 
 	data[com.cocoafish.constants.suppressCode] = 'true';
 	if(!this.isThreeLegged()) {
@@ -116,10 +116,9 @@ Cocoafish.prototype.sendRequest = function (url, method, data, useSecure, callba
 	        callback(com.cocoafish.constants.fileLoadError);
 	        return;
 	    }
+
 	    var header = {};
 	    if ((authType == com.cocoafish.constants.oauth) || (authType == com.cocoafish.constants.three_legged_oauth)) {
-	        //BUGBUG -- NOT NEEDED? reqURL += formatParam(reqURL, com.cocoafish.constants.oauth_consumer_key, this.oauthKey);
-
 	        var message = {
 	            method: apiMethod,
 	            action: reqURL,
@@ -129,7 +128,7 @@ Cocoafish.prototype.sendRequest = function (url, method, data, useSecure, callba
 		    if(this.oauthSecret) {
 	            OAuth.completeRequest(message, {consumerSecret: this.oauthSecret});
 		    }
-	        header['Authorization'] = OAuth.getAuthorizationHeader("", message.parameters);
+	        header[com.cocoafish.constants.oauth_header] = OAuth.getAuthorizationHeader("", message.parameters);
 	    }
 	    //send request
 	    com.cocoafish.js.sdk.utils.sendAppceleratorRequest(reqURL, apiMethod, data, header, callback, this);
@@ -137,8 +136,6 @@ Cocoafish.prototype.sendRequest = function (url, method, data, useSecure, callba
 	    //send request without file
 	    var header = {};
 		if ((authType == com.cocoafish.constants.oauth) || (authType == com.cocoafish.constants.three_legged_oauth)) {
-	        //BUGBUG -- NOT NEEDED? reqURL += formatParam(reqURL, com.cocoafish.constants.oauth_consumer_key, this.oauthKey);
-
 	        var message = {
 	            method: apiMethod,
 	            action: reqURL,
@@ -154,11 +151,12 @@ Cocoafish.prototype.sendRequest = function (url, method, data, useSecure, callba
 			if(this.oauthSecret) {
 	            OAuth.completeRequest(message, {consumerSecret: this.oauthSecret});
 			}
-	        header['Authorization'] = OAuth.getAuthorizationHeader("", message.parameters);
+	        header[com.cocoafish.constants.oauth_header] = OAuth.getAuthorizationHeader("", message.parameters);
 	    }
 	    com.cocoafish.js.sdk.utils.sendAppceleratorRequest(reqURL, apiMethod, data, header, callback, this);
 	}
 };
+
 
 //authorization request needs to be sent explicitly
 //options expected: redirectUri, useSecure, params
@@ -256,52 +254,6 @@ Cocoafish.prototype.signUpRequest = function(options) {
 	});
 };
 
-//Invalidating request needs to be sent explicitly
-//options expected: redirectUri, useSecure, params
-//params option is an object containing arguments for popup window or iframe
-Cocoafish.prototype.invalidateTokenRequest = function(options) {
-
-  //send a request to invalidate the current access token
-  //authorization server will redirect to rediretUri or return back javascript code to post
-  //message to main window depending on the mode (CURRENT/POPUP).
-  //client should redirect user back to the home page and show current status accordingly.
-
-  var authType = com.cocoafish.js.sdk.utils.getAuthType(this);
-  if(authType !== com.cocoafish.constants.three_legged_oauth) {
-      alert('wrong authorization type!');
-      return;
-  }
-
-  options = options || {};
-
-  var isSecure = false;
-  if(typeof(options.useSecure) == 'boolean') {
-      isSecure = options.useSecure;
-  }
-
-  //build request url
-  var reqURL = '';
-  if(isSecure) {
-      reqURL += com.cocoafish.sdk.url.https;
-  } else {
-      reqURL += com.cocoafish.sdk.url.http;
-  }
-  reqURL += this.authBaseURL;
-  reqURL += '/oauth/invalidate?';
-  reqURL += com.cocoafish.constants.accessToken + '=' + this.accessToken;
-
-    this.clearSession();
-
-	var params = options.params || {};
-	params.action = 'logout';
-	params.url = reqURL;
-
-	var cb = params.cb;
-	if(cb) delete params.cb;
-	com.cocoafish.js.sdk.ui(params, function(data) {
-		cb && cb(data);
-	});
-};
 
 //Default implementation to store session in cookies.
 //Developers can override this for custom implementation.

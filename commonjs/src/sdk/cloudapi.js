@@ -5,10 +5,12 @@
  * @param type The string value of the expected argument type (such as 'object' or 'string').
  */
 function requireArgument(name, arg, type) {
-    if (arg === undefined)
+    if (arg === undefined) {
         throw 'Argument ' + name + ' was not provided!';
-    if (typeof(arg) != type)
+    }
+    if (typeof(arg) != type) {
         throw 'Argument ' + name + ' was an unexpected type! Expected: ' + type + ', Received: ' + typeof(arg);
+    }
 }
 
 /**
@@ -34,11 +36,10 @@ function defaultExecutor(data, callback) {
     }
     ACS.send(this.url, this.verb, data, secure,
         function handleResponse(evt) {
-            if (!callback)
+            if (!callback) {
                 return;
-            var response = evt.response;
-            if (!response)
-                response = {};
+            }
+            var response = evt.response || {};
             if (evt.meta && evt.meta.status == 'ok') {
                 response.success = true;
                 response.error = false;
@@ -104,13 +105,46 @@ function retrieveStoredSession() {
 	return ACS.retrieveStoredSession();
 }
 
-function signUpRequest(options) {
-	return ACS.signUpRequest(options);
+function secureAuthExecutor(data, callback) {
+    requireArgument('callback', callback, 'function');
+
+	var options = {};
+	options.useSecure = Cloud.useSecure == undefined ? true : Cloud.useSecure;
+	options.params = data || {};
+	options.params.cb = function handleResponse(evt) {
+		if (!callback) {
+			return;
+		}
+		var response = evt || {};
+		if (evt && evt.access_token) {
+			response.success = true;
+			response.error = false;
+			if (Cloud.debug) {
+				Ti.API.info("Token: " + evt.access_token + " Expires: " + evt.expires_in);
+			}
+		} else {
+			response.success = false;
+			response.error = true;
+			response.message = "Cancelled";
+			if (Cloud.debug) {
+				Ti.API.error(response.message);
+			}
+		}
+		callback(response);
+	};
+
+	ACS.secureSend(this.method, options);
 }
 
-function sendAuthRequest(options) {
-	Ti.API.error("<<<"+JSON.stringify(options));
-	return ACS.sendAuthRequest(options);
+function dataOptionalSecureAuthExecutor() {
+    secureAuthExecutor.call(this,
+        arguments.length == 2 ? arguments[0] : {},
+        arguments.length == 2 ? arguments[1] : arguments[0]
+    );
+}
+
+function checkStatus() {
+	return ACS.checkStatus();
 }
 
 BedFrame.build(Cloud, {
@@ -120,8 +154,7 @@ BedFrame.build(Cloud, {
 	    // Top level methods not associated with a namespace
 	    { method: 'hasStoredSession', executor: hasStoredSession },
 	    { method: 'retrieveStoredSession', executor: retrieveStoredSession },
-	    { method: 'signUpRequest', executor: signUpRequest },
-	    { method: 'sendAuthRequest', executor: sendAuthRequest },
+	    { method: 'checkStatus', executor: checkStatus },
         {
             property: 'ACLs',
             children: [
@@ -348,7 +381,9 @@ BedFrame.build(Cloud, {
                         );
                     }
                 },
-                { method: 'requestResetPassword', restMethod: 'request_reset_password' }
+                { method: 'requestResetPassword', restMethod: 'request_reset_password' },
+	            { method: 'secureCreate', executor: dataOptionalSecureAuthExecutor },
+	       	    { method: 'secureLogin', executor: dataOptionalSecureAuthExecutor }
             ]
         }
     ]

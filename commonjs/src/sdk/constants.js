@@ -9,6 +9,12 @@ com.cocoafish.sdk.url.baseURL = 'api.cloud.appcelerator.com';
 com.cocoafish.sdk.url.authBaseURL = 'secure-identity.cloud.appcelerator.com';
 com.cocoafish.sdk.url.version = 'v1';
 
+//HTTP methods
+com.cocoafish.constants.get_method = 'GET';
+com.cocoafish.constants.post_method = 'POST';
+com.cocoafish.constants.put_method = 'PUT';
+com.cocoafish.constants.delete_method = 'DELETE';
+
 //Authentication Types
 com.cocoafish.constants.app_key = 1;
 com.cocoafish.constants.oauth = 2;
@@ -28,13 +34,9 @@ com.cocoafish.constants.json='json';
 com.cocoafish.constants.sessionId = '_session_id';
 com.cocoafish.constants.sessionCookieName = 'Cookie';
 com.cocoafish.constants.responseCookieName = 'Set-Cookie';
-com.cocoafish.constants.ie = 'MSIE';
-com.cocoafish.constants.ie_v7 = 7;
 com.cocoafish.constants.file = 'file';
-com.cocoafish.constants.photo = 'photo';
 com.cocoafish.constants.suppressCode = 'suppress_response_codes';
 com.cocoafish.constants.response_wrapper = 'response_wrapper';
-com.cocoafish.constants.oauth_consumer_key = 'oauth_consumer_key';
 com.cocoafish.constants.photo = 'photo';
 com.cocoafish.constants.method = '_method';
 com.cocoafish.constants.name = 'name';

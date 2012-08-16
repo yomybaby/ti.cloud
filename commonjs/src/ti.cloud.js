@@ -125,10 +125,12 @@ BedFrame.build = function bedFrameTransformObject(target, api) {
  * @param type The string value of the expected argument type (such as 'object' or 'string').
  */
 function requireArgument(name, arg, type) {
-    if (arg === undefined)
+    if (arg === undefined) {
         throw 'Argument ' + name + ' was not provided!';
-    if (typeof(arg) != type)
+    }
+    if (typeof(arg) != type) {
         throw 'Argument ' + name + ' was an unexpected type! Expected: ' + type + ', Received: ' + typeof(arg);
+    }
 }
 
 /**
@@ -154,11 +156,10 @@ function defaultExecutor(data, callback) {
     }
     ACS.send(this.url, this.verb, data, secure,
         function handleResponse(evt) {
-            if (!callback)
+            if (!callback) {
                 return;
-            var response = evt.response;
-            if (!response)
-                response = {};
+            }
+            var response = evt.response || {};
             if (evt.meta && evt.meta.status == 'ok') {
                 response.success = true;
                 response.error = false;
@@ -224,13 +225,46 @@ function retrieveStoredSession() {
 	return ACS.retrieveStoredSession();
 }
 
-function signUpRequest(options) {
-	return ACS.signUpRequest(options);
+function secureAuthExecutor(data, callback) {
+    requireArgument('callback', callback, 'function');
+
+	var options = {};
+	options.useSecure = Cloud.useSecure == undefined ? true : Cloud.useSecure;
+	options.params = data || {};
+	options.params.cb = function handleResponse(evt) {
+		if (!callback) {
+			return;
+		}
+		var response = evt || {};
+		if (evt && evt.access_token) {
+			response.success = true;
+			response.error = false;
+			if (Cloud.debug) {
+				Ti.API.info("Token: " + evt.access_token + " Expires: " + evt.expires_in);
+			}
+		} else {
+			response.success = false;
+			response.error = true;
+			response.message = "Cancelled";
+			if (Cloud.debug) {
+				Ti.API.error(response.message);
+			}
+		}
+		callback(response);
+	};
+
+	ACS.secureSend(this.method, options);
 }
 
-function sendAuthRequest(options) {
-	Ti.API.error("<<<"+JSON.stringify(options));
-	return ACS.sendAuthRequest(options);
+function dataOptionalSecureAuthExecutor() {
+    secureAuthExecutor.call(this,
+        arguments.length == 2 ? arguments[0] : {},
+        arguments.length == 2 ? arguments[1] : arguments[0]
+    );
+}
+
+function checkStatus() {
+	return ACS.checkStatus();
 }
 
 BedFrame.build(Cloud, {
@@ -240,8 +274,7 @@ BedFrame.build(Cloud, {
 	    // Top level methods not associated with a namespace
 	    { method: 'hasStoredSession', executor: hasStoredSession },
 	    { method: 'retrieveStoredSession', executor: retrieveStoredSession },
-	    { method: 'signUpRequest', executor: signUpRequest },
-	    { method: 'sendAuthRequest', executor: sendAuthRequest },
+	    { method: 'checkStatus', executor: checkStatus },
         {
             property: 'ACLs',
             children: [
@@ -468,7 +501,9 @@ BedFrame.build(Cloud, {
                         );
                     }
                 },
-                { method: 'requestResetPassword', restMethod: 'request_reset_password' }
+                { method: 'requestResetPassword', restMethod: 'request_reset_password' },
+	            { method: 'secureCreate', executor: dataOptionalSecureAuthExecutor },
+	       	    { method: 'secureLogin', executor: dataOptionalSecureAuthExecutor }
             ]
         }
     ]
@@ -1207,10 +1242,10 @@ Cocoafish.prototype.sendRequest = function (url, method, data, useSecure, callba
         reqURL += com.cocoafish.constants.oauthKeyParam + this.oauthKey;
 	}
 
-	if (!data)
+	if (data == null)
 	    data = {};
 
-	var apiMethod = method ? method.toUpperCase() : 'GET';
+	var apiMethod = method ? method.toUpperCase() : com.cocoafish.constants.get_method;
 
 	data[com.cocoafish.constants.suppressCode] = 'true';
 	if(!this.isThreeLegged()) {
@@ -1266,10 +1301,9 @@ Cocoafish.prototype.sendRequest = function (url, method, data, useSecure, callba
 	        callback(com.cocoafish.constants.fileLoadError);
 	        return;
 	    }
+
 	    var header = {};
 	    if ((authType == com.cocoafish.constants.oauth) || (authType == com.cocoafish.constants.three_legged_oauth)) {
-	        //BUGBUG -- NOT NEEDED? reqURL += formatParam(reqURL, com.cocoafish.constants.oauth_consumer_key, this.oauthKey);
-
 	        var message = {
 	            method: apiMethod,
 	            action: reqURL,
@@ -1279,7 +1313,7 @@ Cocoafish.prototype.sendRequest = function (url, method, data, useSecure, callba
 		    if(this.oauthSecret) {
 	            OAuth.completeRequest(message, {consumerSecret: this.oauthSecret});
 		    }
-	        header['Authorization'] = OAuth.getAuthorizationHeader("", message.parameters);
+	        header[com.cocoafish.constants.oauth_header] = OAuth.getAuthorizationHeader("", message.parameters);
 	    }
 	    //send request
 	    com.cocoafish.js.sdk.utils.sendAppceleratorRequest(reqURL, apiMethod, data, header, callback, this);
@@ -1287,8 +1321,6 @@ Cocoafish.prototype.sendRequest = function (url, method, data, useSecure, callba
 	    //send request without file
 	    var header = {};
 		if ((authType == com.cocoafish.constants.oauth) || (authType == com.cocoafish.constants.three_legged_oauth)) {
-	        //BUGBUG -- NOT NEEDED? reqURL += formatParam(reqURL, com.cocoafish.constants.oauth_consumer_key, this.oauthKey);
-
 	        var message = {
 	            method: apiMethod,
 	            action: reqURL,
@@ -1304,11 +1336,12 @@ Cocoafish.prototype.sendRequest = function (url, method, data, useSecure, callba
 			if(this.oauthSecret) {
 	            OAuth.completeRequest(message, {consumerSecret: this.oauthSecret});
 			}
-	        header['Authorization'] = OAuth.getAuthorizationHeader("", message.parameters);
+	        header[com.cocoafish.constants.oauth_header] = OAuth.getAuthorizationHeader("", message.parameters);
 	    }
 	    com.cocoafish.js.sdk.utils.sendAppceleratorRequest(reqURL, apiMethod, data, header, callback, this);
 	}
 };
+
 
 //authorization request needs to be sent explicitly
 //options expected: redirectUri, useSecure, params
@@ -1353,8 +1386,6 @@ Cocoafish.prototype.sendAuthRequest = function(options) {
 	var cb = params.cb;
 	if(cb) delete params.cb;
 	com.cocoafish.js.sdk.ui(params, function(data) {
-		//BUGBUG
-		Ti.API.info(">>> sendAuthRequest callback " + JSON.stringify(data));
 		that.saveSession(data);
 		cb && cb(data);
 	});
@@ -1403,59 +1434,11 @@ Cocoafish.prototype.signUpRequest = function(options) {
 	var cb = params.cb;
 	if(cb) delete params.cb;
 	com.cocoafish.js.sdk.ui(params, function(data) {
-		//BUGBUG
-		Ti.API.info(">>> signUpRequest callback " + JSON.stringify(data));
 		that.saveSession(data);
 		cb && cb(data);
 	});
 };
 
-//Invalidating request needs to be sent explicitly
-//options expected: redirectUri, useSecure, params
-//params option is an object containing arguments for popup window or iframe
-Cocoafish.prototype.invalidateTokenRequest = function(options) {
-
-  //send a request to invalidate the current access token
-  //authorization server will redirect to rediretUri or return back javascript code to post
-  //message to main window depending on the mode (CURRENT/POPUP).
-  //client should redirect user back to the home page and show current status accordingly.
-
-  var authType = com.cocoafish.js.sdk.utils.getAuthType(this);
-  if(authType !== com.cocoafish.constants.three_legged_oauth) {
-      alert('wrong authorization type!');
-      return;
-  }
-
-  options = options || {};
-
-  var isSecure = false;
-  if(typeof(options.useSecure) == 'boolean') {
-      isSecure = options.useSecure;
-  }
-
-  //build request url
-  var reqURL = '';
-  if(isSecure) {
-      reqURL += com.cocoafish.sdk.url.https;
-  } else {
-      reqURL += com.cocoafish.sdk.url.http;
-  }
-  reqURL += this.authBaseURL;
-  reqURL += '/oauth/invalidate?';
-  reqURL += com.cocoafish.constants.accessToken + '=' + this.accessToken;
-
-    this.clearSession();
-
-	var params = options.params || {};
-	params.action = 'logout';
-	params.url = reqURL;
-
-	var cb = params.cb;
-	if(cb) delete params.cb;
-	com.cocoafish.js.sdk.ui(params, function(data) {
-		cb && cb(data);
-	});
-};
 
 //Default implementation to store session in cookies.
 //Developers can override this for custom implementation.
@@ -1543,6 +1526,12 @@ com.cocoafish.sdk.url.baseURL = 'api.cloud.appcelerator.com';
 com.cocoafish.sdk.url.authBaseURL = 'secure-identity.cloud.appcelerator.com';
 com.cocoafish.sdk.url.version = 'v1';
 
+//HTTP methods
+com.cocoafish.constants.get_method = 'GET';
+com.cocoafish.constants.post_method = 'POST';
+com.cocoafish.constants.put_method = 'PUT';
+com.cocoafish.constants.delete_method = 'DELETE';
+
 //Authentication Types
 com.cocoafish.constants.app_key = 1;
 com.cocoafish.constants.oauth = 2;
@@ -1562,13 +1551,9 @@ com.cocoafish.constants.json='json';
 com.cocoafish.constants.sessionId = '_session_id';
 com.cocoafish.constants.sessionCookieName = 'Cookie';
 com.cocoafish.constants.responseCookieName = 'Set-Cookie';
-com.cocoafish.constants.ie = 'MSIE';
-com.cocoafish.constants.ie_v7 = 7;
 com.cocoafish.constants.file = 'file';
-com.cocoafish.constants.photo = 'photo';
 com.cocoafish.constants.suppressCode = 'suppress_response_codes';
 com.cocoafish.constants.response_wrapper = 'response_wrapper';
-com.cocoafish.constants.oauth_consumer_key = 'oauth_consumer_key';
 com.cocoafish.constants.photo = 'photo';
 com.cocoafish.constants.method = '_method';
 com.cocoafish.constants.name = 'name';
@@ -1756,7 +1741,7 @@ com.cocoafish.js.sdk.utils.sendAppceleratorRequest = function (url, method, data
 
     // for GET request only
     var requestURL = url;
-    if ((method == 'GET') || (method == 'DELETE')) {
+    if ((method.toUpperCase() == com.cocoafish.constants.get_method) || (method.toUpperCase() == com.cocoafish.constants.delete_method)) {
         var params = '';
         for (var prop in data) {
             if (!data.hasOwnProperty(prop)) {
@@ -1826,6 +1811,7 @@ com.cocoafish.js.sdk.utils.decodeQS = function(str) {
     return params;
 };
 
+
 /**
  * Generates a weak random ID.
  *
@@ -1887,7 +1873,6 @@ function fetchSession() {
 function getSession() {
 	if (session == null) {
 	    session = fetchSession();
-		session.useThreeLegged(Cloud.useThreeLegged == undefined ? false : Cloud.useThreeLegged);
 	}
 	return session;
 }
@@ -1912,64 +1897,75 @@ ACS.reset = function () {
 	}
 };
 
-ACS.signUpRequest = function (options) {
-	getSession().signUpRequest(options);
-};
+ACS.secureSend = function (method, options) {
+	var session = getSession();
+	session.useThreeLegged(true);
 
-ACS.sendAuthRequest = function (options) {
-	getSession().sendAuthRequest(options);
-};
-var redirectUrl = 'about:blank';
+	if (method === 'secureCreate') {
+		session.signUpRequest(options);
+	} else if (method === 'secureLogin') {
+		session.sendAuthRequest(options);
+	}
+}
+
+ACS.checkStatus = function () {
+	return getSession().checkStatus();
+}
+/**
+ * Internal UI functions.
+ *
+ * @static
+ * @access private
+ */
 
 com.cocoafish.js.sdk.UIManager = {
-	getData: function(uri) {
-		var s = decodeURIComponent(uri).split(redirectUrl + "#");
-		if (s.length > 1) {
-			return com.cocoafish.js.sdk.utils.decodeQS(s[1]);
-		}
-		return null;
-	},
+	redirect_uri: 'acsconnect://success',
 
 	displayModal: function(call) {
-		var modal = Ti.UI.createWindow({
-			modal: true
-			//BUGBUG: DOES THIS MESS UP IOS AND ANDROID AND IPAD???
-			//,
-			// width: call.size.width,
-			// height: call.size.height
-		});
 		if (Cloud.debug) {
             Ti.API.info('ThreeLegged Request url: ' + call.url);
 		}
+
+		//var w = Ti.Platform.displayCaps.platformWidth > call.params.size.width ? call.params.size.width : Ti.UI.FILL;
+		//var h = Ti.Platform.displayCaps.platformHeight > call.params.size.height ? call.params.size.height : Ti.UI.FILL;
+
+		var modal = Ti.UI.createWindow({
+			modal: true,
+			title: call.params.title || "Appcelerator Cloud Service"
+			//,
+			//width: w,
+			//height: h
+		});
+
 		var webView = Ti.UI.createWebView({
 			url: call.url,
 			scalesPageToFit: false,
 			showScrollbars: true
 		});
-		webView.addEventListener('load', function(e){
-			if (Cloud.debug) {
-				Ti.API.info('ThreeLegged Response: ' + JSON.stringify(e));
-			}
-			var data = com.cocoafish.js.sdk.UIManager.getData(e.url);
-			if (data != null) {
-				modal.close();
-				//BUGBUG
-				Ti.API.info(">>> onLoad call " + JSON.stringify(data));
+
+		function checkResponse(e) {
+			var re = /^acsconnect:\/\/([^#]*)#(.*)/;
+			var result = re.exec(decodeURIComponent(e.url));
+			if (result && result.length == 3) {
+				var data = null;
+				if (result[1] == 'success') {
+					data = com.cocoafish.js.sdk.utils.decodeQS(result[2]);
+				} else if (result[1] != 'cancel') {
+					return;
+				}
+				// We received either a 'success' or 'cancel' response
+				webView.removeEventListener('beforeload', checkResponse);
+				webView.removeEventListener('load', checkResponse);
+
+				modal && modal.close();
 				call.cb && call.cb(data);
+				webView = modal = call = null;
 			}
-		});
-		webView.addEventListener('error', function(e){
-			if (Cloud.debug) {
-				Ti.API.info('ThreeLegged Response: ' + JSON.stringify(e));
-			}
-			var data = com.cocoafish.js.sdk.UIManager.getData(e.url);
-			if (data != null) {
-				modal.close();
-				//BUGBUG
-				Ti.API.info(">>> onError call " + JSON.stringify(data));
-				call.cb && call.cb(data);
-			}
-		});
+		}
+
+		webView.addEventListener('beforeload', checkResponse);
+		webView.addEventListener('load', checkResponse);
+
 		var closeButton = Ti.UI.createButton({
 			title: 'close',
 			width: '50%',
@@ -1977,6 +1973,8 @@ com.cocoafish.js.sdk.UIManager = {
 		});
 		closeButton.addEventListener('click', function(){
 			modal.close();
+			call.cb && call.cb();
+			webView = modal = call = null;
 		});
 
 		modal.add(webView);
@@ -1994,7 +1992,7 @@ com.cocoafish.js.sdk.UIManager = {
 		var call = {
 			cb     : cb,
 			size   : params.size || {},
-			url    : params.url + com.cocoafish.constants.redirectUriParam + redirectUrl,
+			url    : params.url + com.cocoafish.constants.redirectUriParam + com.cocoafish.js.sdk.UIManager.redirect_uri,
 			params : params
 		};
 
@@ -2004,23 +2002,14 @@ com.cocoafish.js.sdk.UIManager = {
 
 com.cocoafish.js.sdk.UIManager.Actions = {
 	login: {
-		display:'popup',
 		size: {
-			width: 500,
-			height: 350
-		}
-	},
-	logout: {
-		display:'hidden',
-		size: {
-			width: 0,
-			height: 0
+			width: 515,
+			height: 380
 		}
 	},
 	signup: {
-		display:'popup',
 		size: {
-			width: 500,
+			width: 515,
 			height: 650
 		}
 	}

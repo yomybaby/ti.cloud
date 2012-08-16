@@ -29,7 +29,6 @@ function fetchSession() {
 function getSession() {
 	if (session == null) {
 	    session = fetchSession();
-		session.useThreeLegged(Cloud.useThreeLegged == undefined ? false : Cloud.useThreeLegged);
 	}
 	return session;
 }
@@ -54,10 +53,17 @@ ACS.reset = function () {
 	}
 };
 
-ACS.signUpRequest = function (options) {
-	getSession().signUpRequest(options);
-};
+ACS.secureSend = function (method, options) {
+	var session = getSession();
+	session.useThreeLegged(true);
 
-ACS.sendAuthRequest = function (options) {
-	getSession().sendAuthRequest(options);
-};
+	if (method === 'secureCreate') {
+		session.signUpRequest(options);
+	} else if (method === 'secureLogin') {
+		session.sendAuthRequest(options);
+	}
+}
+
+ACS.checkStatus = function () {
+	return getSession().checkStatus();
+}

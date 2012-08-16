@@ -178,7 +178,7 @@ com.cocoafish.js.sdk.utils.sendAppceleratorRequest = function (url, method, data
 
     // for GET request only
     var requestURL = url;
-    if ((method == 'GET') || (method == 'DELETE')) {
+    if ((method.toUpperCase() == com.cocoafish.constants.get_method) || (method.toUpperCase() == com.cocoafish.constants.delete_method)) {
         var params = '';
         for (var prop in data) {
             if (!data.hasOwnProperty(prop)) {
@@ -247,6 +247,7 @@ com.cocoafish.js.sdk.utils.decodeQS = function(str) {
 
     return params;
 };
+
 
 /**
  * Generates a weak random ID.
