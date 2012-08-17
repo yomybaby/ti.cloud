@@ -120,14 +120,14 @@ function secureAuthExecutor(data, callback) {
 			response.success = true;
 			response.error = false;
 			if (Cloud.debug) {
-				Ti.API.info("Token: " + evt.access_token + " Expires: " + evt.expires_in);
+				Ti.API.info("ACS Token: " + evt.access_token + " Expires: " + evt.expires_in);
 			}
 		} else {
 			response.success = false;
 			response.error = true;
 			response.message = "Cancelled";
 			if (Cloud.debug) {
-				Ti.API.error(response.message);
+				Ti.API.error("ACS " + response.message);
 			}
 		}
 		callback(response);

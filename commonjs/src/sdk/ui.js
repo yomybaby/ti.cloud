@@ -24,6 +24,16 @@ com.cocoafish.js.sdk.UIManager = {
 			showScrollbars: true
 		});
 
+		var loading = Ti.UI.createLabel({
+			text: 'Loading, please wait...',
+			color: 'black',
+			width: Ti.UI.SIZE || 'auto',
+			height: Ti.UI.SIZE || 'auto',
+			zIndex: 100
+		});
+
+		var response;
+
 		function checkResponse(e) {
 			var re = /^acsconnect:\/\/([^#]*)#(.*)/;
 			var result = re.exec(decodeURIComponent(e.url));
@@ -38,28 +48,41 @@ com.cocoafish.js.sdk.UIManager = {
 				webView.removeEventListener('beforeload', checkResponse);
 				webView.removeEventListener('load', checkResponse);
 
+				response = data;
 				modal && modal.close();
-				call.cb && call.cb(data);
-				webView = modal = call = null;
+			}
+
+			if (loading && (e.type == 'load')) {
+				modal.remove(loading);
+				loading = null;
 			}
 		}
 
 		webView.addEventListener('beforeload', checkResponse);
 		webView.addEventListener('load', checkResponse);
+		modal.addEventListener('close', closeHandler);
 
-		var closeButton = Ti.UI.createButton({
-			title: 'close',
-			width: '50%',
-			height: '20%'
-		});
-		closeButton.addEventListener('click', function(){
-			modal.close();
-			call.cb && call.cb();
-			webView = modal = call = null;
-		});
+		if (Ti.Platform.osname != 'android') {
+			var closeButton = Ti.UI.createButton({
+				title: 'close',
+				width: '50%',
+				height: '20%'
+			});
+			closeButton.addEventListener('click', function(){
+				modal.close();
+			});
+			modal.rightNavButton = closeButton;
+		}
+
+		function closeHandler(e) {
+			if (call) {
+				call.cb && call.cb(response);
+				webView = modal = loading = call = response = null;
+			}
+		};
 
 		modal.add(webView);
-		modal.rightNavButton = closeButton;
+		modal.add(loading);
 
 		modal.open();
 	},

@@ -3,7 +3,7 @@
 ## Documentation
 
 Please refer to the documentation available here:
-[http://docs.appcelerator.com/titanium/2.0/#!/api/Titanium.Cloud](http://docs.appcelerator.com/titanium/2.0/#!/api/Titanium.Cloud)
+[http://docs.appcelerator.com/titanium/latest/#!/api/Titanium.Cloud](http://docs.appcelerator.com/titanium/latest/#!/api/Titanium.Cloud)
 
 ## Author
 

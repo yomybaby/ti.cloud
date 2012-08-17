@@ -240,14 +240,14 @@ function secureAuthExecutor(data, callback) {
 			response.success = true;
 			response.error = false;
 			if (Cloud.debug) {
-				Ti.API.info("Token: " + evt.access_token + " Expires: " + evt.expires_in);
+				Ti.API.info("ACS Token: " + evt.access_token + " Expires: " + evt.expires_in);
 			}
 		} else {
 			response.success = false;
 			response.error = true;
 			response.message = "Cancelled";
 			if (Cloud.debug) {
-				Ti.API.error(response.message);
+				Ti.API.error("ACS " + response.message);
 			}
 		}
 		callback(response);
@@ -1047,10 +1047,8 @@ OAuth.SignatureMethod.registerMethodClass(["HMAC-SHA1", "HMAC-SHA1-Accessor"],
 * Configurable variables. You may need to tweak these to be compatible with
 * the server-side, but the defaults work in most cases.
 */
-var b64pad = "";
-/* base-64 pad character. "=" for strict RFC compliance   */
-var chrsz = 8;
-/* bits per input character. 8 - ASCII; 16 - Unicode      */
+var b64pad = ""; /* base-64 pad character. "=" for strict RFC compliance   */
+var chrsz = 8; /* bits per input character. 8 - ASCII; 16 - Unicode      */
 
 /*
 * These are the functions you'll usually want to call
@@ -1772,15 +1770,15 @@ com.cocoafish.js.sdk.utils.sendAppceleratorRequest = function (url, method, data
 	// MOD-831 -- MobileWeb does not support setting request headers
 	if (Ti.Platform.osname != 'mobileweb') {
         xhr.setRequestHeader('Accept-Encoding', 'gzip,deflate');
+	    if (header) {
+	        for (var prop in header) {
+	            if (!header.hasOwnProperty(prop)) {
+	                continue;
+	            }
+	            xhr.setRequestHeader(prop, header[prop]);
+	        }
+	    }
 	}
-    if (header) {
-        for (var prop in header) {
-            if (!header.hasOwnProperty(prop)) {
-                continue;
-            }
-            xhr.setRequestHeader(prop, header[prop]);
-        }
-    }
 
     // send the data
     xhr.send(data);
@@ -1937,6 +1935,16 @@ com.cocoafish.js.sdk.UIManager = {
 			showScrollbars: true
 		});
 
+		var loading = Ti.UI.createLabel({
+			text: 'Loading, please wait...',
+			color: 'black',
+			width: Ti.UI.SIZE || 'auto',
+			height: Ti.UI.SIZE || 'auto',
+			zIndex: 100
+		});
+
+		var response;
+
 		function checkResponse(e) {
 			var re = /^acsconnect:\/\/([^#]*)#(.*)/;
 			var result = re.exec(decodeURIComponent(e.url));
@@ -1951,28 +1959,41 @@ com.cocoafish.js.sdk.UIManager = {
 				webView.removeEventListener('beforeload', checkResponse);
 				webView.removeEventListener('load', checkResponse);
 
+				response = data;
 				modal && modal.close();
-				call.cb && call.cb(data);
-				webView = modal = call = null;
+			}
+
+			if (loading && (e.type == 'load')) {
+				modal.remove(loading);
+				loading = null;
 			}
 		}
 
 		webView.addEventListener('beforeload', checkResponse);
 		webView.addEventListener('load', checkResponse);
+		modal.addEventListener('close', closeHandler);
 
-		var closeButton = Ti.UI.createButton({
-			title: 'close',
-			width: '50%',
-			height: '20%'
-		});
-		closeButton.addEventListener('click', function(){
-			modal.close();
-			call.cb && call.cb();
-			webView = modal = call = null;
-		});
+		if (Ti.Platform.osname != 'android') {
+			var closeButton = Ti.UI.createButton({
+				title: 'close',
+				width: '50%',
+				height: '20%'
+			});
+			closeButton.addEventListener('click', function(){
+				modal.close();
+			});
+			modal.rightNavButton = closeButton;
+		}
+
+		function closeHandler(e) {
+			if (call) {
+				call.cb && call.cb(response);
+				webView = modal = loading = call = response = null;
+			}
+		};
 
 		modal.add(webView);
-		modal.rightNavButton = closeButton;
+		modal.add(loading);
 
 		modal.open();
 	},

@@ -209,15 +209,15 @@ com.cocoafish.js.sdk.utils.sendAppceleratorRequest = function (url, method, data
 	// MOD-831 -- MobileWeb does not support setting request headers
 	if (Ti.Platform.osname != 'mobileweb') {
         xhr.setRequestHeader('Accept-Encoding', 'gzip,deflate');
+	    if (header) {
+	        for (var prop in header) {
+	            if (!header.hasOwnProperty(prop)) {
+	                continue;
+	            }
+	            xhr.setRequestHeader(prop, header[prop]);
+	        }
+	    }
 	}
-    if (header) {
-        for (var prop in header) {
-            if (!header.hasOwnProperty(prop)) {
-                continue;
-            }
-            xhr.setRequestHeader(prop, header[prop]);
-        }
-    }
 
     // send the data
     xhr.send(data);

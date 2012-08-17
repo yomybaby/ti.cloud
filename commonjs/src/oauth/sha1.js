@@ -12,10 +12,8 @@
 * Configurable variables. You may need to tweak these to be compatible with
 * the server-side, but the defaults work in most cases.
 */
-var b64pad = "";
-/* base-64 pad character. "=" for strict RFC compliance   */
-var chrsz = 8;
-/* bits per input character. 8 - ASCII; 16 - Unicode      */
+var b64pad = ""; /* base-64 pad character. "=" for strict RFC compliance   */
+var chrsz = 8; /* bits per input character. 8 - ASCII; 16 - Unicode      */
 
 /*
 * These are the functions you'll usually want to call

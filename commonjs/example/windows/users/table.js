@@ -9,7 +9,8 @@ Ti.include(
     'search.js',
     'show.js',
     'showMe.js',
-    'update.js'
+    'update.js',
+	'secureIdentity.js'
 );
 
 windowFunctions['Users'] = function (evt) {
@@ -22,6 +23,7 @@ windowFunctions['Users'] = function (evt) {
             'Has Stored Session',
             'Create User',
             'Login User',
+	        'Secure Identity',
             'Request Reset Password',
             'Show Current User',
             'Update Current User',
