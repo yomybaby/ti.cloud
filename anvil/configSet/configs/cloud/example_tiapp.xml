@@ -40,6 +40,6 @@
 
 	<property name="acs-base-url" type="string">api.cloud.appcelerator.com</property>
     <modules>
-        <module platform="commonjs" version="2.2.0">ti.cloud</module>
+        <module platform="commonjs" version="2.3.0">ti.cloud</module>
     </modules>
 </ti:app>

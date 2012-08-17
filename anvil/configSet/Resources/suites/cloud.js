@@ -30,10 +30,10 @@ module.exports = new function () {
 
 	// Test that all of the namespace APIs are available
 	this.testApi = function (testRun) {
-		valueOf(testRun, Cloud.getStatus).shouldBeFunction();
+		valueOf(testRun, Cloud.checkStatus).shouldBeFunction();
 		valueOf(testRun, Cloud.hasStoredSession).shouldBeFunction();
 		valueOf(testRun, Cloud.retrieveStoredSession).shouldBeFunction();
-
+		finish(testRun);
 	};
 
 	// Test the usage of the useSecure property

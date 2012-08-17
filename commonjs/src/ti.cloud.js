@@ -1181,7 +1181,8 @@ function binb2b64(binarray) {
        }
    }
    return str;
-}//if you want to use three-legged OAuth, always pass OAuth key to the key argument
+}
+//if you want to use three-legged OAuth, always pass OAuth key to the key argument
 function Cocoafish(key, secret, baseURL, authBaseURL) {
 
 	//a flag indicating whether 3-legged oauth will be used
@@ -1270,6 +1271,7 @@ Cocoafish.prototype.sendRequest = function (url, method, data, useSecure, callba
         }
     }
 
+	injectAnalytics(data, url);
 	data = com.cocoafish.js.sdk.utils.cleanInvalidData(data);
 
 	var fileInputObj = com.cocoafish.js.sdk.utils.getFileObject(data);
@@ -1770,15 +1772,15 @@ com.cocoafish.js.sdk.utils.sendAppceleratorRequest = function (url, method, data
 	// MOD-831 -- MobileWeb does not support setting request headers
 	if (Ti.Platform.osname != 'mobileweb') {
         xhr.setRequestHeader('Accept-Encoding', 'gzip,deflate');
-	    if (header) {
-	        for (var prop in header) {
-	            if (!header.hasOwnProperty(prop)) {
-	                continue;
-	            }
-	            xhr.setRequestHeader(prop, header[prop]);
-	        }
-	    }
 	}
+    if (header) {
+        for (var prop in header) {
+            if (!header.hasOwnProperty(prop)) {
+                continue;
+            }
+            xhr.setRequestHeader(prop, header[prop]);
+        }
+    }
 
     // send the data
     xhr.send(data);
@@ -1840,7 +1842,8 @@ com.cocoafish.js.sdk.utils.copy = function(target, source, overwrite, transform)
     }
   }
   return target;
-};function fetchSetting(key, def) {
+};
+function fetchSetting(key, def) {
     var value;
     var deployType = Ti.App.deployType.toLowerCase() == 'production' ? 'production' : 'development';
     if ((value = Ti.App.Properties.getString(key + '-' + deployType)) && value != 'undefined') {

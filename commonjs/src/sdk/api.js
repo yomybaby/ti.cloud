@@ -87,6 +87,7 @@ Cocoafish.prototype.sendRequest = function (url, method, data, useSecure, callba
         }
     }
 
+	injectAnalytics(data, url);
 	data = com.cocoafish.js.sdk.utils.cleanInvalidData(data);
 
 	var fileInputObj = com.cocoafish.js.sdk.utils.getFileObject(data);
