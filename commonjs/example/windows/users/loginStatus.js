@@ -10,15 +10,15 @@ windowFunctions['Login Status'] = function () {
 
 	content.add(Ti.UI.createLabel({
 			text: 'accessToken: ' + Cloud.accessToken, textAlign: 'left',
-			height: 30 + u, left: 20 + u, right: 20 + u
+			height: 40 + u, left: 20 + u, right: 20 + u
 	}));
 	content.add(Ti.UI.createLabel({
 			text: 'expiresIn: ' + Cloud.expiresIn, textAlign: 'left',
-			height: 30 + u, left: 20 + u, right: 20 + u
+			height: 40 + u, left: 20 + u, right: 20 + u
 	}));
 	content.add(Ti.UI.createLabel({
 			text: 'sessionId: ' + Cloud.sessionId, textAlign: 'left',
-			height: 30 + u, left: 20 + u, right: 20 + u
+			height: 40 + u, left: 20 + u, right: 20 + u
 	}));
 
 	win.open();
