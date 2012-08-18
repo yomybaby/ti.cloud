@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ti:app xmlns:ti="http://ti.appcelerator.org">
+	<id>com.appcelerator.harness</id>
+	<name>harness</name>
+	<version>1.0</version>
+	<publisher>not specified</publisher>
+	<url>not specified</url>
+	<description>not specified</description>
+	<copyright>not specified</copyright>
+	<icon>appicon.png</icon>
+	<persistent-wifi>false</persistent-wifi>
+	<prerendered-icon>false</prerendered-icon>
+	<statusbar-style>default</statusbar-style>
+	<statusbar-hidden>false</statusbar-hidden>
+	<fullscreen>false</fullscreen>
+	<navbar-hidden>false</navbar-hidden>
+	<analytics>false</analytics>
+	<guid></guid>
+	<property name="ti.ui.defaultunit">system</property>
+	<iphone>
+		<orientations device="iphone">
+			<orientation>Ti.UI.PORTRAIT</orientation>
+		</orientations>
+		<orientations device="ipad">
+			<orientation>Ti.UI.PORTRAIT</orientation>
+			<orientation>Ti.UI.UPSIDE_PORTRAIT</orientation>
+			<orientation>Ti.UI.LANDSCAPE_LEFT</orientation>
+			<orientation>Ti.UI.LANDSCAPE_RIGHT</orientation>
+		</orientations>
+	</iphone>
+    <property name="ti.android.fastdev" type="bool">false</property>
+	<android xmlns:android="http://schemas.android.com/apk/res/android">
+	</android>
+
+    <!-- INSERT YOUR ACS KEYS IN THE FOLLOWING PROPERTIES -->
+
+	<property name="acs-oauth-key" type="string"></property>
+	<property name="acs-oauth-secret" type="string"></property>
+    <property name="acs-api-key" type="string"></property>
+
+	<property name="acs-base-url" type="string">api.cloud.appcelerator.com</property>
+    <modules>
+        <module platform="commonjs" version="2.3.0">ti.cloud</module>
+    </modules>
+</ti:app>
