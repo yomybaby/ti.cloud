@@ -7,24 +7,32 @@ com.cocoafish.js.sdk.utils.getSessionParams = function() {
 	return sessionParam;
 };
 
+com.cocoafish.js.sdk.utils.cookieMap = [];
+com.cocoafish.js.sdk.utils.cookieMap[com.cocoafish.constants.sessionId] = 'sessionId';
+com.cocoafish.js.sdk.utils.cookieMap[com.cocoafish.constants.accessToken] = 'accessToken';
+com.cocoafish.js.sdk.utils.cookieMap[com.cocoafish.constants.expiresIn] = 'expiresIn';
+
 com.cocoafish.js.sdk.utils.getCookie = function( name ) {
-	if (Ti.App.Properties.hasProperty(name)) {
-		return (Ti.App.Properties.getString(name));
-	}
-	// otherwise, return null
-	return null;
+	var friendlyName = com.cocoafish.js.sdk.utils.cookieMap[name];
+	return (friendlyName && Cloud[friendlyName]) || null;
 };
 
 com.cocoafish.js.sdk.utils.setCookie = function( name, value, expires, path, domain, secure ) {
-	if (value === '') {
-		Ti.App.Properties.removeProperty(name);
-	} else {
-		Ti.App.Properties.setString(name, value);
+	var friendlyName = com.cocoafish.js.sdk.utils.cookieMap[name];
+	if (friendlyName) {
+		if (value === '') {
+			delete Cloud[friendlyName];
+		} else {
+			Cloud[friendlyName] = value;
+		}
 	}
 };
 
 com.cocoafish.js.sdk.utils.deleteCookie = function( name, path, domain ) {
-	Ti.App.Properties.removeProperty(name);
+	var friendlyName = com.cocoafish.js.sdk.utils.cookieMap[name];
+	if (friendlyName) {
+		delete Cloud[friendlyName];
+	}
 };
 
 com.cocoafish.js.sdk.utils.getAuthType = function (obj) {
@@ -120,11 +128,6 @@ com.cocoafish.js.sdk.utils.populateOAuthParameters = function (parameters, oauth
         parameters.push(["oauth_nonce", OAuth.nonce(15)]);
     }
 };
-
-function formatParam(url, name, value) {
-    var sep = (url.indexOf("?") != -1) ? "&" : "?";
-    return sep + name + "=" + value;
-}
 
 com.cocoafish.js.sdk.utils.sendAppceleratorRequest = function (url, method, data, header, callback, sdk) {
     var xhr = Ti.Network.createHTTPClient({

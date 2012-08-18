@@ -98,10 +98,12 @@ function propagateRestNames(context) {
 }
 
 function hasStoredSession() {
+	Ti.API.warn("Cloud.hasStoredSession has been deprecated. Use Cloud.sessionId property");
 	return ACS.hasStoredSession();
 }
 
 function retrieveStoredSession() {
+	Ti.API.warn("Cloud.retrieveStoredSession has been deprecated. Use Cloud.sessionId property");
 	return ACS.retrieveStoredSession();
 }
 
@@ -154,7 +156,6 @@ BedFrame.build(Cloud, {
 	    // Top level methods not associated with a namespace
 	    { method: 'hasStoredSession', executor: hasStoredSession },
 	    { method: 'retrieveStoredSession', executor: retrieveStoredSession },
-	    { method: 'checkStatus', executor: checkStatus },
         {
             property: 'ACLs',
             children: [
@@ -384,6 +385,7 @@ BedFrame.build(Cloud, {
                 { method: 'requestResetPassword', restMethod: 'request_reset_password' },
 	            { method: 'secureCreate', executor: dataOptionalSecureAuthExecutor },
 	       	    { method: 'secureLogin', executor: dataOptionalSecureAuthExecutor }
+	            { method: 'secureStatus', executor: checkStatus }
             ]
         }
     ]

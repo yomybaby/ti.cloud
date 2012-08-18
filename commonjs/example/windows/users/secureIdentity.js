@@ -67,7 +67,7 @@ windowFunctions['Secure Identity'] = function (evt) {
 	}
 
 	function secureCheckStatus() {
-		if (Cloud.checkStatus()) {
+		if (Cloud.Users.secureStatus()) {
 			alert ("Logged in");
 		} else {
 			alert ("Logged out");

@@ -69,7 +69,11 @@ Cocoafish.prototype.sendRequest = function (url, method, data, useSecure, callba
 			sessionId = this.session_id;
 
 		if (sessionId) {
-		    reqURL += formatParam(reqURL, com.cocoafish.constants.sessionId, sessionId);
+			if(reqURL.indexOf("?") != -1) {
+				reqURL += "&" + com.cocoafish.constants.sessionId + '=' + sessionId;
+			} else {
+				reqURL += "?" + com.cocoafish.constants.sessionId + '=' + sessionId;
+			}
 		}
 	}
 

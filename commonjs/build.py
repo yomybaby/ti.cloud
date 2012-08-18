@@ -21,7 +21,7 @@ ignoreFiles = ['.DS_Store','.cvsignore','.gitignore']
 ignoreDirs = ['.svn','_svn','.git','CVS','CVSROOT','sdk','oauth']
 
 moduleFiles = [
-	'sdk/appcelerator.js',
+	'sdk/appcelerator_start.js',
 	'sdk/bedframe.js',
 	'sdk/cloudapi.js',
 	'sdk/analytics.js',
@@ -32,7 +32,8 @@ moduleFiles = [
 	'sdk/constants.js',
 	'sdk/utils.js',
 	'sdk/acs.js',
-	'sdk/ui.js'
+	'sdk/ui.js',
+	'sdk/appcelerator_end.js'
 ]
 
 required_manifest_keys = ['name','version','moduleid','description','copyright','license','copyright','platform','minsdk']
