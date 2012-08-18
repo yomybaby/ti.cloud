@@ -77,8 +77,8 @@ module.exports = new function () {
 		};
 
 		var unsubscribed = function (e) {
-			valueOf(testRun, e.success).shouldBeTrue();
-			valueOf(testRun, e.error).shouldBeFalse();
+			valueOf(testRun, e.success).shouldBeFalse();
+			valueOf(testRun, e.error).shouldBeTrue();
 			finish(testRun);
 		};
 

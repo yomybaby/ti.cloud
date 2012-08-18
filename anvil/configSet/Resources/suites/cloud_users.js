@@ -50,7 +50,9 @@ module.exports = new function () {
 			'update',
 			'logout',
 			'remove',
-			'requestResetPassword'
+			'requestResetPassword',
+			'secureCreate',
+			'secureLogin'
 		]);
 		finish(testRun);
 	};

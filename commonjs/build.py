@@ -18,7 +18,22 @@ except ImportError:
 	import markdown
 
 ignoreFiles = ['.DS_Store','.cvsignore','.gitignore']
-ignoreDirs = ['.svn','_svn','.git','CVS','CVSROOT']
+ignoreDirs = ['.svn','_svn','.git','CVS','CVSROOT','sdk','oauth']
+
+moduleFiles = [
+	'sdk/appcelerator.js',
+	'sdk/bedframe.js',
+	'sdk/cloudapi.js',
+	'sdk/analytics.js',
+	'oauth/oauth.js',
+	'oauth/sha1.js',
+	'sdk/api.js',
+	'sdk/namespace.js',
+	'sdk/constants.js',
+	'sdk/utils.js',
+	'sdk/acs.js',
+	'sdk/ui.js'
+]
 
 required_manifest_keys = ['name','version','moduleid','description','copyright','license','copyright','platform','minsdk']
 manifest_defaults = {
@@ -60,8 +75,11 @@ class Compiler(object):
 		self.load_manifest()
 		self.check_license()
 		self.load_timodule_xml()
-		self.check_main()
-		
+
+		#self.check_main()
+		# Module's Javascript file is a created by concatenating multiple files together
+		self.makeModule()
+
 		self.modules_map = {}
 		self.require_cache = {}
 		self.parse_module(self.main, None)
@@ -98,7 +116,7 @@ class Compiler(object):
 			print '[INFO] Finished in %s minutes %s seconds' % (int(total_minutes), int(total_seconds))
 		else:
 			print '[INFO] Finished in %s seconds' % int(total_time)
-	
+
 	def load_manifest(self):
 		self.manifest = {}
 		manifest_file = os.path.join(self.module_path, 'manifest')
@@ -277,7 +295,19 @@ class Compiler(object):
 				if dep.startswith('\'') or dep.startswith('"'):
 					found.append(simplejson.loads(dep))
 		return found
-	
+
+	def makeModule(self):
+		self.main = self.timodule['main'] if 'main' in self.timodule else self.manifest['name']
+		dest = os.path.join(self.src_path, self.main + '.js')
+		print '[INFO] Concatenating %s... into %s' % (self.src_path, dest)
+		if os.path.exists(dest):
+			os.remove(dest)
+		js = codecs.open(dest, 'w', encoding='utf-8')
+		for file in moduleFiles:
+			src = os.path.join(self.src_path, file)
+			js.write(codecs.open(src, 'r', 'utf-8').read())
+		js.close()
+
 	def copy(self, src_path, dest_path):
 		print '[INFO] Copying %s...' % src_path
 		for root, dirs, files in os.walk(src_path):

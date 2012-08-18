@@ -15,7 +15,7 @@ module.exports = new function () {
 		Cloud = require('ti.cloud');
 	};
 
-	this.name = "cloud";
+	this.name = "cloud secure";
 
 	// ---------------------------------------------------------------
 	// Cloud
@@ -64,11 +64,9 @@ module.exports = new function () {
 		var login2 = function (e) {
 			if (e.success == false) {
 				var data = {
-					username:'chatuser',
-					password:'password',
-					password_confirmation:'password'
+					title: "chatuser"
 				};
-				Cloud.Users.create(data, created1);
+				Cloud.Users.secureCreate(data, created1);
 			} else {
 				created2(e);
 			}
@@ -76,9 +74,8 @@ module.exports = new function () {
 
 		var loggedOut1 = function (e) {
 			valueOf(testRun, e.success).shouldBeTrue();
-			Cloud.Users.login({
-				login:'chatuser',
-				password:'password'
+			Cloud.Users.secureLogin({
+				title: "chatuser"
 			}, login2);
 		};
 
@@ -91,19 +88,16 @@ module.exports = new function () {
 		var login1 = function (e) {
 			if (e.success == false) {
 				var data = {
-					username:'drillbituser',
-					password:'password',
-					password_confirmation:'password'
+					title: "drillbituser"
 				};
-				Cloud.Users.create(data, created1);
+				Cloud.Users.secureCreate(data, created1);
 			} else {
 				created1(e);
 			}
 		};
 
-		Cloud.Users.login({
-			login:'drillbituser',
-			password:'password'
+		Cloud.Users.secureLogin({
+			title: "drillbituser"
 		}, login1);
 	};
 

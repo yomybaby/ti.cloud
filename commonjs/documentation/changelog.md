@@ -1,5 +1,8 @@
 # Change Log
 <pre>
+v2.3.0  Added secureCreate and secureLogin for Secure Identity Server support [MOD-662][MOD-811][MOD-813]
+		Do not set request headers for MobileWeb [MOD-831]
+
 v2.2.0  Added Friends, Messages, Events, Files namespaces and methods [MOD-772]
         Fixed issue with empty dictionary items in data when using OAuth [MOD-817]
 
