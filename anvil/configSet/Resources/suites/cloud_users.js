@@ -52,7 +52,8 @@ module.exports = new function () {
 			'remove',
 			'requestResetPassword',
 			'secureCreate',
-			'secureLogin'
+			'secureLogin',
+			'secureStatus'
 		]);
 		finish(testRun);
 	};

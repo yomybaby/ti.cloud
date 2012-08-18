@@ -1,5 +1,5 @@
 Ti.include(
-    'hasStoredSession.js',
+    'loginStatus.js',
     'create.js',
     'login.js',
     'logout.js',
@@ -20,7 +20,7 @@ windowFunctions['Users'] = function (evt) {
         backgroundColor: '#fff',
         top: offset + u,
         data: createRows([
-            'Has Stored Session',
+            'Login Status',
             'Create User',
             'Login User',
 	        'Secure Identity',

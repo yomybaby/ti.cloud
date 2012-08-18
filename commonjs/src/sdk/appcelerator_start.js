@@ -9,7 +9,6 @@
  * and licensed under the Apache Public License (version 2)
  */
 
-var Cloud = exports || {};
-var ACS = {};
+defineCloud(exports);
 
-
+function defineCloud(Cloud) {
