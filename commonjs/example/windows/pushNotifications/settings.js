@@ -86,6 +86,19 @@ windowFunctions['Settings for This Device'] = function (evt) {
             focusAppOnPush.title = androidPushModule.focusAppOnPush ? 'Push Focuses App' : 'Push Doesn\'t Focus App';
         });
         content.add(focusAppOnPush);
+        
+        /*
+         Trigger callbacks together or one by one when multiple push notifications come.
+         */
+        var singleCallback = Ti.UI.createButton({
+            top: 10, width: 320, height: 50,
+            title: androidPushModule.focusAppOnPush ? 'Callbacks trigger one by one' : 'Callbacks trigger together'
+        });
+        singleCallback.addEventListener('click', function () {
+            androidPushModule.singleCallback = !androidPushModule.singleCallback;
+            singleCallback.title = androidPushModule.singleCallback ? 'Callbacks trigger one by one' : 'Callbacks trigger together';
+        });
+        content.add(singleCallback);
     }
 
     win.open();
