@@ -1,7 +1,9 @@
 # Change Log
 <pre>
+v2.3.1  Update example app for newly added feature Titanium.CloudPush.singleCallback [CLOUDSRV-1949][CLOUDSRV-1532]
+
 v2.3.0  Added secureCreate and secureLogin for Secure Identity Server support [MOD-662][MOD-811][MOD-813]
-		Do not set request headers for MobileWeb [MOD-831]
+        Do not set request headers for MobileWeb [MOD-831]
 
 v2.2.0  Added Friends, Messages, Events, Files namespaces and methods [MOD-772]
         Fixed issue with empty dictionary items in data when using OAuth [MOD-817]

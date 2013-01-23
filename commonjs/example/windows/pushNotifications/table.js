@@ -113,6 +113,8 @@ function checkPushNotifications() {
 
 function deviceTokenSuccess(e) {
     pushDeviceToken = e.deviceToken;
+    alert('Device token is retrieved: ' + pushDeviceToken);
+    Ti.API.info('Device Token: ' + pushDeviceToken);
     androidPushModule.enabled = true;
     androidPushModule.addEventListener('callback', receivePush);
 }
