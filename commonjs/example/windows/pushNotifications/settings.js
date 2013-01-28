@@ -92,7 +92,7 @@ windowFunctions['Settings for This Device'] = function (evt) {
          */
         var singleCallback = Ti.UI.createButton({
             top: 10, width: 320, height: 50,
-            title: androidPushModule.focusAppOnPush ? 'Callbacks trigger one by one' : 'Callbacks trigger together'
+            title: androidPushModule.singleCallback ? 'Callbacks trigger one by one' : 'Callbacks trigger together'
         });
         singleCallback.addEventListener('click', function () {
             androidPushModule.singleCallback = !androidPushModule.singleCallback;
