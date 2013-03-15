@@ -146,15 +146,17 @@ com.cocoafish.js.sdk.utils.sendAppceleratorRequest = function (url, method, data
         },
         onerror: function (e) {
             var retVal = {};
-            var json = this.responseText;
-            try {
-                json = json.trim();
-                if (json && json.length > 0) {
-                    retVal = JSON.parse(json);
+            if(this.responseText) {
+                var json = this.responseText;
+                try {
+                    json = json.trim();
+                    if (json && json.length > 0) {
+                        retVal = JSON.parse(json);
+                    }
+                } catch (err) {
+                    retVal = err;
                 }
-            } catch (err) {
-                retVal = err;
-            }
+        	}
             retVal.message || (retVal.message = e.error);
             retVal.error = true;
             retVal.statusText = this.statusText;
