@@ -1,6 +1,8 @@
 # Change Log
 <pre>
-v2.3.1  Update example app for newly added feature Titanium.CloudPush.singleCallback [CLOUDSRV-1949][CLOUDSRV-1532]
+v2.3.2  Fixed incorrect exception message "c.trim" on a request timeout [CLOUDSRV-2176]
+
+v2.3.1  Updated example app for newly added feature Titanium.CloudPush.singleCallback [CLOUDSRV-1949][CLOUDSRV-1532]
 
 v2.3.0  Added secureCreate and secureLogin for Secure Identity Server support [MOD-662][MOD-811][MOD-813]
         Do not set request headers for MobileWeb [MOD-831]
