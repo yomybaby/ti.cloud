@@ -1,5 +1,7 @@
 # Change Log
 <pre>
+v2.3.3  Added oauth_consumer_key to support global haproxy [CLOUDSRV-2312][MOD-1357]
+
 v2.3.2  Fixed incorrect exception message "c.trim" on a request timeout [CLOUDSRV-2176]
 
 v2.3.1  Updated example app for newly added feature Titanium.CloudPush.singleCallback [CLOUDSRV-1949][CLOUDSRV-1532]

@@ -24,7 +24,7 @@ com.cocoafish.constants.unknown = -1;
 //Others
 com.cocoafish.constants.keyParam = '?key=';
 com.cocoafish.constants.oauthKeyParam = '?oauth_consumer_key=';
-com.cocoafish.constants.clientIdParam = '?client_id=';
+com.cocoafish.constants.clientIdParam = '&client_id=';
 com.cocoafish.constants.redirectUriParam = '&redirect_uri=';
 com.cocoafish.constants.responseTypeParam = '&response_type=';
 com.cocoafish.constants.accessToken = 'access_token';
