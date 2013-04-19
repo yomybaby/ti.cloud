@@ -195,6 +195,7 @@ Cocoafish.prototype.sendAuthRequest = function(options) {
   }
   reqURL += this.authBaseURL;
   reqURL += '/oauth/authorize';
+  reqURL += com.cocoafish.constants.oauthKeyParam + this.oauthKey;
   reqURL += com.cocoafish.constants.clientIdParam + this.oauthKey;
   reqURL += com.cocoafish.constants.responseTypeParam + 'token';
 
@@ -244,6 +245,7 @@ Cocoafish.prototype.signUpRequest = function(options) {
   }
   reqURL += this.authBaseURL;
   reqURL += '/users/sign_up';
+  reqURL += com.cocoafish.constants.oauthKeyParam + this.oauthKey;
   reqURL += com.cocoafish.constants.clientIdParam + this.oauthKey;
 
 	var params = options.params || {};
