@@ -1,5 +1,7 @@
 # Change Log
 <pre>
+v2.3.4  apiKey takes priority over OAuth if both are available [MOD-1369]
+
 v2.3.3  Added oauth_consumer_key to support global haproxy [CLOUDSRV-2312][MOD-1357]
 
 v2.3.2  Fixed incorrect exception message "c.trim" on a request timeout [CLOUDSRV-2176]
