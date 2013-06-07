@@ -1,15 +1,12 @@
 //if you want to use three-legged OAuth, always pass OAuth key to the key argument
-function Cocoafish(key, secret, baseURL, authBaseURL) {
-
+function Cocoafish(appKey, key, secret, baseURL, authBaseURL) {
 	//a flag indicating whether 3-legged oauth will be used
 	var threeLegged = false;
 
-	if (!secret) {
-	    this.appKey = key;
-	} else {
-	    this.oauthKey = key;
-	    this.oauthSecret = secret;
-	}
+    this.appKey = appKey;
+    this.oauthKey = key;
+    this.oauthSecret = secret;
+	    
 	if (baseURL) {
 	    this.apiBaseURL = baseURL;
 	} else {
