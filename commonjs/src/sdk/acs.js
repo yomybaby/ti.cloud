@@ -19,14 +19,8 @@ ACS.fetchSession = function() {
 	var authBaseURL = ACS.fetchSetting('acs-authbase-url', com.cocoafish.sdk.url.authBaseURL);
 	var consumerKey = ACS.fetchSetting('acs-oauth-key', null);
 	var consumerSecret = ACS.fetchSetting('acs-oauth-secret', null);
-	if (apiKey) {
-	    return new Cocoafish(apiKey, null, baseURL, authBaseURL);
-	}
-	if (consumerKey && consumerSecret) {
-	    return new Cocoafish(consumerKey, consumerSecret, baseURL, authBaseURL);
-	}
 
-	throw 'ACS CREDENTIALS NOT SPECIFIED!';
+    return new Cocoafish(apiKey, consumerKey, consumerSecret, baseURL, authBaseURL);
 }
 
 ACS.getSession = function() {
