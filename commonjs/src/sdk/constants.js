@@ -1,9 +1,5 @@
 //REST APIs
 
-//Protocols
-com.cocoafish.sdk.url.http = 'http://';
-com.cocoafish.sdk.url.https = 'https://';
-
 //URL
 com.cocoafish.sdk.url.baseURL = 'https://api.cloud.appcelerator.com';
 com.cocoafish.sdk.url.authBaseURL = 'https://secure-identity.cloud.appcelerator.com';
