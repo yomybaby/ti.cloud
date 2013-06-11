@@ -25,16 +25,14 @@ function defaultExecutor(data, callback) {
     if (!this.url) {
         this.url = this.restNamespace + '/' + this.restMethod + '.json';
     }
-    var secure = Cloud.useSecure == undefined ? true : Cloud.useSecure;
     if (Cloud.debug) {
         Ti.API.info('ACS Request: { ' +
             'url: "' + this.url + '", ' +
             'verb: "' + this.verb + '", ' +
-            'secure: ' + (secure ? 'YES' : 'NO') + ', ' +
             'data: ' + JSON.stringify(data) + ' ' +
             '})');
     }
-    ACS.send(this.url, this.verb, data, secure,
+    ACS.send(this.url, this.verb, data,
         function handleResponse(evt) {
             if (!callback) {
                 return;
@@ -111,7 +109,6 @@ function secureAuthExecutor(data, callback) {
     requireArgument('callback', callback, 'function');
 
 	var options = {};
-	options.useSecure = Cloud.useSecure == undefined ? true : Cloud.useSecure;
 	options.params = data || {};
 	options.params.cb = function handleResponse(evt) {
 		if (!callback) {

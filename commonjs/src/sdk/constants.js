@@ -5,8 +5,8 @@ com.cocoafish.sdk.url.http = 'http://';
 com.cocoafish.sdk.url.https = 'https://';
 
 //URL
-com.cocoafish.sdk.url.baseURL = 'api.cloud.appcelerator.com';
-com.cocoafish.sdk.url.authBaseURL = 'secure-identity.cloud.appcelerator.com';
+com.cocoafish.sdk.url.baseURL = 'https://api.cloud.appcelerator.com';
+com.cocoafish.sdk.url.authBaseURL = 'https://secure-identity.cloud.appcelerator.com';
 com.cocoafish.sdk.url.version = 'v1';
 
 //HTTP methods
