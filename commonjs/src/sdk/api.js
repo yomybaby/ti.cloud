@@ -31,7 +31,7 @@ function Cocoafish(appKey, key, secret, baseURL, authBaseURL) {
 	return this;
 }
 
-Cocoafish.prototype.sendRequest = function (url, method, data, useSecure, callback) {
+Cocoafish.prototype.sendRequest = function (url, method, data, callback) {
 	var authType = com.cocoafish.js.sdk.utils.getAuthType(this);
 	if (authType == com.cocoafish.constants.unknown) {
 	    callback(com.cocoafish.constants.noAppKeyError);
@@ -39,13 +39,7 @@ Cocoafish.prototype.sendRequest = function (url, method, data, useSecure, callba
 	}
 
 	//build request url
-	var reqURL = '';
-	if (useSecure) {
-	    reqURL += com.cocoafish.sdk.url.https;
-	} else {
-	    reqURL += com.cocoafish.sdk.url.http;
-	}
-	reqURL += this.apiBaseURL + "/" + com.cocoafish.sdk.url.version + "/" + url;
+	var reqURL = this.apiBaseURL + "/" + com.cocoafish.sdk.url.version + "/" + url;
 
 	if (authType == com.cocoafish.constants.app_key) {
 	    reqURL += com.cocoafish.constants.keyParam + this.appKey;
@@ -161,7 +155,7 @@ Cocoafish.prototype.sendRequest = function (url, method, data, useSecure, callba
 
 
 //authorization request needs to be sent explicitly
-//options expected: redirectUri, useSecure, params
+//options expected: redirectUri, params
 //params option is an object containing arguments for popup window or iframe
 Cocoafish.prototype.sendAuthRequest = function(options) {
 
@@ -178,19 +172,8 @@ Cocoafish.prototype.sendAuthRequest = function(options) {
 
   options = options || {};
 
-  var isSecure = false;
-  if(typeof(options.useSecure) == 'boolean') {
-      isSecure = options.useSecure;
-  }
-
   //build request url
-  var reqURL = '';
-  if(isSecure) {
-      reqURL += com.cocoafish.sdk.url.https;
-  } else {
-      reqURL += com.cocoafish.sdk.url.http;
-  }
-  reqURL += this.authBaseURL;
+  var reqURL = this.authBaseURL;
   reqURL += '/oauth/authorize';
   reqURL += com.cocoafish.constants.oauthKeyParam + this.oauthKey;
   reqURL += com.cocoafish.constants.clientIdParam + this.oauthKey;
@@ -211,7 +194,7 @@ Cocoafish.prototype.sendAuthRequest = function(options) {
 
 
 //signing up request needs to be sent explicitly
-//options expected: redirectUri, useSecure, params
+//options expected: redirectUri, params
 //params option is an object containing arguments for popup window or iframe
 Cocoafish.prototype.signUpRequest = function(options) {
 
@@ -228,19 +211,8 @@ Cocoafish.prototype.signUpRequest = function(options) {
 
   options = options || {};
 
-  var isSecure = false;
-  if(typeof(options.useSecure) == 'boolean') {
-      isSecure = options.useSecure;
-  }
-
   //build request url
-  var reqURL = '';
-  if(isSecure) {
-      reqURL += com.cocoafish.sdk.url.https;
-  } else {
-      reqURL += com.cocoafish.sdk.url.http;
-  }
-  reqURL += this.authBaseURL;
+  var reqURL = this.authBaseURL;
   reqURL += '/users/sign_up';
   reqURL += com.cocoafish.constants.oauthKeyParam + this.oauthKey;
   reqURL += com.cocoafish.constants.clientIdParam + this.oauthKey;

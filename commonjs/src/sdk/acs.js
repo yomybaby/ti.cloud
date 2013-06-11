@@ -30,8 +30,8 @@ ACS.getSession = function() {
 	return ACS.session;
 }
 
-ACS.send = function (url, method, data, useSecure, callback) {
-	ACS.getSession().sendRequest(url, method, data, useSecure, callback);
+ACS.send = function (url, method, data, callback) {
+	ACS.getSession().sendRequest(url, method, data, callback);
 };
 
 ACS.hasStoredSession = function() {
