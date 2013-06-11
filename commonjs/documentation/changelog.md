@@ -1,6 +1,8 @@
 # Change Log
 <pre>
-v2.3.5	OAuth is used for secure calls and apiKey for other calls [APPTS-1717][]
+v2.3.6  Removed the "useSecure" property. The URLs passed to "acs-base-url" and "acs-authbase-url" will now control using http or https [TIMOB-14120]
+
+v2.3.5  OAuth is used for secure calls and apiKey for other calls [APPTS-1717]
 
 v2.3.4  apiKey takes priority over OAuth if both are available [MOD-1369]
 
