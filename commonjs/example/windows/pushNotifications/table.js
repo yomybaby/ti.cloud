@@ -2,7 +2,10 @@ Ti.include(
     'notify.js',
     'settings.js',
     'subscribe.js',
-    'unsubscribe.js'
+    'unsubscribe.js',
+    'notifyTokens.js',
+    'subscribeToken.js',
+    'unsubscribeToken.js'
 );
 
 windowFunctions['Push Notifications'] = function () {
@@ -10,12 +13,15 @@ windowFunctions['Push Notifications'] = function () {
     var offset = addBackButton(win);
 
     var rows = [
-        'Notify'
+        'Notify',
+        'Notify Tokens'
     ];
     if (Ti.Platform.name === 'iPhone OS' || Ti.Platform.name === 'android') {
         rows.push('Settings for This Device');
         rows.push('Subscribe');
         rows.push('Unsubscribe');
+        rows.push('Subscribe Token');
+        rows.push('Unsubscribe Token');
     }
     else {
         // Our other platforms do not support push notifications yet.
