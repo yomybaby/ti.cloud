@@ -35,7 +35,10 @@ module.exports = new function () {
 		verifyAPIs(testRun, 'PushNotifications', [
 			'subscribe',
 			'unsubscribe',
-			'notify'
+			'notify',
+			'subscribeToken',
+			'unsubscribeToken',
+			'notifyTokens'
 		]);
 		finish(testRun);
 	};
@@ -92,6 +95,37 @@ module.exports = new function () {
 			valueOf(testRun, e.error).shouldBeFalse();
 			finish(testRun);
 		});
+	};
+
+	// Following push notification tests doesn't need user authentication
+	this.testNotifyTokens = function (testRun) {
+		var data = {
+			channel:'test',
+			device_token: Ti.Platform.name === 'iPhone OS' ? 'not-a-real-apple-token' : 'not-a-real-android-token',
+			type: Ti.Platform.name === 'iPhone OS' ? 'ios' : Ti.Platform.name
+		};
+
+		var tokenSubscribed = function (e) {
+			// Should be false because push notifications are not configured in the application settings
+			valueOf(testRun, e.success).shouldBeFalse();
+			valueOf(testRun, e.error).shouldBeTrue();
+			Cloud.PushNotifications.notifyTokens({ channel:data.channel, payload:'Hello World' }, tokensNotified);
+		};
+
+		var tokensNotified = function (e) {
+			// Should be false because push notifications are not configured in the application settings
+			valueOf(testRun, e.success).shouldBeFalse();
+			valueOf(testRun, e.error).shouldBeTrue();
+			Cloud.PushNotifications.unsubscribeToken({ channel:data.channel, device_token:data.device_token }, tokenUnsubscribed);
+		};
+
+		var tokenUnsubscribed = function (e) {
+			valueOf(testRun, e.success).shouldBeFalse();
+			valueOf(testRun, e.error).shouldBeTrue();
+			finish(testRun);
+		};
+
+		Cloud.PushNotifications.subscribeToken(data, tokenSubscribed);
 	};
 
 	// Populate the array of tests based on the 'hammer' convention

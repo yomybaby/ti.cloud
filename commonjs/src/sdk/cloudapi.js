@@ -96,43 +96,43 @@ function propagateRestNames(context) {
 }
 
 function hasStoredSession() {
-	Ti.API.warn("Cloud.hasStoredSession has been deprecated. Use Cloud.sessionId property");
-	return ACS.hasStoredSession();
+    Ti.API.warn("Cloud.hasStoredSession has been deprecated. Use Cloud.sessionId property");
+    return ACS.hasStoredSession();
 }
 
 function retrieveStoredSession() {
-	Ti.API.warn("Cloud.retrieveStoredSession has been deprecated. Use Cloud.sessionId property");
-	return ACS.retrieveStoredSession();
+    Ti.API.warn("Cloud.retrieveStoredSession has been deprecated. Use Cloud.sessionId property");
+    return ACS.retrieveStoredSession();
 }
 
 function secureAuthExecutor(data, callback) {
     requireArgument('callback', callback, 'function');
 
-	var options = {};
-	options.params = data || {};
-	options.params.cb = function handleResponse(evt) {
-		if (!callback) {
-			return;
-		}
-		var response = evt || {};
-		if (evt && evt.access_token) {
-			response.success = true;
-			response.error = false;
-			if (Cloud.debug) {
-				Ti.API.info("ACS Token: " + evt.access_token + " Expires: " + evt.expires_in);
-			}
-		} else {
-			response.success = false;
-			response.error = true;
-			response.message = "Cancelled";
-			if (Cloud.debug) {
-				Ti.API.error("ACS " + response.message);
-			}
-		}
-		callback(response);
-	};
+    var options = {};
+    options.params = data || {};
+    options.params.cb = function handleResponse(evt) {
+        if (!callback) {
+            return;
+        }
+        var response = evt || {};
+        if (evt && evt.access_token) {
+            response.success = true;
+            response.error = false;
+            if (Cloud.debug) {
+                Ti.API.info("ACS Token: " + evt.access_token + " Expires: " + evt.expires_in);
+            }
+        } else {
+            response.success = false;
+            response.error = true;
+            response.message = "Cancelled";
+            if (Cloud.debug) {
+                Ti.API.error("ACS " + response.message);
+            }
+        }
+        callback(response);
+    };
 
-	ACS.secureSend(this.method, options);
+    ACS.secureSend(this.method, options);
 }
 
 function dataOptionalSecureAuthExecutor() {
@@ -143,16 +143,16 @@ function dataOptionalSecureAuthExecutor() {
 }
 
 function checkStatus() {
-	return ACS.checkStatus();
+    return ACS.checkStatus();
 }
 
 BedFrame.build(Cloud, {
     verb: 'GET',
     executor: defaultExecutor,
     children: [
-	    // Top level methods not associated with a namespace
-	    { method: 'hasStoredSession', executor: hasStoredSession },
-	    { method: 'retrieveStoredSession', executor: retrieveStoredSession },
+        // Top level methods not associated with a namespace
+        { method: 'hasStoredSession', executor: hasStoredSession },
+        { method: 'retrieveStoredSession', executor: retrieveStoredSession },
         {
             property: 'ACLs',
             children: [
@@ -207,38 +207,38 @@ BedFrame.build(Cloud, {
             ]
         },
         {
-	        property: 'Events',
-	        children: [
-		        { method: 'create', verb: 'POST' },
-		        { method: 'show' },
-		        { method: 'showOccurrences', restMethod: 'show/occurrences' },
-		        { method: 'query', executor: dataOptionalExecutor },
-		        { method: 'queryOccurrences', restMethod: 'query/occurrences', executor: dataOptionalExecutor },
-		        { method: 'search', executor: dataOptionalExecutor},
-		        { method: 'searchOccurrences', restMethod: 'search/occurrences', executor: dataOptionalExecutor },
-		        { method: 'update', verb: 'PUT' },
-		        { method: 'remove', restMethod: 'delete', verb: 'DELETE' }
-	        ]
+            property: 'Events',
+            children: [
+                { method: 'create', verb: 'POST' },
+                { method: 'show' },
+                { method: 'showOccurrences', restMethod: 'show/occurrences' },
+                { method: 'query', executor: dataOptionalExecutor },
+                { method: 'queryOccurrences', restMethod: 'query/occurrences', executor: dataOptionalExecutor },
+                { method: 'search', executor: dataOptionalExecutor},
+                { method: 'searchOccurrences', restMethod: 'search/occurrences', executor: dataOptionalExecutor },
+                { method: 'update', verb: 'PUT' },
+                { method: 'remove', restMethod: 'delete', verb: 'DELETE' }
+            ]
         },
         {
-	        property: 'Files',
-	        children: [
-		        { method: 'create', verb: 'POST' },
-		        { method: 'query', executor: dataOptionalExecutor },
-		        { method: 'show' },
-		        { method: 'update', verb: 'PUT' },
-		        { method: 'remove', restMethod: 'delete', verb: 'DELETE' }
-	        ]
+            property: 'Files',
+            children: [
+                { method: 'create', verb: 'POST' },
+                { method: 'query', executor: dataOptionalExecutor },
+                { method: 'show' },
+                { method: 'update', verb: 'PUT' },
+                { method: 'remove', restMethod: 'delete', verb: 'DELETE' }
+            ]
         },
         {
-	        property: "Friends",
-	        children: [
-		        { method: 'add', verb: 'POST' },
-		        { method: 'requests', executor: dataOptionalExecutor },
-		        { method: 'approve', verb: 'PUT'},
-		        { method: 'remove', verb: 'DELETE'},
-		        { method: 'search' }
-	        ]
+            property: "Friends",
+            children: [
+                { method: 'add', verb: 'POST' },
+                { method: 'requests', executor: dataOptionalExecutor },
+                { method: 'approve', verb: 'PUT'},
+                { method: 'remove', verb: 'DELETE'},
+                { method: 'search' }
+            ]
         },
         {
             property: 'KeyValues',
@@ -251,18 +251,18 @@ BedFrame.build(Cloud, {
             ]
         },
         {
-	        property: 'Messages',
-	        children: [
-		        { method: 'create', verb: 'POST' },
-		        { method: 'reply', verb: 'POST' },
-		        { method: 'show' },
-		        { method: 'showInbox', restMethod: 'show/inbox', executor: dataOptionalExecutor },
-		        { method: 'showSent', restMethod: 'show/sent', executor: dataOptionalExecutor },
-		        { method: 'showThreads', restMethod: 'show/threads', executor: dataOptionalExecutor },
-		        { method: 'showThread', restMethod: 'show/thread' },
-		        { method: 'remove', restMethod: 'delete', verb: 'DELETE' },
-		        { method: 'removeThread', restMethod: 'delete/thread', verb: 'DELETE' }
-	        ]
+            property: 'Messages',
+            children: [
+                { method: 'create', verb: 'POST' },
+                { method: 'reply', verb: 'POST' },
+                { method: 'show' },
+                { method: 'showInbox', restMethod: 'show/inbox', executor: dataOptionalExecutor },
+                { method: 'showSent', restMethod: 'show/sent', executor: dataOptionalExecutor },
+                { method: 'showThreads', restMethod: 'show/threads', executor: dataOptionalExecutor },
+                { method: 'showThread', restMethod: 'show/thread' },
+                { method: 'remove', restMethod: 'delete', verb: 'DELETE' },
+                { method: 'removeThread', restMethod: 'delete/thread', verb: 'DELETE' }
+            ]
         },
         {
             property: 'Photos',
@@ -316,7 +316,10 @@ BedFrame.build(Cloud, {
             children: [
                 { method: 'subscribe' },
                 { method: 'unsubscribe', verb: 'DELETE' },
-                { method: 'notify' }
+                { method: 'notify' },
+                { method: 'subscribeToken', restMethod: 'subscribe_token', verb: 'POST' },
+                { method: 'unsubscribeToken', restMethod: 'unsubscribe_token', verb: 'DELETE' },
+                { method: 'notifyTokens', restMethod: 'notify_tokens', verb: 'POST' }
             ]
         },
         {
@@ -380,9 +383,9 @@ BedFrame.build(Cloud, {
                     }
                 },
                 { method: 'requestResetPassword', restMethod: 'request_reset_password' },
-	            { method: 'secureCreate', executor: dataOptionalSecureAuthExecutor },
-	       	    { method: 'secureLogin', executor: dataOptionalSecureAuthExecutor },
-	            { method: 'secureStatus', executor: checkStatus }
+                { method: 'secureCreate', executor: dataOptionalSecureAuthExecutor },
+                { method: 'secureLogin', executor: dataOptionalSecureAuthExecutor },
+                { method: 'secureStatus', executor: checkStatus }
             ]
         }
     ]

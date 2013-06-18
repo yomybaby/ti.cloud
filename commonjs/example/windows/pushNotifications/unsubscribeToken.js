@@ -1,4 +1,4 @@
-windowFunctions['Subscribe'] = function (evt) {
+windowFunctions['Unsubscribe Token'] = function (evt) {
     var win = createWindow();
     var offset = addBackButton(win);
     var content = Ti.UI.createScrollView({
@@ -20,7 +20,7 @@ windowFunctions['Subscribe'] = function (evt) {
     }
 
     var channel = Ti.UI.createTextField({
-        hintText: 'Channel',
+        hintText: 'Channel (leave blank for all)',
         top: 10 + u, left: 10 + u, right: 10 + u,
         height: 40 + u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
@@ -29,20 +29,8 @@ windowFunctions['Subscribe'] = function (evt) {
     });
     content.add(channel);
 
-    if ( Ti.Platform.name === 'android' ) {
-        var android_type = Ti.UI.createTextField({
-            hintText: 'android type',
-            top: 10 + u, left: 10 + u, right: 10 + u,
-            height: 40 + u,
-            borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
-            autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
-            autocorrect: false
-        });
-        content.add(android_type);
-    }
-
     var button = Ti.UI.createButton({
-        title: 'Subscribe',
+        title: 'Unsubscribe',
         top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
         height: 40 + u
     });
@@ -52,29 +40,21 @@ windowFunctions['Subscribe'] = function (evt) {
 
     function submitForm() {
         for (var i = 0; i < fields.length; i++) {
-            if (!fields[i].value.length) {
-                fields[i].focus();
-                return;
-            }
             fields[i].blur();
         }
         button.hide();
 
-        var type = Ti.Platform.name;
-        if ( Ti.Platform.name === 'android' ) {
-            type = android_type.value;
-        } else if ( Ti.Platform.name === 'iPhone OS' ) {
-            type = 'ios';
-        }
+        var data = {
+            device_token: pushDeviceToken
+        };
 
-        Cloud.PushNotifications.subscribe({
-            channel: channel.value,
-            device_token: pushDeviceToken,
-            type: type
-        }, function (e) {
+        if (channel.value && channel.value.length) {
+            data.channel = channel.value;
+        }
+        Cloud.PushNotifications.unsubscribeToken(data, function (e) {
             if (e.success) {
                 channel.value = '';
-                alert('Subscribed!');
+                alert('Unsubscribed!');
             }
             else {
                 error(e);

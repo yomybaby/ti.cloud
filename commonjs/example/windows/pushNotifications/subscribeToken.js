@@ -1,4 +1,4 @@
-windowFunctions['Subscribe'] = function (evt) {
+windowFunctions['Subscribe Token'] = function (evt) {
     var win = createWindow();
     var offset = addBackButton(win);
     var content = Ti.UI.createScrollView({
@@ -67,14 +67,14 @@ windowFunctions['Subscribe'] = function (evt) {
             type = 'ios';
         }
 
-        Cloud.PushNotifications.subscribe({
+        Cloud.PushNotifications.subscribeToken({
             channel: channel.value,
             device_token: pushDeviceToken,
             type: type
         }, function (e) {
             if (e.success) {
                 channel.value = '';
-                alert('Subscribed!');
+                alert('Subscribed! ' + pushDeviceToken);
             }
             else {
                 error(e);

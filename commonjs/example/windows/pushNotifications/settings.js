@@ -86,7 +86,7 @@ windowFunctions['Settings for This Device'] = function (evt) {
             focusAppOnPush.title = androidPushModule.focusAppOnPush ? 'Push Focuses App' : 'Push Doesn\'t Focus App';
         });
         content.add(focusAppOnPush);
-        
+
         /*
          Trigger callbacks together or one by one when multiple push notifications come.
          */
@@ -99,6 +99,9 @@ windowFunctions['Settings for This Device'] = function (evt) {
             singleCallback.title = androidPushModule.singleCallback ? 'Callbacks trigger one by one' : 'Callbacks trigger together';
         });
         content.add(singleCallback);
+
+        
+
     }
 
     win.open();
