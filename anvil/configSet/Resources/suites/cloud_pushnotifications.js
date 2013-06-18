@@ -101,7 +101,7 @@ module.exports = new function () {
 	this.testNotifyTokens = function (testRun) {
 		var data = {
 			channel:'test',
-			device_token: Ti.Platform.name === 'iPhone OS' ? 'f7702d77b34ed94869f664e7a297ccc173bec93a2b815css6asd28461a0358db' : 'not-a-real-token',
+			device_token: Ti.Platform.name === 'iPhone OS' ? 'not-a-real-apple-token' : 'not-a-real-android-token',
 			type: Ti.Platform.name === 'iPhone OS' ? 'ios' : Ti.Platform.name
 		};
 
