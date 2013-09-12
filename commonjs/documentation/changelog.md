@@ -1,5 +1,7 @@
 # Change Log
 <pre>
+v2.3.8  Added 3 new apis on push_schedules(create, query, delete) [CLOUDSRV-2785]
+
 v2.3.7  Added 3 new apis on push_notificiation(subsribe_token, unsubsribe_token, notify_tokens) [CLOUDSRV-2211][CLOUDSRV-2447]
 
 v2.3.6  Removed the "useSecure" property. The URLs passed to "acs-base-url" and "acs-authbase-url" will now control using http or https [TIMOB-14120]
