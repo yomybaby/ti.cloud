@@ -11,6 +11,22 @@
 var Cloud = require('ti.cloud');
 Cloud.debug = true;
 
+// Find out if this is iOS 7 or greater
+function isIOS7Plus() {
+    if (Titanium.Platform.name == 'iPhone OS') {
+        var version = Titanium.Platform.version.split(".");
+        var major = parseInt(version[0],10);
+        // can only test this support on a 3.2+ device
+        if (major >= 7) {
+            return true;
+        }
+    }
+    return false;
+
+}
+var IOS7 = isIOS7Plus();
+var top = IOS7 ? 20 : 0;
+
 // Define our window store.
 var windowFunctions = {};
 function handleOpenWindow(evt) {
@@ -36,14 +52,14 @@ function addBackButton(win) {
         title: 'Back',
         color: '#fff', backgroundColor: '#000',
         style: 0,
-        top: 0, left: 0, right: 0,
+        top: top, left: 0, right: 0,
         height: 40 + u
     });
     back.addEventListener('click', function (evt) {
         win.close();
     });
     win.add(back);
-    return 40;
+    return 40 + top;
 }
 function createRows(rows) {
     for (var i = 0, l = rows.length; i < l; i++) {
@@ -126,6 +142,7 @@ var win = Ti.UI.createWindow({
     exitOnClose: true
 });
 var table = Ti.UI.createTableView({
+    top: top,
     backgroundColor: '#fff',
     data: createRows([
         'Users',
