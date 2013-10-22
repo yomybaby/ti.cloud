@@ -31,7 +31,7 @@ windowFunctions['Create Push Schedule'] = function (evt) {
     content.add(start_time);
 
     var recurrence = Ti.UI.createTextField({
-        hintText: '{"interval":10,"end_time":"YYYY-MM-DDTHH:MM"}',
+        hintText: '{"interval":"daily","end_time":"YYYY-MM-DDTHH:MM"}',
         top: 10 + u, left: 10 + u, right: 10 + u,
         height: 40 + u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,

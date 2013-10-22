@@ -63,7 +63,7 @@ module.exports = new function () {
       name: 'push schedule',
       start_time: '2015-09-05T10:11',
       recurrence: {
-        interval: 10,
+        interval: "daily",
         end_time: '2015-09-10T10:11'
       },
       push_notification: {

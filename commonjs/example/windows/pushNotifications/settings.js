@@ -99,28 +99,6 @@ windowFunctions['Settings for This Device'] = function (evt) {
             singleCallback.title = androidPushModule.singleCallback ? 'Callbacks trigger one by one' : 'Callbacks trigger together';
         });
         content.add(singleCallback);
-
-        /*
-         Change android push type either mqtt or gcm.
-         */
-         var changePushType = Ti.UI.createButton({
-             top: 10, width: 320, height: 50,
-             title: androidPushModule.pushType
-         });
-         changePushType.addEventListener('click', function () {
-            if ( androidPushModule.pushType == 'mqtt' ) {
-               androidPushModule.pushType = 'gcm';
-               changePushType.title = 'gcm';
-            } else {
-               androidPushModule.pushType = 'mqtt';
-               changePushType.title = 'mqtt';
-            }
-            if (pushNotificationsEnabled) {
-                disablePushNotifications();
-                enablePushNotifications();
-            }
-         });
-         content.add(changePushType);
     }
     
     /*
