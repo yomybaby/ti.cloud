@@ -122,8 +122,10 @@ function deviceTokenSuccess(e) {
     pushToken = pushDeviceToken; 
     alert('Device token is retrieved: ' + pushDeviceToken);
     Ti.API.info('Device Token: ' + pushDeviceToken);
-    androidPushModule.enabled = true;
-    androidPushModule.addEventListener('callback', receivePush);
+    if (androidPushModule) {
+    	androidPushModule.enabled = true;
+    	androidPushModule.addEventListener('callback', receivePush);
+    }
 }
 
 function deviceTokenError(e) {
