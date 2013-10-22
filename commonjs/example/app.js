@@ -9,6 +9,7 @@
  * That's it! Enjoy.
  */
 var Cloud = require('ti.cloud');
+var pushToken = '';
 Cloud.debug = true;
 
 // Find out if this is iOS 7 or greater
@@ -66,7 +67,9 @@ function createRows(rows) {
         rows[i] = Ti.UI.createTableViewRow({
             backgroundColor: '#fff',
             title: rows[i],
-            hasChild: true
+            hasChild: true,
+            height: 30 + u,
+            font: { fontSize: 20 + u }
         });
     }
     return rows;
@@ -128,6 +131,7 @@ Ti.include(
     'windows/keyValues/table.js',
 	'windows/messages/table.js',
     'windows/pushNotifications/table.js',
+    'windows/pushSchedules/table.js',
     'windows/reviews/table.js',
     'windows/social/table.js',
     'windows/status/table.js',
@@ -162,6 +166,7 @@ var table = Ti.UI.createTableView({
         'Places',
         'Posts',
         'Push Notifications',
+        'Push Schedules',
         'Reviews',
         'Social',
         'Status'
