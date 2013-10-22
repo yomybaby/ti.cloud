@@ -323,6 +323,15 @@ BedFrame.build(Cloud, {
             ]
         },
         {
+            property: 'PushSchedules',
+            restNamespace: 'push_schedules',
+            children: [
+                { method: 'create', restMethod: 'create', verb: 'POST' },
+                { method: 'query', restMethod: 'query', executor: dataOptionalExecutor },
+                { method: 'remove', restMethod: 'delete', verb: 'DELETE' }
+            ]
+        },
+        {
             property: 'Reviews',
             children: [
                 { method: 'create', verb: 'POST' },
