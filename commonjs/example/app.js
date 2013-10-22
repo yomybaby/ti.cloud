@@ -9,6 +9,7 @@
  * That's it! Enjoy.
  */
 var Cloud = require('ti.cloud');
+var pushToken = '';
 Cloud.debug = true;
 
 // Define our window store.
