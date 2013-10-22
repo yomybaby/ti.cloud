@@ -1,6 +1,8 @@
 # Change Log
 <pre>
-v2.3.8  Added 3 new apis on push_schedules(create, query, delete) [CLOUDSRV-2785]
+v2.3.8  Updated the example app to use the Facebook module since it was pulled out of the SDK.[TIMODOPEN-276]
+        Updated the example app lauout to work with iOS 7
+        Added 3 new apis on push_schedules(create, query, delete) [CLOUDSRV-2785]
 
 v2.3.7  Added 3 new apis on push_notificiation(subsribe_token, unsubsribe_token, notify_tokens) [CLOUDSRV-2211][CLOUDSRV-2447]
 
