@@ -100,7 +100,22 @@ windowFunctions['Settings for This Device'] = function (evt) {
         });
         content.add(singleCallback);
 
-        
+         /*
+          If push is enabled, copy the token to clipboard.
+          */
+         var copyPushToken = Ti.UI.createButton({
+             top: 10, width: 320, height: 50,
+             title: 'Copy Push Token to Clipboard'
+         });
+         copyPushToken.addEventListener('click', function () {
+            if ( pushNotificationsEnabled ) {
+                alert('Token ' + pushToken + ' copied to clipboard.');
+                Ti.UI.Clipboard.setText(pushToken);
+            } else {
+                alert('Please enable the push notification.');
+            }
+         });
+         content.add(copyPushToken);
 
     }
 
