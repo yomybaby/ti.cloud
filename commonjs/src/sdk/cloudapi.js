@@ -392,6 +392,7 @@ BedFrame.build(Cloud, {
                     }
                 },
                 { method: 'requestResetPassword', restMethod: 'request_reset_password' },
+                { method: 'resendConfirmation', restMethod: 'resend_confirmation' },
                 { method: 'secureCreate', executor: dataOptionalSecureAuthExecutor },
                 { method: 'secureLogin', executor: dataOptionalSecureAuthExecutor },
                 { method: 'secureStatus', executor: checkStatus }

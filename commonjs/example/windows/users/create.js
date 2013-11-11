@@ -51,6 +51,14 @@ windowFunctions['Create User'] = function (evt) {
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED
     });
     content.add(lastName);
+    
+    var email = Ti.UI.createTextField({
+        hintText: 'Email',
+        top: 10 + u, left: 10 + u, right: 10 + u,
+        height: 40 + u,
+        borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED
+    });
+    content.add(email);
 
     var button = Ti.UI.createButton({
         title: 'Create',
@@ -81,7 +89,8 @@ windowFunctions['Create User'] = function (evt) {
             password: password.value,
             password_confirmation: confirmPassword.value,
             first_name: firstName.value,
-            last_name: lastName.value
+            last_name: lastName.value,
+            email: email.value
         }, function (e) {
             if (e.success) {
                 var user = e.users[0];
