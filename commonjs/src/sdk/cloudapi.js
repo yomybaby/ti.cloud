@@ -322,7 +322,9 @@ BedFrame.build(Cloud, {
                 { method: 'query', verb: 'GET' },
                 { method: 'subscribeToken', restMethod: 'subscribe_token' },
                 { method: 'unsubscribeToken', restMethod: 'unsubscribe_token', verb: 'DELETE' },
-                { method: 'notifyTokens', restMethod: 'notify_tokens' }
+                { method: 'notifyTokens', restMethod: 'notify_tokens' },
+                { method: 'queryChannels', restMethod: 'channels/query', verb: 'GET', executor: dataOptionalExecutor },
+                { method: 'showChannels', restMethod: 'channels/show', verb: 'GET' }
             ]
         },
         {
