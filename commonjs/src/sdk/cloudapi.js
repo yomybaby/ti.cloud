@@ -357,8 +357,11 @@ BedFrame.build(Cloud, {
             property: 'Statuses',
             children: [
                 { method: 'create', verb: 'POST' },
+                { method: 'update', verb: 'PUT' },
+                { method: 'show' },
                 { method: 'search' },
-                { method: 'query', executor: dataOptionalExecutor }
+                { method: 'query', executor: dataOptionalExecutor },
+                { method: 'remove', restMethod: 'delete', verb: 'DELETE' },
             ]
         },
         {
