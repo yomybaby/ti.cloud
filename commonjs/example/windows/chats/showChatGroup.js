@@ -54,6 +54,7 @@ windowFunctions['Show Chat Group'] = function (evt) {
         if (ids[chat.id])
             return;
         ids[chat.id] = true;
+        var chat_id = chat.id;
 
         // Update our query so we only get new messages.
         pingData.where = { updated_at: { '$gt': chat.updated_at } };
@@ -83,8 +84,30 @@ windowFunctions['Show Chat Group'] = function (evt) {
             height: 'auto',
             top: 20 + u, right: 10 + u, left: 10 + u, bottom: 10 + u
         }));
+        var removeMessage = Ti.UI.createButton({
+	        title: 'Delete',
+	        color: '#000', backgroundColor: '#f00',
+	        style: 0,
+	        top: 20 + u, right: 10 + u, bottom: 10 + u,
+	        height: 'auto', width: 'auto',
+	        chat_id: chat.id
+	    });
+	    removeMessage.addEventListener('click', function (evt) {
+	    	Cloud.Chats.remove({
+	    		chat_id: chat_id
+	    	}, function(e) {
+	    		if (e.success) {
+		            alert('Message successfully removed!');
+		            tableView.deleteRow(row);
+		        }
+		        else {
+		            error(e);
+		        }
+	    	});
+	    });
+	    container.add(removeMessage);
         row.add(container);
-        if (tableView.data.length == 0) {
+        if (tableView.data.length == 0 || tableView.data[0].rows.length == 0) {
             tableView.appendRow(row);
         }
         else {

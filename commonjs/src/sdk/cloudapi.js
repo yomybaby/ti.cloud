@@ -170,6 +170,8 @@ BedFrame.build(Cloud, {
             children: [
                 { method: 'create', verb: 'POST' },
                 { method: 'query' },
+                { method: 'remove', restMethod: 'delete', verb: 'DELETE'},
+                { method: 'queryChatGroups', restMethod: 'query_chat_groups', executor: dataOptionalExecutor },
                 { method: 'getChatGroups', restMethod: 'get_chat_groups', executor: dataOptionalExecutor }
             ]
         },
