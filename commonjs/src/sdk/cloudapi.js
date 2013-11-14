@@ -253,6 +253,13 @@ BedFrame.build(Cloud, {
             ]
         },
         {
+            property: 'Likes',
+            children: [
+                { method: 'create', verb: 'POST' },
+                { method: 'remove', restMethod: 'delete', verb: 'DELETE' }
+            ]
+        },
+        {
             property: 'Messages',
             children: [
                 { method: 'create', verb: 'POST' },
