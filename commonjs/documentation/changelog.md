@@ -7,6 +7,7 @@ v2.3.8  Updated the example app to use the Facebook module since it was pulled o
         Added new apis on statuses(update, show, delete) [TIMODOPEN-296]
         Added Users method(resendConfirmation) [TIMODOPEN-293]
         Added Chats methods(remove, queryChatGroups) [TIMODOPEN-291]
+        Added PushNotifications method (query) [TIMODOPEN-292]
 
 v2.3.7  Added 3 new apis on push_notificiation(subsribe_token, unsubsribe_token, notify_tokens) [CLOUDSRV-2211][CLOUDSRV-2447]
 

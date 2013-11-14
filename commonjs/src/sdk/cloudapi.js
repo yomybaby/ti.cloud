@@ -319,9 +319,10 @@ BedFrame.build(Cloud, {
                 { method: 'subscribe' },
                 { method: 'unsubscribe', verb: 'DELETE' },
                 { method: 'notify' },
-                { method: 'subscribeToken', restMethod: 'subscribe_token', verb: 'POST' },
+                { method: 'query', verb: 'GET' },
+                { method: 'subscribeToken', restMethod: 'subscribe_token' },
                 { method: 'unsubscribeToken', restMethod: 'unsubscribe_token', verb: 'DELETE' },
-                { method: 'notifyTokens', restMethod: 'notify_tokens', verb: 'POST' }
+                { method: 'notifyTokens', restMethod: 'notify_tokens' }
             ]
         },
         {

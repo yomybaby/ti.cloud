@@ -1,4 +1,5 @@
 Ti.include(
+    'query.js',
     'notify.js',
     'settings.js',
     'subscribe.js',
@@ -14,7 +15,8 @@ windowFunctions['Push Notifications'] = function () {
 
     var rows = [
         'Notify',
-        'Notify Tokens'
+        'Notify Tokens',
+        'Query Subscriptions'
     ];
     if (Ti.Platform.name === 'iPhone OS' || Ti.Platform.name === 'android') {
         rows.push('Settings for This Device');
@@ -123,8 +125,8 @@ function deviceTokenSuccess(e) {
     alert('Device token is retrieved: ' + pushDeviceToken);
     Ti.API.info('Device Token: ' + pushDeviceToken);
     if (androidPushModule) {
-    	androidPushModule.enabled = true;
-    	androidPushModule.addEventListener('callback', receivePush);
+        androidPushModule.enabled = true;
+        androidPushModule.addEventListener('callback', receivePush);
     }
 }
 
