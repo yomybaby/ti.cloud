@@ -1,66 +1,30 @@
-windowFunctions['Show Status for User'] = function (evt) {
+windowFunctions['Show Status'] = function (evt) {
     var win = createWindow();
     var offset = addBackButton(win);
-
-    var table = Ti.UI.createTableView({
-        backgroundColor: '#fff',
+    var content = Ti.UI.createScrollView({
         top: offset + u, bottom: 0,
-        data: [
-            { title: 'Loading, please wait...' }
-        ]
+        contentHeight: 'auto',
+        layout: 'vertical'
     });
-    table.addEventListener('click', function (evt) {
-        if (evt.row.id) {
-            Cloud.Statuses.search({
-                user_id: evt.row.id
-            }, function (e) {
-                if (e.success) {
-                    if (e.statuses.length == 0) {
-                        table.setData([
-                            { title: 'No Statuses!' }
-                        ]);
-                    }
-                    else {
-                        var data = [];
-                        for (var i = 0, l = e.statuses.length; i < l; i++) {
-                            data.push(Ti.UI.createTableViewRow({
-                                title: e.statuses[i].message
-                            }));
-                        }
-                        table.setData(data);
-                    }
-                }
-                else {
-                    error(e);
-                }
-            })
+    win.add(content);
+
+    var status = Ti.UI.createLabel({
+        text: 'Loading, please wait...', textAlign: 'left',
+        height: 30 + u, left: 20 + u, right: 20 + u
+    });
+    content.add(status);
+    
+    Cloud.Statuses.show({
+        status_id: evt.id
+    }, function (e) {
+        content.remove(status);
+        if (e.success) {
+            enumerateProperties(content, e.statuses, 20);
+        }
+        else {
+            error(e);
         }
     });
-    win.add(table);
 
-    win.addEventListener('open', function () {
-        Cloud.Users.query(function (e) {
-            if (e.success) {
-                if (e.users.length == 0) {
-                    table.setData([
-                        { title: 'No Users!' }
-                    ]);
-                }
-                else {
-                    var data = [];
-                    for (var i = 0, l = e.users.length; i < l; i++) {
-                        data.push(Ti.UI.createTableViewRow({
-                            title: e.users[i].first_name + ' ' + e.users[i].last_name,
-                            id: e.users[i].id
-                        }));
-                    }
-                    table.setData(data);
-                }
-            }
-            else {
-                error(e);
-            }
-        });
-    });
     win.open();
 };
