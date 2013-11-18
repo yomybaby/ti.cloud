@@ -373,7 +373,7 @@ BedFrame.build(Cloud, {
                 { method: 'show' },
                 { method: 'search' },
                 { method: 'query', executor: dataOptionalExecutor },
-                { method: 'remove', restMethod: 'delete', verb: 'DELETE' },
+                { method: 'remove', restMethod: 'delete', verb: 'DELETE' }
             ]
         },
         {

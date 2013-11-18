@@ -1,5 +1,7 @@
 # Change Log
 <pre>
+v3.2.0  Bumping version to match the TiSDK version this module is being shipped with
+
 v2.3.8  Updated the example app to use the Facebook module since it was pulled out of the SDK.[TIMODOPEN-276]
         Updated the example app lauout to work with iOS 7
         Added 3 new apis on push_schedules(create, query, delete) [CLOUDSRV-2785]
