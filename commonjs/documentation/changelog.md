@@ -1,5 +1,18 @@
 # Change Log
 <pre>
+v3.2.0  Bumping version to match the TiSDK version this module is being shipped with
+
+v2.3.8  Updated the example app to use the Facebook module since it was pulled out of the SDK.[TIMODOPEN-276]
+        Updated the example app lauout to work with iOS 7
+        Added 3 new apis on push_schedules(create, query, delete) [CLOUDSRV-2785]
+        Fixed example app issue entering ip address [TIMODOPEN-294]
+        Added new apis on statuses(update, show, delete) [TIMODOPEN-296]
+        Added Users method(resendConfirmation) [TIMODOPEN-293]
+        Added Chats methods(remove, queryChatGroups) [TIMODOPEN-291]
+        Added PushNotifications method (query) [TIMODOPEN-292]
+        Added PushNotifications methods (queryChannels, showChannels) [TIMODOPEN-270]
+        Added likes apis(create, remove) [TIMODOPEN-289]
+
 v2.3.7  Added 3 new apis on push_notificiation(subsribe_token, unsubsribe_token, notify_tokens) [CLOUDSRV-2211][CLOUDSRV-2447]
 
 v2.3.6  Removed the "useSecure" property. The URLs passed to "acs-base-url" and "acs-authbase-url" will now control using http or https [TIMOB-14120]

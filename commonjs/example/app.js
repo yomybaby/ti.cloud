@@ -12,6 +12,22 @@ var Cloud = require('ti.cloud');
 var pushToken = '';
 Cloud.debug = true;
 
+// Find out if this is iOS 7 or greater
+function isIOS7Plus() {
+    if (Titanium.Platform.name == 'iPhone OS') {
+        var version = Titanium.Platform.version.split(".");
+        var major = parseInt(version[0],10);
+        // can only test this support on a 3.2+ device
+        if (major >= 7) {
+            return true;
+        }
+    }
+    return false;
+
+}
+var IOS7 = isIOS7Plus();
+var top = IOS7 ? 20 : 0;
+
 // Define our window store.
 var windowFunctions = {};
 function handleOpenWindow(evt) {
@@ -37,21 +53,23 @@ function addBackButton(win) {
         title: 'Back',
         color: '#fff', backgroundColor: '#000',
         style: 0,
-        top: 0, left: 0, right: 0,
+        top: top, left: 0, right: 0,
         height: 40 + u
     });
     back.addEventListener('click', function (evt) {
         win.close();
     });
     win.add(back);
-    return 40;
+    return 40 + top;
 }
 function createRows(rows) {
     for (var i = 0, l = rows.length; i < l; i++) {
         rows[i] = Ti.UI.createTableViewRow({
             backgroundColor: '#fff',
             title: rows[i],
-            hasChild: true
+            hasChild: true,
+            height: 30 + u,
+            font: { fontSize: 20 + u }
         });
     }
     return rows;
@@ -103,16 +121,18 @@ Ti.include(
     'windows/clients/table.js',
     'windows/customObjects/table.js',
     'windows/emails/table.js',
-	'windows/events/table.js',
-	'windows/files/table.js',
-	'windows/friends/table.js',
+    'windows/events/table.js',
+    'windows/files/table.js',
+    'windows/friends/table.js',
     'windows/photoCollections/table.js',
     'windows/photos/table.js',
     'windows/places/table.js',
     'windows/posts/table.js',
     'windows/keyValues/table.js',
-	'windows/messages/table.js',
+    'windows/likes/table.js',
+    'windows/messages/table.js',
     'windows/pushNotifications/table.js',
+    'windows/pushSchedules/table.js',
     'windows/reviews/table.js',
     'windows/social/table.js',
     'windows/status/table.js',
@@ -127,6 +147,7 @@ var win = Ti.UI.createWindow({
     exitOnClose: true
 });
 var table = Ti.UI.createTableView({
+    top: top,
     backgroundColor: '#fff',
     data: createRows([
         'Users',
@@ -136,16 +157,18 @@ var table = Ti.UI.createTableView({
         'Clients',
         'Custom Objects',
         'Emails',
-	    'Events',
-	    'Files',
-	    'Friends',
+        'Events',
+        'Files',
+        'Friends',
         'Key Values',
-	    'Messages',
+        'Likes',
+        'Messages',
         'Photo Collections',
         'Photos',
         'Places',
         'Posts',
         'Push Notifications',
+        'Push Schedules',
         'Reviews',
         'Social',
         'Status'

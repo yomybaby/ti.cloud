@@ -51,6 +51,7 @@ module.exports = new function () {
 			'logout',
 			'remove',
 			'requestResetPassword',
+			'resendConfirmation',
 			'secureCreate',
 			'secureLogin',
 			'secureStatus'

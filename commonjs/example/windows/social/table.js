@@ -1,3 +1,6 @@
+// Be sure to include the "facebook" module when running this app. It is now separate from the sdk.
+var Facebook = Ti.Facebook ? Ti.Facebook : require('facebook');
+
 Ti.include(
     'externalLink.js',
     'externalLogin.js',
@@ -11,10 +14,10 @@ windowFunctions['Social'] = function (evt) {
     var rows = [
         'Search Facebook Friends'
     ];
-    if (Ti.Facebook.createLoginButton) {
+    if (Facebook.createLoginButton) {
         var available = true;
         try {
-            Ti.Facebook.createLoginButton();
+            Facebook.createLoginButton();
         }
         catch (err) {
             available = false;

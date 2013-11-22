@@ -9,8 +9,8 @@ windowFunctions['External Link'] = function (evt) {
     win.add(content);
 
     // TODO: Get your own App ID from Facebook: https://developers.facebook.com/docs/opengraph/tutorial/#create-app
-    Ti.Facebook.appid = '<<YOUR FACEBOOK APPID HERE>>';
-    Ti.Facebook.permissions = ['publish_stream', 'read_stream'];
+    Facebook.appid = '<<YOUR FACEBOOK APPID HERE>>';
+    Facebook.permissions = ['publish_stream', 'read_stream'];
 
     var label = Ti.UI.createLabel({
         textAlign: 'center',
@@ -20,11 +20,11 @@ windowFunctions['External Link'] = function (evt) {
     content.add(label);
 
     function updateLoginStatus() {
-        if (Ti.Facebook.loggedIn) {
+        if (Facebook.loggedIn) {
             label.text = 'Linking with logged in user, please wait...';
             Cloud.SocialIntegrations.externalAccountLink({
                 type: 'facebook',
-                token: Ti.Facebook.accessToken
+                token: Facebook.accessToken
             }, function (e) {
                 if (e.success) {
                     alert('Linked!');
@@ -39,21 +39,21 @@ windowFunctions['External Link'] = function (evt) {
         }
     }
 
-    content.add(Ti.Facebook.createLoginButton({
+    content.add(Facebook.createLoginButton({
         top: 10 + u,
         style: Ti.Platform.name == 'iPhone OS'
-            ? Ti.Facebook.BUTTON_STYLE_WIDE
+            ? Facebook.BUTTON_STYLE_WIDE
             : 'wide'
     }));
 
     win.addEventListener('open', function (evt) {
-   		Ti.Facebook.addEventListener('login', updateLoginStatus);
-    	Ti.Facebook.addEventListener('logout', updateLoginStatus);    
+   		Facebook.addEventListener('login', updateLoginStatus);
+    	Facebook.addEventListener('logout', updateLoginStatus);    
         updateLoginStatus();
     });
     win.addEventListener('close', function (evt) {
-   		Ti.Facebook.removeEventListener('login', updateLoginStatus);
-    	Ti.Facebook.removeEventListener('logout', updateLoginStatus);       	
+   		Facebook.removeEventListener('login', updateLoginStatus);
+    	Facebook.removeEventListener('logout', updateLoginStatus);       	
     });
 
     win.open();
