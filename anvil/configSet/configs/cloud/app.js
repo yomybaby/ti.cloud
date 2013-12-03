@@ -16,6 +16,7 @@ var testSuites = [
     { name: "cloud_statuses" },
     { name: "cloud_photos" },
     { name: "cloud_pushnotifications" },
+    { name: "cloud_pushschedules" },
     { name: "cloud_keyvalues" },
     { name: "cloud_posts" },
     { name: "cloud_reviews" },

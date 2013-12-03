@@ -1,22 +1,20 @@
+// Push Schedule is only available to admin user or web admin.
 Ti.include(
-    'create.js',
-    'update.js',
-    'query.js',
-    'remove.js',
-    'search.js',
-    'show.js'
+  'create.js',
+  'query.js',
+  'remove.js'
 );
 
-windowFunctions['Status'] = function (evt) {
+windowFunctions['Push Schedules'] = function (evt) {
     var win = createWindow();
     var offset = addBackButton(win);
     var table = Ti.UI.createTableView({
         backgroundColor: '#fff',
         top: offset + u,
         data: createRows([
-            'Create Status',
-            'Query Status',
-            'Search Statuses by User'
+          'Create Push Schedule',
+          'Query Push Schedules',
+          'Remove Push Schedules'
         ])
     });
     table.addEventListener('click', handleOpenWindow);

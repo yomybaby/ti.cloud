@@ -170,6 +170,8 @@ BedFrame.build(Cloud, {
             children: [
                 { method: 'create', verb: 'POST' },
                 { method: 'query' },
+                { method: 'remove', restMethod: 'delete', verb: 'DELETE'},
+                { method: 'queryChatGroups', restMethod: 'query_chat_groups', executor: dataOptionalExecutor },
                 { method: 'getChatGroups', restMethod: 'get_chat_groups', executor: dataOptionalExecutor }
             ]
         },
@@ -251,6 +253,13 @@ BedFrame.build(Cloud, {
             ]
         },
         {
+            property: 'Likes',
+            children: [
+                { method: 'create', verb: 'POST' },
+                { method: 'remove', restMethod: 'delete', verb: 'DELETE' }
+            ]
+        },
+        {
             property: 'Messages',
             children: [
                 { method: 'create', verb: 'POST' },
@@ -317,9 +326,21 @@ BedFrame.build(Cloud, {
                 { method: 'subscribe' },
                 { method: 'unsubscribe', verb: 'DELETE' },
                 { method: 'notify' },
-                { method: 'subscribeToken', restMethod: 'subscribe_token', verb: 'POST' },
+                { method: 'query', verb: 'GET' },
+                { method: 'subscribeToken', restMethod: 'subscribe_token' },
                 { method: 'unsubscribeToken', restMethod: 'unsubscribe_token', verb: 'DELETE' },
-                { method: 'notifyTokens', restMethod: 'notify_tokens', verb: 'POST' }
+                { method: 'notifyTokens', restMethod: 'notify_tokens' },
+                { method: 'queryChannels', restMethod: 'channels/query', verb: 'GET', executor: dataOptionalExecutor },
+                { method: 'showChannels', restMethod: 'channels/show', verb: 'GET' }
+            ]
+        },
+        {
+            property: 'PushSchedules',
+            restNamespace: 'push_schedules',
+            children: [
+                { method: 'create', restMethod: 'create', verb: 'POST' },
+                { method: 'query', restMethod: 'query', executor: dataOptionalExecutor },
+                { method: 'remove', restMethod: 'delete', verb: 'DELETE' }
             ]
         },
         {
@@ -348,8 +369,11 @@ BedFrame.build(Cloud, {
             property: 'Statuses',
             children: [
                 { method: 'create', verb: 'POST' },
+                { method: 'update', verb: 'PUT' },
+                { method: 'show' },
                 { method: 'search' },
-                { method: 'query', executor: dataOptionalExecutor }
+                { method: 'query', executor: dataOptionalExecutor },
+                { method: 'remove', restMethod: 'delete', verb: 'DELETE' }
             ]
         },
         {
@@ -383,6 +407,7 @@ BedFrame.build(Cloud, {
                     }
                 },
                 { method: 'requestResetPassword', restMethod: 'request_reset_password' },
+                { method: 'resendConfirmation', restMethod: 'resend_confirmation' },
                 { method: 'secureCreate', executor: dataOptionalSecureAuthExecutor },
                 { method: 'secureLogin', executor: dataOptionalSecureAuthExecutor },
                 { method: 'secureStatus', executor: checkStatus }

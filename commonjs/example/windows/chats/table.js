@@ -1,6 +1,7 @@
 Ti.include(
     'selectUsersForGroup.js',
-    'showChatGroup.js'
+    'showChatGroup.js',
+    'query.js'
 );
 
 windowFunctions['Chats'] = function (evt) {
@@ -15,6 +16,9 @@ windowFunctions['Chats'] = function (evt) {
         if (evt.row.id) {
             handleOpenWindow({ target: 'Show Chat Group', id: evt.row.id });
         }
+        else if (evt.row.title === 'Query Chat Groups') {
+        	handleOpenWindow({ target: 'Query Chat Groups' });
+        } 
         else {
             handleOpenWindow({ target: 'Select Users for Group' });
         }
@@ -28,6 +32,7 @@ windowFunctions['Chats'] = function (evt) {
         Cloud.Chats.getChatGroups(function (e) {
             if (e.success) {
                 var data = [];
+                data.push({ title: 'Query Chat Groups' });
                 data.push({ title: 'Create new group!' });
                 for (var i = 0, l = e.chat_groups.length; i < l; i++) {
                     var group = e.chat_groups[i];
