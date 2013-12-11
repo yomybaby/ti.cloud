@@ -27,7 +27,8 @@ var testSuites = [
 	{ name: "cloud_friends" },
 	{ name: "cloud_messages" },
 	{ name: "cloud_events" },
-	{ name: "cloud_files" }
+	{ name: "cloud_files" },
+    { name: "cloud_geofences" }
 ] ;
 var suites = require('hammer').populateSuites(testSuites);
 
