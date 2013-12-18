@@ -59,10 +59,10 @@ module.exports = new function () {
   };
 
   var geoFenceParams = {
-    "geo_fence": "{\"loc\": {\"coordinates\":[0,0]}, \"payload\": \"created\", \"start_time\": \"2013-12-15T14:24\", \"end_time\": \"2013-12-25T14:24\"}"
+    "geo_fence": "{\"loc\": {\"coordinate\":[0,0], \"radius\":\"1000/200000\"}, \"payload\": \"created\", \"start_time\": \"2014-12-15T14:24\", \"end_time\": \"2014-12-25T14:24\"}"
   },
   updateGeoFenceParams = {
-    "geo_fence": "{\"loc\": {\"coordinates\":[0,0], \"radius\":\"1000/200000\"}, \"payload\": \"updated\"}"
+    "geo_fence": "{\"loc\": {\"coordinate\":[0,0], \"radius\":\"1000/200000\"}, \"payload\": \"updated\"}"
   };
 
   // Register for push notifications

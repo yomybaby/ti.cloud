@@ -5,7 +5,7 @@ Ti.include(
     'remove.js'
 );
 
-windowFunctions['Geo Fences'] = function (evt) {
+windowFunctions['GeoFences'] = function (evt) {
     var win = createWindow();
     var offset = addBackButton(win);
     var table = Ti.UI.createTableView({
