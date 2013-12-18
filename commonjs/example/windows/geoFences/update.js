@@ -17,12 +17,12 @@ windowFunctions['Update GeoFence'] = function (evt) {
     });
     content.add(geo_fence);
 
-    var button = Ti.UI.createButton({
+    var updateButton = Ti.UI.createButton({
         title: 'Update',
         top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
         height: 40 + u
     });
-    content.add(button);
+    content.add(updateButton);
 
     var remove = Ti.UI.createButton({
         title: 'Remove',
@@ -44,11 +44,11 @@ windowFunctions['Update GeoFence'] = function (evt) {
             }
             fields[i].blur();
         }
-        button.hide();
+        updateButton.hide();
 
         var params = {
             id: geo_fence_id,
-            geo_fence: geo_fence
+            geo_fence: geo_fence.value
         };
 
         Cloud.GeoFences.update(params, function (e) {
@@ -57,10 +57,11 @@ windowFunctions['Update GeoFence'] = function (evt) {
             } else {
                 error(e);
             }
-            button.show();
+            updateButton.show();
         });
     }
 
+    updateButton.addEventListener('click', submitForm);
     for (var i = 0; i < fields.length; i++) {
         fields[i].addEventListener('return', submitForm);
     }
