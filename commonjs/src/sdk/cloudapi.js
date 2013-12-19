@@ -243,6 +243,16 @@ BedFrame.build(Cloud, {
             ]
         },
         {
+            property: "GeoFences",
+            restNamespace: 'geo_fences',
+            children: [
+                { method: 'create', verb: 'POST' },
+                { method: 'update', verb: 'PUT'},
+                { method: 'remove', restMethod: 'delete', verb: 'DELETE'},
+                { method: 'query' }
+            ]
+        },
+        {
             property: 'KeyValues',
             children: [
                 { method: 'set', verb: 'PUT' },
