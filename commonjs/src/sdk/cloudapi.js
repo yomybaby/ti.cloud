@@ -340,6 +340,8 @@ BedFrame.build(Cloud, {
                 { method: 'subscribeToken', restMethod: 'subscribe_token' },
                 { method: 'unsubscribeToken', restMethod: 'unsubscribe_token', verb: 'DELETE' },
                 { method: 'notifyTokens', restMethod: 'notify_tokens' },
+                { method: 'resetBadge', restMethod: 'reset_badge', verb: 'PUT' },
+                { method: 'setBadge', restMethod: 'set_badge', verb: 'PUT', executor: dataOptionalExecutor },
                 { method: 'queryChannels', restMethod: 'channels/query', verb: 'GET', executor: dataOptionalExecutor },
                 { method: 'showChannels', restMethod: 'channels/show', verb: 'GET' }
             ]

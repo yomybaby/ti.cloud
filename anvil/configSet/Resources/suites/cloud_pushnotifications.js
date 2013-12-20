@@ -88,6 +88,39 @@ module.exports = new function () {
 		Cloud.PushNotifications.subscribe(data, subscribed);
 	};
 
+	// Set badge
+	this.testSetBadge = function (testRun) {
+		var data = {
+			device_token:"not-a-real-token",
+            badge_number:21
+		};
+
+		var callback = function (e) {
+			// Should be false because push notifications are not configured in the application settings
+			valueOf(testRun, e.success).shouldBeFalse();
+			valueOf(testRun, e.error).shouldBeTrue();
+			finish(testRun);
+		};
+
+		Cloud.PushNotifications.setBadge(data, callback);
+	};
+
+	// Reset badge
+	this.testResetBadge = function (testRun) {
+		var data = {
+			device_token:"not-a-real-token"
+		};
+
+		var callback = function (e) {
+			// Should be false because push notifications are not configured in the application settings
+			valueOf(testRun, e.success).shouldBeFalse();
+			valueOf(testRun, e.error).shouldBeTrue();
+			finish(testRun);
+		};
+
+		Cloud.PushNotifications.resetBadge(data, callback);
+	};
+
 	// Done with the tests -- log out
 	this.testLogoutDrillbitUser = function (testRun) {
 		Cloud.Users.logout(function (e) {
