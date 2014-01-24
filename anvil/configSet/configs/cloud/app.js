@@ -7,7 +7,7 @@
 
 var testSuites = [
     { name: "cloud" },
-	{ name: "cloud_users" },
+    { name: "cloud_users" },
     { name: "cloud_objects" },
     { name: "cloud_chats" },
     { name: "cloud_socialinteractions" },
@@ -24,10 +24,11 @@ var testSuites = [
     { name: "cloud_emails" },
     { name: "cloud_photocollections" },
     { name: "cloud_acls" },
-	{ name: "cloud_friends" },
-	{ name: "cloud_messages" },
-	{ name: "cloud_events" },
-	{ name: "cloud_files" }
+    { name: "cloud_friends" },
+    { name: "cloud_messages" },
+    { name: "cloud_events" },
+    { name: "cloud_files" },
+    { name: "cloud_geofences" }
 ] ;
 var suites = require('hammer').populateSuites(testSuites);
 

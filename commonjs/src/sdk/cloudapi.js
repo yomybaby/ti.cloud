@@ -243,6 +243,16 @@ BedFrame.build(Cloud, {
             ]
         },
         {
+            property: "GeoFences",
+            restNamespace: 'geo_fences',
+            children: [
+                { method: 'create', verb: 'POST' },
+                { method: 'update', verb: 'PUT'},
+                { method: 'remove', restMethod: 'delete', verb: 'DELETE'},
+                { method: 'query' }
+            ]
+        },
+        {
             property: 'KeyValues',
             children: [
                 { method: 'set', verb: 'PUT' },
@@ -330,6 +340,8 @@ BedFrame.build(Cloud, {
                 { method: 'subscribeToken', restMethod: 'subscribe_token' },
                 { method: 'unsubscribeToken', restMethod: 'unsubscribe_token', verb: 'DELETE' },
                 { method: 'notifyTokens', restMethod: 'notify_tokens' },
+                { method: 'resetBadge', restMethod: 'reset_badge', verb: 'PUT' },
+                { method: 'setBadge', restMethod: 'set_badge', verb: 'PUT', executor: dataOptionalExecutor },
                 { method: 'queryChannels', restMethod: 'channels/query', verb: 'GET', executor: dataOptionalExecutor },
                 { method: 'showChannels', restMethod: 'channels/show', verb: 'GET' }
             ]

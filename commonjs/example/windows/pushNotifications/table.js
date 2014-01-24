@@ -8,7 +8,9 @@ Ti.include(
     'subscribeToken.js',
     'unsubscribeToken.js',
     'showChannels.js',
-    'queryChannels.js'
+    'queryChannels.js',
+    'setBadge.js',
+    'resetBadge.js'
 );
 
 windowFunctions['Push Notifications'] = function () {
@@ -20,7 +22,9 @@ windowFunctions['Push Notifications'] = function () {
         'Notify Tokens',
         'Query Subscriptions',
         'Show Channels',
-        'Query Channels'
+        'Query Channels',
+        'Set Badge',
+        'Reset Badge'
     ];
     if (Ti.Platform.name === 'iPhone OS' || Ti.Platform.name === 'android') {
         rows.push('Settings for This Device');
