@@ -5,10 +5,10 @@
 Please refer to the documentation available here:
 [http://docs.appcelerator.com/titanium/latest/#!/api/Titanium.Cloud](http://docs.appcelerator.com/titanium/latest/#!/api/Titanium.Cloud)
 
-## Author
+## Authors
 
-Dawson Toth and Jeff English
+Dawson Toth, Jeff English, Jon Alter, Paul Lv, and Michael Goff
 
 ## License
 
-Copyright(c) 2011-2013 by Appcelerator, Inc. All Rights Reserved. Please see the LICENSE file included in the distribution for further details.
+Copyright(c) 2011-2014 by Appcelerator, Inc. All Rights Reserved. Please see the LICENSE file included in the distribution for further details.
