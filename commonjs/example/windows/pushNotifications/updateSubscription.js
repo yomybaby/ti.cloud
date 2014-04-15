@@ -67,8 +67,6 @@ windowFunctions['Update Subscription'] = function (evt) {
 
     var fields = [ channel ];
 
-
-
     function submitForm() {
         for (var i = 0; i < fields.length; i++) {
             if (!fields[i].value.length) {
