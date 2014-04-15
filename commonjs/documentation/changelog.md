@@ -1,5 +1,7 @@
 # Change Log
 <pre>
+v3.2.2  Added PushNotifications API(updateSubscription) [TIMODOPEN-383]
+
 v3.2.1  Added GeoFences APIs(create, update, query, remove) [TIMODOPEN-349]
         Added PushNotifications APIs(setBadge, resetBadge) [TIMODOPEN-354]
 
