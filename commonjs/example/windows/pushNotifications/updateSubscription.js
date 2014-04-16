@@ -19,22 +19,12 @@ windowFunctions['Update Subscription'] = function (evt) {
         return;
     }
 
-    var channel = Ti.UI.createTextField({
-        hintText: 'Channel',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
-        borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
-        autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
-        autocorrect: false
-    });
-    content.add(channel);
-
     // These variables represent the device's geographic coordinates,
     // and are passed in the 'loc' parameter to the updateSubscription() method.
     // This enables a Dashboard administrator to send a push notification to this user based on their location.
 
-    var latitude = 37.3895100;
-    var longitude = -122.0502150;
+    var currentLatitude = "37.3895100";
+    var currentLongitude = "-122.0502150";
 
     var latitude = Ti.UI.createTextField({
         hintText: 'Latitude',
@@ -43,7 +33,7 @@ windowFunctions['Update Subscription'] = function (evt) {
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
         autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
         autocorrect: false,
-        value: latitude
+        value: currentLatitude
     });
     content.add(latitude);
     
@@ -54,7 +44,7 @@ windowFunctions['Update Subscription'] = function (evt) {
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
         autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
         autocorrect: false,
-        value: longitude
+        value: currentLongitude
     });
     content.add(longitude);
 
@@ -65,7 +55,7 @@ windowFunctions['Update Subscription'] = function (evt) {
     });
     content.add(button);    
 
-    var fields = [ channel ];
+    var fields = [ longitude, latitude ];
 
     function submitForm() {
         for (var i = 0; i < fields.length; i++) {
@@ -78,12 +68,10 @@ windowFunctions['Update Subscription'] = function (evt) {
         button.hide();
 
         Cloud.PushNotifications.updateSubscription({
-            channel: channel.value,
             device_token: pushDeviceToken,
-            loc: [parseInt(longitude.value), parseInt(latitude.value)]
+            loc: [parseFloat(longitude.value), parseFloat(latitude.value)]
         }, function (e) {
             if (e.success) {
-                channel.value = '';
                 alert('Subscription Updated! ' + pushDeviceToken);
             }
             else {
@@ -99,7 +87,7 @@ windowFunctions['Update Subscription'] = function (evt) {
     }
 
     win.addEventListener('open', function () {
-        channel.focus();
+        latitude.focus();
     });
     win.open();
 };
