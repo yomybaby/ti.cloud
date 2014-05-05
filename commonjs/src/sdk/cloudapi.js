@@ -142,6 +142,24 @@ function dataOptionalSecureAuthExecutor() {
     );
 }
 
+function dataExcludedResetSessionExecutor(callback) {
+    defaultExecutor.call(this, {}, function (evt) {
+        ACS.reset();
+        callback(evt);
+    });
+}
+
+function dataOptionalResetSessionExecutor() {
+    var orig = arguments;
+    defaultExecutor.call(this,
+        orig.length == 2 ? orig[0] : {},
+        function (evt) {
+            ACS.reset();
+            (orig.length == 2 ? orig[1] : orig[0])(evt);
+        }
+    );
+}
+
 function checkStatus() {
     return ACS.checkStatus();
 }
@@ -399,26 +417,8 @@ BedFrame.build(Cloud, {
                 { method: 'search', executor: dataOptionalExecutor },
                 { method: 'query', executor: dataOptionalExecutor },
                 { method: 'update', verb: 'PUT' },
-                { method: 'logout',
-                    executor: function (callback) {
-                        defaultExecutor.call(this, {}, function (evt) {
-                            ACS.reset();
-                            callback(evt);
-                        });
-                    }
-                },
-                { method: 'remove', restMethod: 'delete', verb: 'DELETE',
-                    executor: function () {
-                        var orig = arguments;
-                        defaultExecutor.call(this,
-                            orig.length == 2 ? orig[0] : {},
-                            function (evt) {
-                                ACS.reset();
-                                (orig.length == 2 ? orig[1] : orig[0])(evt);
-                            }
-                        );
-                    }
-                },
+                { method: 'logout', executor: dataExcludedResetSessionExecutor },
+                { method: 'remove', restMethod: 'delete', verb: 'DELETE', executor: dataOptionalResetSessionExecutor },
                 { method: 'requestResetPassword', restMethod: 'request_reset_password' },
                 { method: 'resendConfirmation', restMethod: 'resend_confirmation' },
                 { method: 'secureCreate', executor: dataOptionalSecureAuthExecutor },
