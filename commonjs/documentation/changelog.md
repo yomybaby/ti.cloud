@@ -1,6 +1,7 @@
 # Change Log
 <pre>
 v3.2.3  Added Generic Send Request (Cloud.sendRequest) [TIMODOPEN-389]
+        Added Removed OAuth methods(secureCreate, secureLogin, secureStatus) [TTIMODOPEN-394]
 
 v3.2.2  Added PushNotifications API(updateSubscription) [TIMODOPEN-383]
 
