@@ -1,5 +1,7 @@
 # Change Log
 <pre>
+v3.2.3  Added Generic Send Request (Cloud.sendRequest) [TIMODOPEN-389]
+
 v3.2.2  Added PushNotifications API(updateSubscription) [TIMODOPEN-383]
 
 v3.2.1  Added GeoFences APIs(create, update, query, remove) [TIMODOPEN-349]

@@ -2,7 +2,7 @@
 # this is your module manifest and used by Titanium
 # during compilation, packaging, distribution, etc.
 #
-version: 3.2.2
+version: 3.2.3
 description: Appcelerator Cloud Services
 author: Dawson Toth, Jeff English, Jon Alter, Paul Lv, and Michael Goff
 license: Appcelerator Commercial License
