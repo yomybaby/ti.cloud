@@ -162,7 +162,7 @@ var table = Ti.UI.createTableView({
         'Events',
         'Files',
         'Friends',
-        'GeoFences',
+        'Geo Fences',
         'Key Values',
         'Likes',
         'Messages',
