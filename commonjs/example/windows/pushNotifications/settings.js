@@ -14,15 +14,15 @@ exports['Settings for This Device'] = function (evt) {
 
     var enablePush = Ti.UI.createButton({
         top: 10, width: 320, height: 50,
-        title: pushNotificationsEnabled ? 'Enabled' : 'Disabled'
+        title: Utils.pushNotificationsEnabled ? 'Enabled' : 'Disabled'
     });
     enablePush.addEventListener('click', function () {
-        if (!pushNotificationsEnabled) {
+        if (!Utils.pushNotificationsEnabled) {
             enablePushNotifications();
         } else {
             disablePushNotifications();
         }
-        enablePush.title = pushNotificationsEnabled ? 'Enabled' : 'Disabled';
+        enablePush.title = Utils.pushNotificationsEnabled ? 'Enabled' : 'Disabled';
     });
     content.add(enablePush);
 
@@ -113,7 +113,7 @@ exports['Settings for This Device'] = function (evt) {
         title: 'Copy Push Token to Clipboard'
     });
     copyPushToken.addEventListener('click', function () {
-       if ( pushNotificationsEnabled ) {
+       if ( Utils.pushNotificationsEnabled ) {
            alert('Token ' + Utils.pushToken + ' copied to clipboard.');
            Ti.UI.Clipboard.setText(Utils.pushToken);
        } else {

@@ -2,7 +2,7 @@
  * We'll follow a really simple paradigm in this example app. It's going to be a hierarchy of tables where you can drill
  * in to individual examples for each ACS namespace.
  *
- * To facilitate that, we will have a collection of "windowFunctions" like the "Users" window, and the "Login" window.
+ * To facilitate that, we will have a collection of "Window Functions" like the "Users" window, and the "Login" window.
  *
  * These are defined in the "windows" folder and its children.
  *

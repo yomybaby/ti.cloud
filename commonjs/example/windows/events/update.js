@@ -133,7 +133,7 @@ exports['Update Event'] = function (evt) {
 	         status.hide();
 	         if (e.success) {
 	             var event = e.events[0];
-		         var datetime = convertISOToDate(event.start_time);
+		         var datetime = Utils.convertISOToDate(event.start_time);
 	             name.value = event.name;
 		         date.value = datetime.toLocaleDateString();
 		         time.value = datetime.toLocaleTimeString();

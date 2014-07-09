@@ -5,7 +5,6 @@ exports['Logout Current User'] = function (evt) {
     var win = WindowManager.createWindow({
         backgroundColor: 'white'
     });
-    addBackButton(win);
     var status = Ti.UI.createLabel({
         text: 'Logging out, please wait...',
         textAlign: 'center'

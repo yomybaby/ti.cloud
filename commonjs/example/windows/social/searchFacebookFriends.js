@@ -1,6 +1,7 @@
 var WindowManager = require('helper/WindowManager');
 var Utils = require('helper/Utils');
 var Cloud = require('ti.cloud');
+var Facebook = Ti.Facebook ? Ti.Facebook : require('facebook');
 exports['Search Facebook Friends'] = function (evt) {
     var win = WindowManager.createWindow({
         backgroundColor: 'white'

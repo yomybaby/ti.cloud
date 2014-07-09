@@ -4,10 +4,12 @@ exports.navigationWindow = null;
 exports.handleOpenWindow = function(evt) {
     var target = (evt.row && evt.row.title) || evt.target;
     if (exports[target]) {
+		var w = exports[target](evt);
+		w.title = target;
     	if(exports.navigationWindow != null) {
-    		var w = exports[target](evt);
-    		w.title = target;
 	     	exports.navigationWindow.openWindow(w);
+	    } else {
+	    	w.open();
 	    }
     }
 }
@@ -22,7 +24,8 @@ exports.include = function() {
 }
 exports.createInitialWindow = function(_title, _content) {
 	var win = Ti.UI.createWindow({
-		title: _title
+		title: _title,
+		exitOnClose: true
 	});
 	win.add(_content);
 	if(Utils.iOS) {

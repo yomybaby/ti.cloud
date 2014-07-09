@@ -13,7 +13,7 @@ exports['Show User'] = function (evt) {
     });
     win.add(button);
     var content = Ti.UI.createScrollView({
-        top: 0, bottom: 0,
+        top: 60 + Utils.u, bottom: 0,
         contentHeight: 'auto',
         layout: 'vertical'
     });

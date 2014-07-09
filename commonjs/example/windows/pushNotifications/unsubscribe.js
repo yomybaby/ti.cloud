@@ -12,7 +12,7 @@ exports['Unsubscribe'] = function (evt) {
     });
     win.add(content);
 
-    if (!pushDeviceToken) {
+    if (!Utils.pushDeviceToken) {
         content.add(Ti.UI.createLabel({
             text: 'Please visit Push Notifications > Settings to enable push!',
             textAlign: 'center',
@@ -49,7 +49,7 @@ exports['Unsubscribe'] = function (evt) {
         button.hide();
 
         var data = {
-            device_token: pushDeviceToken
+            device_token: Utils.pushDeviceToken
         };
 
         if (channel.value && channel.value.length) {

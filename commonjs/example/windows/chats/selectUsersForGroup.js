@@ -1,10 +1,6 @@
 var WindowManager = require('helper/WindowManager');
 var Utils = require('helper/Utils');
 var Cloud = require('ti.cloud');
-
-var WindowManager = require('helper/WindowManager');
-var Utils = require('helper/Utils');
-var Cloud = require('ti.cloud');
 exports['Select Users for Group'] = function (evt) {
     var win = WindowManager.createWindow({
         backgroundColor: 'white'

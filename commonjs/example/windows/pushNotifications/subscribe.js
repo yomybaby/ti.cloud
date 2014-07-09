@@ -12,7 +12,7 @@ exports['Subscribe'] = function (evt) {
     });
     win.add(content);
 
-    if (!pushDeviceToken) {
+    if (!Utils.pushDeviceToken) {
         content.add(Ti.UI.createLabel({
             text: 'Please visit Push Notifications > Settings to enable push!',
             textAlign: 'center',
@@ -73,7 +73,7 @@ exports['Subscribe'] = function (evt) {
 
         Cloud.PushNotifications.subscribe({
             channel: channel.value,
-            device_token: pushDeviceToken,
+            device_token: Utils.pushDeviceToken,
             type: type
         }, function (e) {
             if (e.success) {

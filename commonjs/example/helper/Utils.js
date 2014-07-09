@@ -18,19 +18,20 @@ exports.android = Ti.Platform.osname == 'android';
 exports.iOS = Ti.Platform.osname == 'ipad' || Ti.Platform.osname == 'iphone';
 exports.blackberry = Ti.Platform.osname == 'blackberry';
 
-// Utility functions for defining windows.
 var u = Ti.Android != undefined ? 'dp' : 0;
 exports.u = u;
 
 exports.createRows = function(rows) {
     for (var i = 0, l = rows.length; i < l; i++) {
-        rows[i] = Ti.UI.createTableViewRow({
-            backgroundColor: '#fff',
+        rows[i] = {
             title: rows[i],
-            hasChild: true,
-            height: 30 + u,
-            font: { fontSize: 20 + u }
-        });
+            hasChild: true
+        };
+        if(exports.android) {
+            rows[i].backgroundColor = '#fff';
+            rows[i].height = 44 + u;
+            rows[i].font = { fontSize: 20 + u };
+        }
     }
     return rows;
 }
@@ -74,22 +75,6 @@ exports.convertISOToDate = function(isoDate) {
     return new Date(Date.UTC(dtcomps[0],dtcomps[1],dtcomps[2],dtcomps[3],dtcomps[4],dtcomps[5]));
 }
 
-exports.addBackButton = function(win) {
-    if (Ti.Android) {
-        return 0;
-    }
-    var back = Ti.UI.createButton({
-        title: 'Back',
-        color: '#fff', backgroundColor: '#000',
-        style: 0,
-        top: top, left: 0, right: 0,
-        height: 40 + u
-    });
-    back.addEventListener('click', function (evt) {
-        win.close();
-    });
-    win.add(back);
-    return 40 + top;
-}
-
 exports.pushToken = null;
+exports.pushNotificationsEnabled = null;
+exports.pushDeviceToken = null;

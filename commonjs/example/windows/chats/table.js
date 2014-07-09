@@ -8,9 +8,6 @@ WindowManager.include(
     '/windows/chats/query'
 );
 
-var WindowManager = require('helper/WindowManager');
-var Utils = require('helper/Utils');
-var Cloud = require('ti.cloud');
 exports['Chats'] = function (evt) {
     var win = WindowManager.createWindow({
         backgroundColor: 'white'
