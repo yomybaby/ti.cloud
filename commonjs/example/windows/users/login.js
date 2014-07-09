@@ -7,7 +7,7 @@ exports['Login User'] = function (evt) {
     });
     var content = Ti.UI.createScrollView({
         top: 0,
-        contentHeight: 'auto',
+        contentHeight: Ti.UI.SIZE,
         layout: 'vertical'
     });
     win.add(content);
@@ -33,9 +33,12 @@ exports['Login User'] = function (evt) {
 
     var button = Ti.UI.createButton({
         title: 'Login User',
-        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
         height: 40 + Utils.u
     });
+    if(!Utils.blackberry) {
+        button.bottom = 10 + Utils.u;
+    }
     content.add(button);
 
     var fields = [ login, password ];

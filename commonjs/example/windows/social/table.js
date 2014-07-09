@@ -1,11 +1,8 @@
 var WindowManager = require('helper/WindowManager');
 var Utils = require('helper/Utils');
 var Cloud = require('ti.cloud');
-// Be sure to include the "facebook" module when running this app. It is now separate from the sdk.
-var Facebook = Ti.Facebook ? Ti.Facebook : require('facebook');
 
 WindowManager.include(
-
     '/windows/social/externalLink',
     '/windows/social/externalLogin',
     '/windows/social/externalUnlink',
@@ -13,6 +10,8 @@ WindowManager.include(
 );
 
 exports['Social'] = function (evt) {
+    // Be sure to include the "facebook" module when running this app. It is now separate from the sdk.
+    var Facebook = Ti.Facebook ? Ti.Facebook : require('facebook');
     var win = WindowManager.createWindow({
         backgroundColor: 'white'
     });

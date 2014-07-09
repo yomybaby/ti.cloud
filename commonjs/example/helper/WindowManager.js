@@ -7,7 +7,11 @@ exports.handleOpenWindow = function(evt) {
 		var w = exports[target](evt);
 		w.title = target;
     	if(exports.navigationWindow != null) {
-	     	exports.navigationWindow.openWindow(w);
+    		if(Utils.blackberry) {
+    		    exports.navigationWindow.open(w);	
+    		} else {
+		        exports.navigationWindow.openWindow(w);
+		    }
 	    } else {
 	    	w.open();
 	    }
@@ -30,6 +34,12 @@ exports.createInitialWindow = function(_title, _content) {
 	win.add(_content);
 	if(Utils.iOS) {
 		exports.navigationWindow = Ti.UI.iOS.createNavigationWindow({
+			window: win
+		});
+		return exports.navigationWindow;
+	}
+	if(Utils.blackberry) {
+		exports.navigationWindow = Ti.UI.BlackBerry.createNavigationWindow({
 			window: win
 		});
 		return exports.navigationWindow;
