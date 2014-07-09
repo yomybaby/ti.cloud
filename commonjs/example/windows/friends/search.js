@@ -1,10 +1,14 @@
-windowFunctions['Search Friends of User'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Search Friends of User'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
 
     var table = Ti.UI.createTableView({
         backgroundColor: '#fff',
-        top: offset + u, bottom: 0,
+        top: 0, bottom: 0,
         data: [
             { title: 'Loading, please wait...' }
         ]
@@ -37,11 +41,11 @@ windowFunctions['Search Friends of User'] = function (evt) {
 		        table.setData([
 			        { title: (e.error && e.message) || e }
 		        ]);
-		        error(e);
+		        Utils.error(e);
 	        }
         });
     }
 
     win.addEventListener('open', searchFriends);
-    win.open();
+    return win;
 };

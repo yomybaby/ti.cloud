@@ -1,11 +1,15 @@
-windowFunctions['Show Messages In Thread'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Show Messages In Thread'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
 	var threadId = evt.id;
 
     var table = Ti.UI.createTableView({
         backgroundColor: '#fff',
-        top: offset + u, bottom: 0,
+        top: 0, bottom: 0,
         data: [
             { title: 'Loading, please wait...' }
         ]
@@ -13,9 +17,9 @@ windowFunctions['Show Messages In Thread'] = function (evt) {
 
     table.addEventListener('click', function (evt) {
         if (evt.row.id) {
-	        handleOpenWindow({ target: 'Show Message', id: evt.row.id, allowReply: true });
+	        WindowManager.handleOpenWindow({ target: 'Show Message', id: evt.row.id, allowReply: true });
         } else {
-	        handleOpenWindow({ target: 'Remove All Thread Messages', id: threadId });
+	        WindowManager.handleOpenWindow({ target: 'Remove All Thread Messages', id: threadId });
         }
     });
     win.add(table);
@@ -46,11 +50,11 @@ windowFunctions['Show Messages In Thread'] = function (evt) {
                 table.setData([
                     { title: (e.error && e.message) || e }
                 ]);
-                error(e);
+                Utils.error(e);
             }
         })
     }
 
     win.addEventListener('open', showThreadMessages);
-    win.open();
+    return win;
 };

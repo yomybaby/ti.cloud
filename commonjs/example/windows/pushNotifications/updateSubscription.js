@@ -1,8 +1,12 @@
-windowFunctions['Update Subscription'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Update Subscription'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
     var content = Ti.UI.createScrollView({
-        top: offset + u,
+        top: 0,
         contentHeight: 'auto',
         layout: 'vertical'
     });
@@ -15,7 +19,7 @@ windowFunctions['Update Subscription'] = function (evt) {
             color: '#000',
             height: 'auto'
         }));
-        win.open();
+        return win;
         return;
     }
 
@@ -28,8 +32,8 @@ windowFunctions['Update Subscription'] = function (evt) {
 
     var latitude = Ti.UI.createTextField({
         hintText: 'Latitude',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
         autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
         autocorrect: false,
@@ -39,8 +43,8 @@ windowFunctions['Update Subscription'] = function (evt) {
     
     var longitude = Ti.UI.createTextField({
         hintText: 'Longitude',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
         autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
         autocorrect: false,
@@ -50,8 +54,8 @@ windowFunctions['Update Subscription'] = function (evt) {
 
     var button = Ti.UI.createButton({
         title: 'Update',
-        top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     content.add(button);    
 
@@ -75,7 +79,7 @@ windowFunctions['Update Subscription'] = function (evt) {
                 alert('Subscription Updated! ' + pushDeviceToken);
             }
             else {
-                error(e);
+                Utils.error(e);
             }
             button.show();
         });
@@ -89,5 +93,5 @@ windowFunctions['Update Subscription'] = function (evt) {
     win.addEventListener('open', function () {
         latitude.focus();
     });
-    win.open();
+    return win;
 };

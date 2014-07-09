@@ -1,8 +1,12 @@
-windowFunctions['Show Review'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Show Review'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
     var content = Ti.UI.createScrollView({
-        top: offset + u,
+        top: 0,
         contentHeight: 'auto',
         layout: 'vertical'
     });
@@ -10,7 +14,7 @@ windowFunctions['Show Review'] = function (evt) {
 
     var status = Ti.UI.createLabel({
         text: 'Loading, please wait...', textAlign: 'left',
-        height: 30 + u, left: 20 + u, right: 20 + u
+        height: 30 + Utils.u, left: 20 + Utils.u, right: 20 + Utils.u
     });
     content.add(status);
 
@@ -22,31 +26,31 @@ windowFunctions['Show Review'] = function (evt) {
 
         var update = Ti.UI.createButton({
             title: 'Update Review',
-            top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-            height: 40 + u
+            top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+            height: 40 + Utils.u
         });
         update.addEventListener('click', function () {
-            handleOpenWindow({ target: 'Update Review', user_id: evt.user_id, review_id: evt.review_id });
+            WindowManager.handleOpenWindow({ target: 'Update Review', user_id: evt.user_id, review_id: evt.review_id });
         });
         content.add(update);
 
         var remove = Ti.UI.createButton({
             title: 'Remove Review',
-            top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-            height: 40 + u
+            top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+            height: 40 + Utils.u
         });
         remove.addEventListener('click', function () {
-            handleOpenWindow({ target: 'Remove Review', user_id: evt.user_id, review_id: evt.review_id });
+            WindowManager.handleOpenWindow({ target: 'Remove Review', user_id: evt.user_id, review_id: evt.review_id });
         });
         content.add(remove);
 
         if (e.success) {
-            enumerateProperties(content, e.reviews[0], 20);
+            Utils.enumerateProperties(content, e.reviews[0], 20);
         }
         else {
-            error(e);
+            Utils.error(e);
         }
     });
 
-    win.open();
+    return win;
 };

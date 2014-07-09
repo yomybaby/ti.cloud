@@ -1,8 +1,12 @@
-windowFunctions['Key Values'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Key Values'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
     var content = Ti.UI.createScrollView({
-        top: offset + u,
+        top: 0,
         contentHeight: 'auto',
         layout: 'vertical'
     });
@@ -10,8 +14,8 @@ windowFunctions['Key Values'] = function (evt) {
 
     var name = Ti.UI.createTextField({
         hintText: 'Name',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
         autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
         autocorrect: false
@@ -20,8 +24,8 @@ windowFunctions['Key Values'] = function (evt) {
 
     var value = Ti.UI.createTextField({
         hintText: 'Value',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
         autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
         autocorrect: false
@@ -30,8 +34,8 @@ windowFunctions['Key Values'] = function (evt) {
 
     var setButton = Ti.UI.createButton({
         title: 'Set',
-        top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     setButton.addEventListener('click', function submitForm() {
         Cloud.KeyValues.set({
@@ -42,7 +46,7 @@ windowFunctions['Key Values'] = function (evt) {
                 alert('Set!');
             }
             else {
-                error(e);
+                Utils.error(e);
             }
         });
     });
@@ -50,8 +54,8 @@ windowFunctions['Key Values'] = function (evt) {
 
     var getButton = Ti.UI.createButton({
         title: 'Get',
-        top: 0, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 0, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     getButton.addEventListener('click', function (evt) {
         Cloud.KeyValues.get({
@@ -62,7 +66,7 @@ windowFunctions['Key Values'] = function (evt) {
                 alert('Got!');
             }
             else {
-                error(e);
+                Utils.error(e);
             }
         });
     });
@@ -70,8 +74,8 @@ windowFunctions['Key Values'] = function (evt) {
 
     var appendButton = Ti.UI.createButton({
         title: 'Append',
-        top: 0, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 0, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     appendButton.addEventListener('click', function (evt) {
         Cloud.KeyValues.append({
@@ -82,7 +86,7 @@ windowFunctions['Key Values'] = function (evt) {
                 alert('Appended!');
             }
             else {
-                error(e);
+                Utils.error(e);
             }
         });
     });
@@ -90,8 +94,8 @@ windowFunctions['Key Values'] = function (evt) {
 
     var incrementButton = Ti.UI.createButton({
         title: 'Increment',
-        top: 0, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 0, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     incrementButton.addEventListener('click', function (evt) {
     	var incrby = parseInt(value.value, 10);
@@ -108,7 +112,7 @@ windowFunctions['Key Values'] = function (evt) {
                 alert('Incremented!');
             }
             else {
-                error(e);
+                Utils.error(e);
             }
         });
     });
@@ -116,8 +120,8 @@ windowFunctions['Key Values'] = function (evt) {
 
     var removeButton = Ti.UI.createButton({
         title: 'Remove',
-        top: 0, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 0, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     removeButton.addEventListener('click', function (evt) {
         Cloud.KeyValues.remove({
@@ -128,7 +132,7 @@ windowFunctions['Key Values'] = function (evt) {
                 value.value = '';
             }
             else {
-                error(e);
+                Utils.error(e);
             }
         });
     });
@@ -137,5 +141,5 @@ windowFunctions['Key Values'] = function (evt) {
     win.addEventListener('open', function () {
         name.focus();
     });
-    win.open();
+    return win;
 };

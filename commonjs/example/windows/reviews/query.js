@@ -1,17 +1,21 @@
-windowFunctions['Query Review'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Query Review'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
 
     var table = Ti.UI.createTableView({
         backgroundColor: '#fff',
-        top: offset + u, bottom: 0,
+        top: 0, bottom: 0,
         data: [
             { title: 'Loading, please wait...' }
         ]
     });
     table.addEventListener('click', function (evt) {
         if (evt.row.id) {
-            handleOpenWindow({ target: 'Show Review', user_id: userID, review_id: evt.row.id });
+            WindowManager.handleOpenWindow({ target: 'Show Review', user_id: userID, review_id: evt.row.id });
         }
     });
     win.add(table);
@@ -19,7 +23,7 @@ windowFunctions['Query Review'] = function (evt) {
     var status = Ti.UI.createLabel({
         text: 'Loading, please wait...', textAlign: 'center',
         color: '#000', backgroundColor: '#fff',
-        top: offset + u
+        top: 0
     });
     win.add(status);
 
@@ -50,15 +54,15 @@ windowFunctions['Query Review'] = function (evt) {
                     }
                 }
                 else {
-                    error(e);
+                    Utils.error(e);
                 }
             });
         }
         else {
-            error(e);
+            Utils.error(e);
             status.text = (e.error && e.message) || e;
         }
     });
 
-    win.open();
+    return win;
 };

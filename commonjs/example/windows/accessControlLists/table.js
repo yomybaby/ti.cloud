@@ -1,25 +1,29 @@
-Ti.include(
-    'create.js',
-    'show.js',
-    'checkUser.js',
-    'selectUsers.js',
-    'updateUsers.js'
-);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+WindowManager.include(
 
-windowFunctions['Access Control Lists'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+    '/windows/accessControlLists/create',
+    '/windows/accessControlLists/show',
+    '/windows/accessControlLists/checkUser',
+    '/windows/accessControlLists/selectUsers',
+    '/windows/accessControlLists/updateUsers'
+);
+exports['Access Control Lists'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
     var table = Ti.UI.createTableView({
         backgroundColor: '#fff',
-        top: offset + u,
-        data: createRows([
+        top: 0,
+        data: Utils.createRows([
             'Create ACL',
             'Show ACL',
             'Update Users in ACL',
             'Check Permission of ACL'
         ])
     });
-    table.addEventListener('click', handleOpenWindow);
+    table.addEventListener('click', WindowManager.handleOpenWindow);
     win.add(table);
-    win.open();
+    return win;
 };

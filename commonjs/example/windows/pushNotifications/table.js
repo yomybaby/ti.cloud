@@ -1,22 +1,26 @@
-Ti.include(
-    'query.js',
-    'notify.js',
-    'settings.js',
-    'subscribe.js',
-    'unsubscribe.js',
-    'notifyTokens.js',
-    'subscribeToken.js',
-    'unsubscribeToken.js',
-    'updateSubscription.js',
-    'showChannels.js',
-    'queryChannels.js',
-    'setBadge.js',
-    'resetBadge.js'
-);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+WindowManager.include(
 
-windowFunctions['Push Notifications'] = function () {
-    var win = createWindow();
-    var offset = addBackButton(win);
+    '/windows/pushNotifications/query',
+    '/windows/pushNotifications/notify',
+    '/windows/pushNotifications/settings',
+    '/windows/pushNotifications/subscribe',
+    '/windows/pushNotifications/unsubscribe',
+    '/windows/pushNotifications/notifyTokens',
+    '/windows/pushNotifications/subscribeToken',
+    '/windows/pushNotifications/unsubscribeToken',
+    '/windows/pushNotifications/updateSubscription',
+    '/windows/pushNotifications/showChannels',
+    '/windows/pushNotifications/queryChannels',
+    '/windows/pushNotifications/setBadge',
+    '/windows/pushNotifications/resetBadge'
+);
+exports['Push Notifications'] = function () {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
 
     var rows = [
         'Notify',
@@ -41,12 +45,12 @@ windowFunctions['Push Notifications'] = function () {
 
     var table = Ti.UI.createTableView({
         backgroundColor: '#fff',
-        top: offset + u,
-        data: createRows(rows)
+        top: 0,
+        data: Utils.createRows(rows)
     });
-    table.addEventListener('click', handleOpenWindow);
+    table.addEventListener('click', WindowManager.handleOpenWindow);
     win.add(table);
-    win.open();
+    return win;
 };
 
 function receivePush(e) {
@@ -131,7 +135,7 @@ function checkPushNotifications() {
 
 function deviceTokenSuccess(e) {
     pushDeviceToken = e.deviceToken;
-    pushToken = pushDeviceToken; 
+    Utils.pushToken = pushDeviceToken; 
     alert('Device token is retrieved: ' + pushDeviceToken);
     Ti.API.info('Device Token: ' + pushDeviceToken);
     if (androidPushModule) {

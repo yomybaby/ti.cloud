@@ -1,8 +1,12 @@
-windowFunctions['Update Review'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Update Review'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
     var content = Ti.UI.createScrollView({
-        top: offset + u,
+        top: 0,
         contentHeight: 'auto',
         layout: 'vertical'
     });
@@ -10,23 +14,23 @@ windowFunctions['Update Review'] = function (evt) {
 
     var contentText = Ti.UI.createTextField({
         hintText: 'Content',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED
     });
     content.add(contentText);
 
     var rating = Ti.UI.createSlider({
         value: 5, min: 1, max: 5,
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     content.add(rating);
 
     var button = Ti.UI.createButton({
         title: 'Update',
-        top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     content.add(button);
 
@@ -43,7 +47,7 @@ windowFunctions['Update Review'] = function (evt) {
                 alert('Updated!');
             }
             else {
-                error(e);
+                Utils.error(e);
             }
             button.show();
         });
@@ -57,7 +61,7 @@ windowFunctions['Update Review'] = function (evt) {
 
     var status = Ti.UI.createLabel({
         text: 'Loading, please wait...', textAlign: 'center',
-        top: offset + u, right: 0, bottom: 0, left: 0,
+        top: 0, right: 0, bottom: 0, left: 0,
         backgroundColor: '#fff', zIndex: 2
     });
     win.add(status);
@@ -75,9 +79,9 @@ windowFunctions['Update Review'] = function (evt) {
                 contentText.focus();
             }
             else {
-                error(e);
+                Utils.error(e);
             }
         });
     });
-    win.open();
+    return win;
 };

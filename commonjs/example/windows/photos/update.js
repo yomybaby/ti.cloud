@@ -1,8 +1,12 @@
-windowFunctions['Update Photo'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Update Photo'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
     var content = Ti.UI.createScrollView({
-        top: offset + u,
+        top: 0,
         contentHeight: 'auto',
         layout: 'vertical'
     });
@@ -13,8 +17,8 @@ windowFunctions['Update Photo'] = function (evt) {
     if (Ti.Media.openPhotoGallery) {
         var selectPhoto = Ti.UI.createButton({
             title: 'Select Photo from Gallery',
-            top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-            height: 40 + u
+            top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+            height: 40 + Utils.u
         });
         selectPhoto.addEventListener('click', function (evt) {
             Ti.Media.openPhotoGallery({
@@ -28,8 +32,8 @@ windowFunctions['Update Photo'] = function (evt) {
     if (Ti.Media.showCamera) {
         var takePhoto = Ti.UI.createButton({
             title: 'Take Photo with Camera',
-            top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-            height: 40 + u
+            top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+            height: 40 + Utils.u
         });
         takePhoto.addEventListener('click', function (evt) {
             Ti.Media.showCamera({
@@ -44,8 +48,8 @@ windowFunctions['Update Photo'] = function (evt) {
     var collectionID;
     var chooseCollection = Ti.UI.createButton({
         title: 'Choose Collection',
-        top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     chooseCollection.addEventListener('click', function (evt) {
         var table = Ti.UI.createTableView({
@@ -93,7 +97,7 @@ windowFunctions['Update Photo'] = function (evt) {
                 }
                 else {
                     win.remove(table);
-                    error(e);
+                    Utils.error(e);
                 }
             });
         }
@@ -106,7 +110,7 @@ windowFunctions['Update Photo'] = function (evt) {
                 table.setData([
                     { title: (e.error && e.message) || e }
                 ]);
-                error(e);
+                Utils.error(e);
             }
         });
     });
@@ -114,8 +118,8 @@ windowFunctions['Update Photo'] = function (evt) {
 
     var tags = Ti.UI.createTextField({
         hintText: 'Tags (csv)',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
         autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
         autocorrect: false
@@ -124,16 +128,16 @@ windowFunctions['Update Photo'] = function (evt) {
 
     var button = Ti.UI.createButton({
         title: 'Update',
-        top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     content.add(button);
 
     if (Ti.UI.createProgressBar) {
         var uploadProgress = Ti.UI.createProgressBar({
-            top: 10 + u, right: 10 + u, left: 10 + u,
+            top: 10 + Utils.u, right: 10 + Utils.u, left: 10 + Utils.u,
             max: 1, min: 0, value: 0,
-            height: 25 + u
+            height: 25 + Utils.u
         });
         content.add(uploadProgress);
         uploadProgress.show();
@@ -173,7 +177,7 @@ windowFunctions['Update Photo'] = function (evt) {
                 alert('Updated!');
             }
             else {
-                error(e);
+                Utils.error(e);
             }
             button.show();
         });
@@ -186,7 +190,7 @@ windowFunctions['Update Photo'] = function (evt) {
 
     var status = Ti.UI.createLabel({
         text: 'Loading, please wait...', textAlign: 'center',
-        top: offset + u, right: 0, bottom: 0, left: 0,
+        top: 0, right: 0, bottom: 0, left: 0,
         backgroundColor: '#fff', zIndex: 2
     });
     win.add(status);
@@ -205,9 +209,9 @@ windowFunctions['Update Photo'] = function (evt) {
                 tags.focus();
             }
             else {
-                error(e);
+                Utils.error(e);
             }
         });
     });
-    win.open();
+    return win;
 };

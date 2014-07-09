@@ -1,8 +1,12 @@
-windowFunctions['Settings for This Device'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Settings for This Device'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
     var content = Ti.UI.createScrollView({
-        top: offset + u,
+        top: 0,
         contentHeight: 'auto',
         layout: 'vertical'
     });
@@ -110,13 +114,13 @@ windowFunctions['Settings for This Device'] = function (evt) {
     });
     copyPushToken.addEventListener('click', function () {
        if ( pushNotificationsEnabled ) {
-           alert('Token ' + pushToken + ' copied to clipboard.');
-           Ti.UI.Clipboard.setText(pushToken);
+           alert('Token ' + Utils.pushToken + ' copied to clipboard.');
+           Ti.UI.Clipboard.setText(Utils.pushToken);
        } else {
            alert('Please enable the push notification.');
        }
     });
     content.add(copyPushToken);
 
-    win.open();
+    return win;
 };

@@ -1,8 +1,12 @@
-windowFunctions['Create Push Schedule'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Create Push Schedule'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
     var content = Ti.UI.createScrollView({
-        top: offset + u,
+        top: 0,
         contentHeight: 'auto',
         layout: 'vertical'
     });
@@ -10,8 +14,8 @@ windowFunctions['Create Push Schedule'] = function (evt) {
 
     var name = Ti.UI.createTextField({
         hintText: 'name',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
         autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
         autocorrect: false
@@ -21,8 +25,8 @@ windowFunctions['Create Push Schedule'] = function (evt) {
 
     var start_time = Ti.UI.createTextField({
         hintText: 'YYYY-MM-DDTHH:MM',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
         autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
         autocorrect: false
@@ -32,8 +36,8 @@ windowFunctions['Create Push Schedule'] = function (evt) {
 
     var recurrence = Ti.UI.createTextField({
         hintText: '{"interval":"daily","end_time":"YYYY-MM-DDTHH:MM"}',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
         autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
         autocorrect: false
@@ -42,8 +46,8 @@ windowFunctions['Create Push Schedule'] = function (evt) {
 
     var push_notification = Ti.UI.createTextField({
         hintText: '{"payload":"hello world","channel":"channel"}',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
         autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
         autocorrect: false
@@ -52,8 +56,8 @@ windowFunctions['Create Push Schedule'] = function (evt) {
 
     var button = Ti.UI.createButton({
         title: 'Create',
-        top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     content.add(button);
 
@@ -107,7 +111,7 @@ windowFunctions['Create Push Schedule'] = function (evt) {
                 alert('Created!');
             }
             else {
-                error(e);
+                Utils.error(e);
             }
             button.show();
         });
@@ -118,5 +122,5 @@ windowFunctions['Create Push Schedule'] = function (evt) {
         fields[i].addEventListener('return', submitForm);
     }
 
-    win.open();
+    return win;
 };

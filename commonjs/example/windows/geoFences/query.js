@@ -1,10 +1,14 @@
-windowFunctions['Query Geo Fences'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Query Geo Fences'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
 
     var table = Ti.UI.createTableView({
         backgroundColor: '#fff',
-        top: offset + u, bottom: 0,
+        top: 0, bottom: 0,
         data: [
             { title: 'Loading, please wait...' }
         ]
@@ -13,12 +17,7 @@ windowFunctions['Query Geo Fences'] = function (evt) {
 
     table.addEventListener('click', function (evt) {
         if (evt.row.id) {
-            handleOpenWindow({ 
-                target: 'Update GeoFence', 
-                id: evt.row.id, 
-                loc: evt.row.loc,
-                payload: evt.row.payload
-            });
+            WindowManager.handleOpenWindow({ target: 'Update GeoFence', id: evt.row.id });
         }
     });
 
@@ -33,21 +32,18 @@ windowFunctions['Query Geo Fences'] = function (evt) {
                 } else {
                     var data = [];
                     for (var i = 0, l = e.geo_fences.length; i < l; i++) {
-                        var payload = e.geo_fences[i].payload;
-                        var loc = e.geo_fences[i].loc;
                         data.push(Ti.UI.createTableViewRow({
-                            title: payload.name + " " + JSON.stringify(loc.coordinates),
-                            loc: loc,
-                            payload: payload,
+                            title: e.geo_fences[i].payload,
+                            loc: e.geo_fences[i].loc,
                             id: e.geo_fences[i].id
                         }));
                     }
                     table.setData(data);
                 }
             } else {
-                error(e);
+                Utils.error(e);
             }
         });
     });
-    win.open();
+    return win;
 };

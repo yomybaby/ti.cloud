@@ -1,16 +1,19 @@
-windowFunctions['Show User'] = function (evt) {
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Show User'] = function (evt) {
     var userId;
-    var win = createWindow();
-    var offset = addBackButton(win);
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
     var button = Ti.UI.createButton({
         title: 'Copy User ID',
-        top: offset + 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
-    offset += 50;
     win.add(button);
     var content = Ti.UI.createScrollView({
-        top: offset + u, bottom: 0,
+        top: 0, bottom: 0,
         contentHeight: 'auto',
         layout: 'vertical'
     });
@@ -18,7 +21,7 @@ windowFunctions['Show User'] = function (evt) {
 
     var status = Ti.UI.createLabel({
         text: 'Loading, please wait...', textAlign: 'left',
-        height: 30 + u, left: 20 + u, right: 20 + u
+        height: 30 + Utils.u, left: 20 + Utils.u, right: 20 + Utils.u
     });
     content.add(status);
 
@@ -34,13 +37,13 @@ windowFunctions['Show User'] = function (evt) {
     }, function (e) {
         content.remove(status);
         if (e.success) {
-            enumerateProperties(content, e.users[0], 20);
+            Utils.enumerateProperties(content, e.users[0], 20);
             userId = e.users[0].id;
         }
         else {
-            error(e);
+            Utils.error(e);
         }
     });
 
-    win.open();
+    return win;
 };

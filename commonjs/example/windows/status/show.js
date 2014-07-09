@@ -1,8 +1,12 @@
-windowFunctions['Show Status'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Show Status'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
     var content = Ti.UI.createScrollView({
-        top: offset + u, bottom: 0,
+        top: 0, bottom: 0,
         contentHeight: 'auto',
         layout: 'vertical'
     });
@@ -10,7 +14,7 @@ windowFunctions['Show Status'] = function (evt) {
 
     var status = Ti.UI.createLabel({
         text: 'Loading, please wait...', textAlign: 'left',
-        height: 30 + u, left: 20 + u, right: 20 + u
+        height: 30 + Utils.u, left: 20 + Utils.u, right: 20 + Utils.u
     });
     content.add(status);
     
@@ -19,12 +23,12 @@ windowFunctions['Show Status'] = function (evt) {
     }, function (e) {
         content.remove(status);
         if (e.success) {
-            enumerateProperties(content, e.statuses, 20);
+            Utils.enumerateProperties(content, e.statuses, 20);
         }
         else {
-            error(e);
+            Utils.error(e);
         }
     });
 
-    win.open();
+    return win;
 };

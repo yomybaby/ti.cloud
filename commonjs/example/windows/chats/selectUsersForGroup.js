@@ -1,12 +1,20 @@
-windowFunctions['Select Users for Group'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Select Users for Group'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
 
     var checked = {};
 
     var table = Ti.UI.createTableView({
         backgroundColor: '#fff',
-        top: offset + u, bottom: 0,
+        top: 0, bottom: 0,
         data: [
             { title: 'Loading, please wait...' }
         ]
@@ -30,7 +38,7 @@ windowFunctions['Select Users for Group'] = function (evt) {
                 ids.push(id);
             }
             if (ids.length) {
-                handleOpenWindow({ target: 'Show Chat Group', ids: ids });
+                WindowManager.handleOpenWindow({ target: 'Show Chat Group', ids: ids });
             } else {
                 alert('Please check at least one user!');
             }
@@ -47,7 +55,7 @@ windowFunctions['Select Users for Group'] = function (evt) {
                 table.setData([
                     { title: (e.error && e.message) || e }
                 ]);
-                error(e);
+                Utils.error(e);
             }
         });
     }
@@ -83,7 +91,7 @@ windowFunctions['Select Users for Group'] = function (evt) {
                 table.setData([
                     { title: (e.error && e.message) || e }
                 ]);
-                error(e);
+                Utils.error(e);
             }
         })
     }
@@ -91,5 +99,5 @@ windowFunctions['Select Users for Group'] = function (evt) {
     win.addEventListener('open', function () {
         getMyID(queryUsers);
     });
-    win.open();
+    return win;
 };

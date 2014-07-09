@@ -1,17 +1,21 @@
-windowFunctions['Remove Photo'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Remove Photo'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
 
     var button = Ti.UI.createButton({
         title: 'Are you sure?',
-        top: offset + 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     win.add(button);
 
     var status = Ti.UI.createLabel({
         text: '', textAlign: 'center',
-        left: 20 + u, right: 20 + u
+        left: 20 + Utils.u, right: 20 + Utils.u
     });
     win.add(status);
 
@@ -30,5 +34,5 @@ windowFunctions['Remove Photo'] = function (evt) {
         });
     });
 
-    win.open();
+    return win;
 };

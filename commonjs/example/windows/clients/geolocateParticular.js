@@ -1,26 +1,30 @@
-windowFunctions['Geolocate Particular'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Geolocate Particular'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
 
     var ipAddress = Ti.UI.createTextField({
         hintText: 'IP Address',
-        top: offset + 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
         autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
-        keyboardType: (Ti.Platform.name === 'android') ? Ti.UI.KEYBOARD_NUMBER_PAD : Ti.UI.KEYBOARD_DECIMAL_PAD
+        keyboardType: Ti.UI.KEYBOARD_DECIMAL_PAD
     });
     win.add(ipAddress);
 
     var button = Ti.UI.createButton({
         title: 'Search',
-        top: offset + 60 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u
+        top: 60 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     win.add(button);
 
     var content = Ti.UI.createScrollView({
-        top: offset + 110 + u,
+        top: 110 + Utils.u,
         contentHeight: 'auto',
         layout: 'vertical'
     });
@@ -28,13 +32,13 @@ windowFunctions['Geolocate Particular'] = function (evt) {
 
     var status = Ti.UI.createLabel({
         text: 'Loading, please wait...', textAlign: 'left',
-        height: 30 + u, left: 20 + u, right: 20 + u
+        height: 30 + Utils.u, left: 20 + Utils.u, right: 20 + Utils.u
     });
 
     function lookup() {
         win.remove(content);
         content = Ti.UI.createScrollView({
-            top: offset + 110 + u,
+            top: 110 + Utils.u,
             contentHeight: 'auto',
             layout: 'vertical'
         });
@@ -47,10 +51,10 @@ windowFunctions['Geolocate Particular'] = function (evt) {
             ipAddress.blur();
             if (e.success) {
                 ipAddress.value = '';
-                enumerateProperties(content, e, 20);
+                Utils.enumerateProperties(content, e, 20);
             }
             else {
-                error(e);
+                Utils.error(e);
             }
         });
     }
@@ -61,5 +65,5 @@ windowFunctions['Geolocate Particular'] = function (evt) {
         ipAddress.focus();
     });
 
-    win.open();
+    return win;
 };

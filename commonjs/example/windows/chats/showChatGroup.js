@@ -1,4 +1,11 @@
-windowFunctions['Show Chat Group'] = function (evt) {
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Show Chat Group'] = function (evt) {
     var pingData = {}, createData = {};
     var ids = {};
     if (evt.id) {
@@ -12,13 +19,14 @@ windowFunctions['Show Chat Group'] = function (evt) {
         return;
     }
 
-    var win = createWindow();
-    var offset = addBackButton(win);
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
 
     var message = Ti.UI.createTextField({
         hintText: 'Enter chat message',
-        top: offset + 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED
     });
     message.addEventListener('return', function (evt) {
@@ -33,7 +41,7 @@ windowFunctions['Show Chat Group'] = function (evt) {
     win.add(message);
 
     var tableView = Ti.UI.createTableView({
-        top: offset + 60 + u, bottom: 0
+        top: 60 + Utils.u, bottom: 0
     });
     win.add(tableView);
 
@@ -44,7 +52,7 @@ windowFunctions['Show Chat Group'] = function (evt) {
             }
         }
         else {
-            error(e);
+            Utils.error(e);
         }
 
     }
@@ -69,26 +77,26 @@ windowFunctions['Show Chat Group'] = function (evt) {
         });
         container.add(Ti.UI.createLabel({
             text: chat.from.first_name + ' ' + chat.from.last_name, textAlign: 'left',
-            top: 10 + u, right: 10 + u, left: 10 + u,
+            top: 10 + Utils.u, right: 10 + Utils.u, left: 10 + Utils.u,
             font: { fontSize: 9, fontWeight: 'bold' },
-            height: 10 + u
+            height: 10 + Utils.u
         }));
         container.add(Ti.UI.createLabel({
             text: new Date(chat.updated_at).toLocaleTimeString(),
-            top: 10 + u, right: 10 + u,
+            top: 10 + Utils.u, right: 10 + Utils.u,
             font: { fontSize: 8 },
-            height: 10 + u, width: 'auto'
+            height: 10 + Utils.u, width: 'auto'
         }));
         container.add(Ti.UI.createLabel({
             text: chat.message, textAlign: 'left',
             height: 'auto',
-            top: 20 + u, right: 10 + u, left: 10 + u, bottom: 10 + u
+            top: 20 + Utils.u, right: 10 + Utils.u, left: 10 + Utils.u, bottom: 10 + Utils.u
         }));
         var removeMessage = Ti.UI.createButton({
 	        title: 'Delete',
 	        color: '#000', backgroundColor: '#f00',
 	        style: 0,
-	        top: 20 + u, right: 10 + u, bottom: 10 + u,
+	        top: 20 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
 	        height: 'auto', width: 'auto',
 	        chat_id: chat.id
 	    });
@@ -101,7 +109,7 @@ windowFunctions['Show Chat Group'] = function (evt) {
 		            tableView.deleteRow(row);
 		        }
 		        else {
-		            error(e);
+		            Utils.error(e);
 		        }
 	    	});
 	    });
@@ -129,5 +137,5 @@ windowFunctions['Show Chat Group'] = function (evt) {
     win.addEventListener('close', function (evt) {
         clearInterval(pingID);
     });
-    win.open();
+    return win;
 };

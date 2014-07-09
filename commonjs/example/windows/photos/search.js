@@ -1,17 +1,21 @@
-windowFunctions['Search Photo'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Search Photo'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
 
     var table = Ti.UI.createTableView({
         backgroundColor: '#fff',
-        top: offset + u, bottom: 0,
+        top: 0, bottom: 0,
         data: [
             { title: 'Loading, please wait...' }
         ]
     });
     table.addEventListener('click', function (evt) {
         if (evt.row.id) {
-            handleOpenWindow({ target: 'Show Photo', id: evt.row.id });
+            WindowManager.handleOpenWindow({ target: 'Show Photo', id: evt.row.id });
         }
     });
     win.add(table);
@@ -38,7 +42,7 @@ windowFunctions['Search Photo'] = function (evt) {
                 }
             }
             else {
-                error(e);
+                Utils.error(e);
             }
         });
     }
@@ -52,7 +56,7 @@ windowFunctions['Search Photo'] = function (evt) {
                 table.setData([
                     { title: (e.error && e.message) || e }
                 ]);
-                error(e);
+                Utils.error(e);
             }
         });
     }
@@ -60,5 +64,5 @@ windowFunctions['Search Photo'] = function (evt) {
     win.addEventListener('open', function () {
         findMe();
     });
-    win.open();
+    return win;
 };

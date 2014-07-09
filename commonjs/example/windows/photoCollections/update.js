@@ -1,8 +1,12 @@
-windowFunctions['Update Photo Collection'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Update Photo Collection'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
     var content = Ti.UI.createScrollView({
-        top: offset + u,
+        top: 0,
         contentHeight: 'auto',
         layout: 'vertical'
     });
@@ -10,16 +14,16 @@ windowFunctions['Update Photo Collection'] = function (evt) {
 
     var name = Ti.UI.createTextField({
         hintText: 'Name',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED
     });
     content.add(name);
 
     var button = Ti.UI.createButton({
         title: 'Update',
-        top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     content.add(button);
 
@@ -34,7 +38,7 @@ windowFunctions['Update Photo Collection'] = function (evt) {
                 alert('Updated!');
             }
             else {
-                error(e);
+                Utils.error(e);
             }
             button.show();
         });
@@ -48,7 +52,7 @@ windowFunctions['Update Photo Collection'] = function (evt) {
 
     var status = Ti.UI.createLabel({
         text: 'Loading, please wait...', textAlign: 'center',
-        top: offset + u, right: 0, bottom: 0, left: 0,
+        top: 0, right: 0, bottom: 0, left: 0,
         backgroundColor: '#fff', zIndex: 2
     });
     win.add(status);
@@ -64,9 +68,9 @@ windowFunctions['Update Photo Collection'] = function (evt) {
                 name.focus();
             }
             else {
-                error(e);
+                Utils.error(e);
             }
         });
     });
-    win.open();
+    return win;
 };

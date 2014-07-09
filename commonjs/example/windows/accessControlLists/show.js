@@ -1,8 +1,12 @@
-windowFunctions['Show ACL'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Show ACL'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
     var content = Ti.UI.createScrollView({
-        top: offset + u,
+        top: 0,
         contentHeight: 'auto',
         layout: 'vertical'
     });
@@ -10,8 +14,8 @@ windowFunctions['Show ACL'] = function (evt) {
 
     var name = Ti.UI.createTextField({
         hintText: 'Name',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
         autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
         autocorrect: false
@@ -24,11 +28,11 @@ windowFunctions['Show ACL'] = function (evt) {
 	};
     var readersButton = Ti.UI.createButton({
         title: 'Select Readers',
-        top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     readersButton.addEventListener('click', function submitForm() {
-	    handleOpenWindow({ target: 'Select Users for ACL', access: readers });
+	    WindowManager.handleOpenWindow({ target: 'Select Users for ACL', access: readers });
     });
     content.add(readersButton);
 
@@ -38,18 +42,18 @@ windowFunctions['Show ACL'] = function (evt) {
 	};
     var writersButton = Ti.UI.createButton({
         title: 'Select Writers',
-        top: 0, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 0, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     writersButton.addEventListener('click', function (evt) {
-	    handleOpenWindow({ target: 'Select Users for ACL', access: writers });
+	    WindowManager.handleOpenWindow({ target: 'Select Users for ACL', access: writers });
     });
     content.add(writersButton);
 
     var showButton = Ti.UI.createButton({
         title: 'Show',
-        top: 0, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 0, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     showButton.addEventListener('click', function (evt) {
     	if (name.value.length == 0) {
@@ -67,7 +71,7 @@ windowFunctions['Show ACL'] = function (evt) {
             	writers.ids = acls.writers || [];
             	alert('Shown!');
             } else {
-                error(e);
+                Utils.error(e);
             }
         });
     });
@@ -75,8 +79,8 @@ windowFunctions['Show ACL'] = function (evt) {
     
     var updateButton = Ti.UI.createButton({
         title: 'Update',
-        top: 0, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 0, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     updateButton.addEventListener('click', function (evt) {
         Cloud.ACLs.update({
@@ -89,7 +93,7 @@ windowFunctions['Show ACL'] = function (evt) {
             if (e.success) {
                 alert('Updated!');
             } else {
-                error(e);
+                Utils.error(e);
             }
          });
     });
@@ -97,8 +101,8 @@ windowFunctions['Show ACL'] = function (evt) {
     
     var removeButton = Ti.UI.createButton({
         title: 'Remove',
-        top: 0, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 0, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     removeButton.addEventListener('click', function (evt) {
         Cloud.ACLs.remove({
@@ -107,7 +111,7 @@ windowFunctions['Show ACL'] = function (evt) {
             if (e.success) {
                 alert('Removed!');
             } else {
-                error(e);
+                Utils.error(e);
             }
         });
     });
@@ -116,5 +120,5 @@ windowFunctions['Show ACL'] = function (evt) {
     win.addEventListener('open', function () {
         name.focus();
     });
-    win.open();
+    return win;
 };

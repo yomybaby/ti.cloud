@@ -1,8 +1,12 @@
-windowFunctions['Resend Confirmation'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Resend Confirmation'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
     var content = Ti.UI.createScrollView({
-        top: offset + u,
+        top: 0,
         contentHeight: 'auto',
         layout: 'vertical'
     });
@@ -10,8 +14,8 @@ windowFunctions['Resend Confirmation'] = function (evt) {
 
     var email = Ti.UI.createTextField({
         hintText: 'Email',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
         keyboardType: Ti.UI.KEYBOARD_EMAIL
     });
@@ -19,8 +23,8 @@ windowFunctions['Resend Confirmation'] = function (evt) {
 
     var button = Ti.UI.createButton({
         title: 'Resend Confirmation',
-        top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     content.add(button);
 
@@ -44,7 +48,7 @@ windowFunctions['Resend Confirmation'] = function (evt) {
                 email.value = '';
             }
             else {
-                error(e);
+                Utils.error(e);
             }
             button.show();
         });
@@ -58,5 +62,5 @@ windowFunctions['Resend Confirmation'] = function (evt) {
     win.addEventListener('open', function () {
         email.focus();
     });
-    win.open();
+    return win;
 };

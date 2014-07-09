@@ -1,26 +1,34 @@
-Ti.include(
-    'selectUsersForGroup.js',
-    'showChatGroup.js',
-    'query.js'
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+
+WindowManager.include(
+    '/windows/chats/selectUsersForGroup',
+    '/windows/chats/showChatGroup',
+    '/windows/chats/query'
 );
 
-windowFunctions['Chats'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Chats'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
 
     var table = Ti.UI.createTableView({
         backgroundColor: '#fff',
-        top: offset + u, bottom: 0
+        top: 0, bottom: 0
     });
     table.addEventListener('click', function (evt) {
         if (evt.row.id) {
-            handleOpenWindow({ target: 'Show Chat Group', id: evt.row.id });
+            WindowManager.handleOpenWindow({ target: 'Show Chat Group', id: evt.row.id });
         }
         else if (evt.row.title === 'Query Chat Groups') {
-        	handleOpenWindow({ target: 'Query Chat Groups' });
+        	WindowManager.handleOpenWindow({ target: 'Query Chat Groups' });
         } 
         else {
-            handleOpenWindow({ target: 'Select Users for Group' });
+            WindowManager.handleOpenWindow({ target: 'Select Users for Group' });
         }
     });
     win.add(table);
@@ -48,12 +56,12 @@ windowFunctions['Chats'] = function (evt) {
                 table.setData(data);
             }
             else {
-                error(e);
+                Utils.error(e);
             }
         });
     }
 
     win.addEventListener('open', refresh);
     win.addEventListener('focus', refresh);
-    win.open();
+    return win;
 };

@@ -13,8 +13,9 @@ com.cocoafish.js.sdk.UIManager = {
             Ti.API.info('ThreeLegged Request url: ' + call.url);
 		}
 
+		var nav = null;
 		var modal = Ti.UI.createWindow({
-			modal: true,
+			fullscreen: false,
 			title: call.params.title || "Appcelerator Cloud Service"
 		});
 
@@ -49,7 +50,11 @@ com.cocoafish.js.sdk.UIManager = {
 				webView.removeEventListener('load', checkResponse);
 
 				response = data;
-				modal && modal.close();
+				if(nav != null) {
+					nav.close();
+				} else {
+					modal && modal.close();
+				}
 			}
 
 			if (loading && (e.type == 'load')) {
@@ -61,7 +66,6 @@ com.cocoafish.js.sdk.UIManager = {
 		webView.addEventListener('beforeload', checkResponse);
 		webView.addEventListener('load', checkResponse);
 		modal.addEventListener('close', closeHandler);
-
 		if (Ti.Platform.osname != 'android') {
 			var closeButton = Ti.UI.createButton({
 				title: 'close',
@@ -69,9 +73,14 @@ com.cocoafish.js.sdk.UIManager = {
 				height: '20%'
 			});
 			closeButton.addEventListener('click', function(){
-				modal.close();
+				nav.close();
 			});
 			modal.rightNavButton = closeButton;
+			if(Ti.Platform.osname == 'iphone' || Ti.Platform.osname == 'ios') {
+				nav = Ti.UI.iOS.createNavigationWindow({
+					window: modal
+				});
+			}
 		}
 
 		function closeHandler(e) {
@@ -83,8 +92,12 @@ com.cocoafish.js.sdk.UIManager = {
 
 		modal.add(webView);
 		modal.add(loading);
-
-		modal.open();
+		if(nav != null) {
+			nav.open({modal: true});
+		} else {
+			modal.open();
+		}
+		
 	},
 
 	processParams: function(params, cb) {
