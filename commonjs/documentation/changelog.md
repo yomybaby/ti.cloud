@@ -1,5 +1,11 @@
 # Change Log
 <pre>
+v3.2.3  Updating Analytics payload [NATIVESDK-136, NATIVESDK-195]
+        Added Generic Send Request (Cloud.sendRequest) [TIMODOPEN-389]
+        Added Removed OAuth methods(secureCreate, secureLogin, secureStatus) [TTIMODOPEN-394]
+        Geofence example updated [TIMODOPEN-405]
+        Fixed example app issue entering ip address [TIMODOPEN-294]
+
 v3.2.2  Added PushNotifications API(updateSubscription) [TIMODOPEN-383]
 
 v3.2.1  Added GeoFences APIs(create, update, query, remove) [TIMODOPEN-349]

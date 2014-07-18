@@ -13,26 +13,15 @@ function requireArgument(name, arg, type) {
     }
 }
 
-/**
- * Calls the ACS REST API with the provided data, executing the provided callback when we get a response.
- * @param data
- * @param callback
- */
-function defaultExecutor(data, callback) {
-    requireArgument('data', data, 'object');
-    requireArgument('callback', callback, 'function');
-    propagateRestNames(this);
-    if (!this.url) {
-        this.url = this.restNamespace + '/' + this.restMethod + '.json';
-    }
+function baseExecutor(url, verb, data, callback) {
     if (Cloud.debug) {
         Ti.API.info('ACS Request: { ' +
-            'url: "' + this.url + '", ' +
-            'verb: "' + this.verb + '", ' +
+            'url: "' + url + '", ' +
+            'verb: "' + verb + '", ' +
             'data: ' + JSON.stringify(data) + ' ' +
             '})');
     }
-    ACS.send(this.url, this.verb, data,
+    ACS.send(url, verb, data,
         function handleResponse(evt) {
             if (!callback) {
                 return;
@@ -58,6 +47,31 @@ function defaultExecutor(data, callback) {
             callback(response);
         }
     );
+}
+
+function genericExecutor(params, callback) {
+    requireArgument('params', params, 'object');
+    requireArgument('url', params.url, 'string');
+    requireArgument('method', params.method, 'string');
+    requireArgument('callback', callback, 'function');
+
+    var data = params.data ? params.data : {};
+    baseExecutor(params.url, params.method, data, callback);
+}
+
+/**
+ * Calls the ACS REST API with the provided data, executing the provided callback when we get a response.
+ * @param data
+ * @param callback
+ */
+function defaultExecutor(data, callback) {
+    requireArgument('data', data, 'object');
+    requireArgument('callback', callback, 'function');
+    propagateRestNames(this);
+    if (!this.url) {
+        this.url = this.restNamespace + '/' + this.restMethod + '.json';
+    }
+    baseExecutor(this.url, this.verb, data, callback);
 }
 
 function dataOptionalExecutor() {
@@ -142,6 +156,24 @@ function dataOptionalSecureAuthExecutor() {
     );
 }
 
+function dataExcludedResetSessionExecutor(callback) {
+    defaultExecutor.call(this, {}, function (evt) {
+        ACS.reset();
+        callback(evt);
+    });
+}
+
+function dataOptionalResetSessionExecutor() {
+    var orig = arguments;
+    defaultExecutor.call(this,
+        orig.length == 2 ? orig[0] : {},
+        function (evt) {
+            ACS.reset();
+            (orig.length == 2 ? orig[1] : orig[0])(evt);
+        }
+    );
+}
+
 function checkStatus() {
     return ACS.checkStatus();
 }
@@ -151,6 +183,7 @@ BedFrame.build(Cloud, {
     executor: defaultExecutor,
     children: [
         // Top level methods not associated with a namespace
+        { method: 'sendRequest', executor: genericExecutor },
         { method: 'hasStoredSession', executor: hasStoredSession },
         { method: 'retrieveStoredSession', executor: retrieveStoredSession },
         {
@@ -399,31 +432,13 @@ BedFrame.build(Cloud, {
                 { method: 'search', executor: dataOptionalExecutor },
                 { method: 'query', executor: dataOptionalExecutor },
                 { method: 'update', verb: 'PUT' },
-                { method: 'logout',
-                    executor: function (callback) {
-                        defaultExecutor.call(this, {}, function (evt) {
-                            ACS.reset();
-                            callback(evt);
-                        });
-                    }
-                },
-                { method: 'remove', restMethod: 'delete', verb: 'DELETE',
-                    executor: function () {
-                        var orig = arguments;
-                        defaultExecutor.call(this,
-                            orig.length == 2 ? orig[0] : {},
-                            function (evt) {
-                                ACS.reset();
-                                (orig.length == 2 ? orig[1] : orig[0])(evt);
-                            }
-                        );
-                    }
-                },
+                { method: 'logout', executor: dataExcludedResetSessionExecutor },
+                { method: 'remove', restMethod: 'delete', verb: 'DELETE', executor: dataOptionalResetSessionExecutor },
                 { method: 'requestResetPassword', restMethod: 'request_reset_password' },
-                { method: 'resendConfirmation', restMethod: 'resend_confirmation' },
-                { method: 'secureCreate', executor: dataOptionalSecureAuthExecutor },
-                { method: 'secureLogin', executor: dataOptionalSecureAuthExecutor },
-                { method: 'secureStatus', executor: checkStatus }
+                { method: 'resendConfirmation', restMethod: 'resend_confirmation' }
+                // { method: 'secureCreate', executor: dataOptionalSecureAuthExecutor },
+                // { method: 'secureLogin', executor: dataOptionalSecureAuthExecutor },
+                // { method: 'secureStatus', executor: checkStatus }
             ]
         }
     ]
