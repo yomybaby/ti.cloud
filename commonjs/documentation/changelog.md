@@ -1,5 +1,7 @@
 # Change Log
 <pre>
+v3.2.4  Fix bug in ACLs example [TIMODOPEN-423]
+
 v3.2.3  Updating Analytics payload [NATIVESDK-136, NATIVESDK-195]
         Added Generic Send Request (Cloud.sendRequest) [TIMODOPEN-389]
         Added Removed OAuth methods(secureCreate, secureLogin, secureStatus) [TTIMODOPEN-394]
