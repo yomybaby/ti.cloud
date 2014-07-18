@@ -36,8 +36,8 @@ windowFunctions['Check Permission of ACL'] = function (evt) {
             	user_id: evt.row.id
         	}, function (e) {
             	if (e.success) {
-					alert('Read Permission: ' + (e.permission['read permission'] || 'no') +  
-						  '\nWrite Permission: ' + (e.permission['write permission'] || 'no'));
+					alert('Read Permission: ' + (e.permission['read_permission'] || 'no') +  
+						  '\nWrite Permission: ' + (e.permission['write_permission'] || 'no'));
             	} else {
                 	error(e);
             	}
