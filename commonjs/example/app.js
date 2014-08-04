@@ -38,7 +38,8 @@ WindowManager.include(
     '/windows/social/table',
     '/windows/status/table',
     '/windows/users/table',
-    '/windows/accessControlLists/table'
+    '/windows/accessControlLists/table',
+    '/windows/genericSendRequest'
 );
 
 // Define our main window.
@@ -67,7 +68,8 @@ var table = Ti.UI.createTableView({
         'Push Schedules',
         'Reviews',
         'Social',
-        'Status'
+        'Status',
+        'Generic Send Request'
     ])
 });
 table.addEventListener('click', WindowManager.handleOpenWindow);
