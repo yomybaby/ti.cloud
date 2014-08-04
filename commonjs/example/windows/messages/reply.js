@@ -1,16 +1,20 @@
-windowFunctions['Reply Message'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Reply Message'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
     var content = Ti.UI.createScrollView({
-        top: offset + u,
+        top: 0,
         contentHeight: 'auto',
         layout: 'vertical'
     });
     win.add(content);
 
 	var subject = Ti.UI.createTextField({
-		top: 10 + u, left: 10 + u, right: 10 + u,
-		height: 40 + u,
+		top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+		height: 40 + Utils.u,
 		borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
 		editable: false,
 		ellipsize: true,
@@ -20,8 +24,8 @@ windowFunctions['Reply Message'] = function (evt) {
 
 	var body = Ti.UI.createTextArea({
 		hintText: 'Body',
-		top: 10 + u, left: 10 + u, right: 10 + u,
-		height: 120 + u,
+		top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+		height: 120 + Utils.u,
       	borderWidth: 2,
       	borderColor: '#bbb',
       	borderRadius: 5,
@@ -31,8 +35,8 @@ windowFunctions['Reply Message'] = function (evt) {
 
     var replyButton = Ti.UI.createButton({
         title: 'Reply',
-        top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     replyButton.addEventListener('click', function () {
     	replyButton.hide();
@@ -44,7 +48,7 @@ windowFunctions['Reply Message'] = function (evt) {
                 alert('Replied!');
 	            body.value = '';
             } else {
-                error(e);
+                Utils.error(e);
             }
             replyButton.show();
         });
@@ -55,5 +59,5 @@ windowFunctions['Reply Message'] = function (evt) {
         body.focus();
     });
 
-    win.open();
+    return win;
 };

@@ -1,8 +1,13 @@
-windowFunctions['External Login'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['External Login'] = function (evt) {
+    var Facebook = Ti.Facebook ? Ti.Facebook : require('facebook');
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
     var content = Ti.UI.createScrollView({
-        top: offset + u,
+        top: 0,
         contentHeight: 'auto',
         layout: 'vertical'
     });
@@ -14,7 +19,7 @@ windowFunctions['External Login'] = function (evt) {
 
     var label = Ti.UI.createLabel({
         textAlign: 'center',
-        top: 10 + u, right: 10 + u, left: 10 + u,
+        top: 10 + Utils.u, right: 10 + Utils.u, left: 10 + Utils.u,
         height: 'auto'
     });
     content.add(label);
@@ -31,7 +36,7 @@ windowFunctions['External Login'] = function (evt) {
                     alert('Logged in! You are now logged in as ' + user.id);
                 }
                 else {
-                    error(e);
+                    Utils.error(e);
                 }
             });
         }
@@ -43,7 +48,7 @@ windowFunctions['External Login'] = function (evt) {
 
 
     content.add(Facebook.createLoginButton({
-        top: 10 + u,
+        top: 10 + Utils.u,
         style: Ti.Platform.name == 'iPhone OS'
             ? Facebook.BUTTON_STYLE_WIDE
             : 'wide'
@@ -59,5 +64,5 @@ windowFunctions['External Login'] = function (evt) {
     	Facebook.removeEventListener('logout', updateLoginStatus);       	
     });
 
-    win.open();
+    return win;
 };

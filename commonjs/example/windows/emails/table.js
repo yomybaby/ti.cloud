@@ -1,8 +1,12 @@
-windowFunctions['Emails'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Emails'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
     var content = Ti.UI.createScrollView({
-        top: offset + u,
+        top: 0,
         contentHeight: 'auto',
         layout: 'vertical'
     });
@@ -10,8 +14,8 @@ windowFunctions['Emails'] = function (evt) {
 
     var template = Ti.UI.createTextField({
         hintText: 'Template Name',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
         autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
         autocorrect: false
@@ -20,8 +24,8 @@ windowFunctions['Emails'] = function (evt) {
 
     var recipients = Ti.UI.createTextField({
         hintText: 'Recipients (csv)',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
         autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
         autocorrect: false
@@ -30,8 +34,8 @@ windowFunctions['Emails'] = function (evt) {
 
     var button = Ti.UI.createButton({
         title: 'Send Email',
-        top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     content.add(button);
 
@@ -55,7 +59,7 @@ windowFunctions['Emails'] = function (evt) {
                 alert('Sent!');
             }
             else {
-                error(e);
+                Utils.error(e);
             }
             button.show();
         });
@@ -69,5 +73,5 @@ windowFunctions['Emails'] = function (evt) {
     win.addEventListener('open', function () {
         template.focus();
     });
-    win.open();
+    return win;
 };

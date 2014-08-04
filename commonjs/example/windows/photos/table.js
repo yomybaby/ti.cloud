@@ -1,15 +1,19 @@
-Ti.include(
-    'create.js',
-    'query.js',
-    'remove.js',
-    'search.js',
-    'show.js',
-    'update.js'
-);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+WindowManager.include(
 
-windowFunctions['Photos'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+    '/windows/photos/create',
+    '/windows/photos/query',
+    '/windows/photos/remove',
+    '/windows/photos/search',
+    '/windows/photos/show',
+    '/windows/photos/update'
+);
+exports['Photos'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
     var rows = [
         'Query Photo',
         'Search Photo'
@@ -19,10 +23,10 @@ windowFunctions['Photos'] = function (evt) {
     }
     var table = Ti.UI.createTableView({
         backgroundColor: '#fff',
-        top: offset + u,
-        data: createRows(rows)
+        top: 0,
+        data: Utils.createRows(rows)
     });
-    table.addEventListener('click', handleOpenWindow);
+    table.addEventListener('click', WindowManager.handleOpenWindow);
     win.add(table);
-    win.open();
+    return win;
 };

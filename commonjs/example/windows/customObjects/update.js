@@ -1,8 +1,12 @@
-windowFunctions['Update Object'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Update Object'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
     var content = Ti.UI.createScrollView({
-        top: offset + u,
+        top: 0,
         contentHeight: 'auto',
         layout: 'vertical'
     });
@@ -10,18 +14,18 @@ windowFunctions['Update Object'] = function (evt) {
 
     var remove = Ti.UI.createButton({
         title: 'Remove',
-        top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     remove.addEventListener('click', function () {
-        handleOpenWindow({ target: 'Remove Object', id: evt.id, classname: evt.classname });
+        WindowManager.handleOpenWindow({ target: 'Remove Object', id: evt.id, classname: evt.classname });
     });
     content.add(remove);
 
     var button = Ti.UI.createButton({
         title: 'Update',
-        top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
 
     var fields = [];
@@ -44,7 +48,7 @@ windowFunctions['Update Object'] = function (evt) {
                 alert('Updated!');
             }
             else {
-                error(e);
+                Utils.error(e);
             }
             button.show();
         });
@@ -54,7 +58,7 @@ windowFunctions['Update Object'] = function (evt) {
 
     var status = Ti.UI.createLabel({
         text: 'Loading, please wait...', textAlign: 'center',
-        top: offset + u, right: 0, bottom: 0, left: 0,
+        top: 0, right: 0, bottom: 0, left: 0,
         backgroundColor: '#fff', zIndex: 2
     });
     win.add(status);
@@ -77,8 +81,8 @@ windowFunctions['Update Object'] = function (evt) {
                     }
                     var textField = Ti.UI.createTextField({
                         hintText: key, value: object[key],
-                        top: 10 + u, left: 10 + u, right: 10 + u,
-                        height: 40 + u,
+                        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+                        height: 40 + Utils.u,
                         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED
                     });
                     content.add(textField);
@@ -92,9 +96,9 @@ windowFunctions['Update Object'] = function (evt) {
                 }
             }
             else {
-                error(e);
+                Utils.error(e);
             }
         });
     });
-    win.open();
+    return win;
 };

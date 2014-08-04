@@ -1,53 +1,33 @@
-windowFunctions['Create Geo Fence'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Create Geo Fence'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
     var content = Ti.UI.createScrollView({
-        top: offset + u,
+        top: 0,
         contentHeight: 'auto',
         layout: 'vertical'
     });
     win.add(content);
 
-    var name = Ti.UI.createTextField({
-        hintText: 'name',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+    var geo_fence = Ti.UI.createTextField({
+        hintText: 'geo_fence',
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED
     });
-    content.add(name);
-
-    var latitude = Ti.UI.createTextField({
-        hintText: 'latitude',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
-        borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED
-    });
-    content.add(latitude);
-
-    var longitude = Ti.UI.createTextField({
-        hintText: 'longitude',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
-        borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED
-    });
-    content.add(longitude);
-
-    var radius = Ti.UI.createTextField({
-        hintText: 'radius',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
-        borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED
-    });
-    content.add(radius);
+    content.add(geo_fence);
 
     var button = Ti.UI.createButton({
         title: 'Create',
-        top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     content.add(button);
 
-    var fields = [ name, latitude, longitude, radius ];
+    var fields = [ geo_fence ];
 
     function submitForm() {
         for (var i = 0; i < fields.length; i++) {
@@ -60,20 +40,12 @@ windowFunctions['Create Geo Fence'] = function (evt) {
         button.hide();
 
         Cloud.GeoFences.create({
-            geo_fence: {
-                loc: {
-                    coordinates: [parseFloat(longitude.value), parseFloat(latitude.value)],
-                    radius: radius.value
-                },
-                payload: {
-                    name: name.value
-                }
-            }
+            geo_fence: geo_fence.value
         }, function (e) {
             if (e.success) {
                 alert('Created!');
             } else {
-                error(e);
+                Utils.error(e);
             }
             button.show();
         });
@@ -85,7 +57,7 @@ windowFunctions['Create Geo Fence'] = function (evt) {
     }
 
     win.addEventListener('open', function () {
-        name.focus();
+        geo_fence.focus();
     });
-    win.open();
+    return win;
 };

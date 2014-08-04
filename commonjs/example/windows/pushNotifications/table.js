@@ -1,22 +1,26 @@
-Ti.include(
-    'query.js',
-    'notify.js',
-    'settings.js',
-    'subscribe.js',
-    'unsubscribe.js',
-    'notifyTokens.js',
-    'subscribeToken.js',
-    'unsubscribeToken.js',
-    'updateSubscription.js',
-    'showChannels.js',
-    'queryChannels.js',
-    'setBadge.js',
-    'resetBadge.js'
-);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+WindowManager.include(
 
-windowFunctions['Push Notifications'] = function () {
-    var win = createWindow();
-    var offset = addBackButton(win);
+    '/windows/pushNotifications/query',
+    '/windows/pushNotifications/notify',
+    '/windows/pushNotifications/settings',
+    '/windows/pushNotifications/subscribe',
+    '/windows/pushNotifications/unsubscribe',
+    '/windows/pushNotifications/notifyTokens',
+    '/windows/pushNotifications/subscribeToken',
+    '/windows/pushNotifications/unsubscribeToken',
+    '/windows/pushNotifications/updateSubscription',
+    '/windows/pushNotifications/showChannels',
+    '/windows/pushNotifications/queryChannels',
+    '/windows/pushNotifications/setBadge',
+    '/windows/pushNotifications/resetBadge'
+);
+exports['Push Notifications'] = function () {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
 
     var rows = [
         'Notify',
@@ -41,12 +45,12 @@ windowFunctions['Push Notifications'] = function () {
 
     var table = Ti.UI.createTableView({
         backgroundColor: '#fff',
-        top: offset + u,
-        data: createRows(rows)
+        top: 0,
+        data: Utils.createRows(rows)
     });
-    table.addEventListener('click', handleOpenWindow);
+    table.addEventListener('click', WindowManager.handleOpenWindow);
     win.add(table);
-    win.open();
+    return win;
 };
 
 function receivePush(e) {
@@ -54,16 +58,14 @@ function receivePush(e) {
 }
 
 var androidPushModule = null;
-
-var pushDeviceToken = null, pushNotificationsEnabled = null;
 function enablePushNotifications() {
-    pushNotificationsEnabled = true;
+    Utils.pushNotificationsEnabled = true;
     Ti.App.Properties.setBool('PushNotifications-Enabled', true);
     checkPushNotifications();
 }
 
 function disablePushNotifications() {
-    pushNotificationsEnabled = false;
+    Utils.pushNotificationsEnabled = false;
     Ti.App.Properties.setBool('PushNotifications-Enabled', false);
     checkPushNotifications();
 }
@@ -74,18 +76,18 @@ function getAndroidPushModule() {
     }
     catch (err) {
         alert('Unable to require the ti.cloudpush module for Android!');
-        pushNotificationsEnabled = false;
+        Utils.pushNotificationsEnabled = false;
         Ti.App.Properties.setBool('PushNotifications-Enabled', false);
         return null;
     }
 }
 
 function checkPushNotifications() {
-    if (pushNotificationsEnabled === null) {
-        pushNotificationsEnabled = Ti.App.Properties.getBool('PushNotifications-Enabled', false);
+    if (Utils.pushNotificationsEnabled === null) {
+        Utils.pushNotificationsEnabled = Ti.App.Properties.getBool('PushNotifications-Enabled', false);
     }
     if (Ti.Platform.name === 'iPhone OS') {
-        if (pushNotificationsEnabled) {
+        if (Utils.pushNotificationsEnabled) {
             if (Titanium.Platform.model == 'Simulator') {
                 alert('The simulator does not support push!');
                 disablePushNotifications();
@@ -104,7 +106,7 @@ function checkPushNotifications() {
         }
         else {
             Ti.Network.unregisterForPushNotifications();
-            pushDeviceToken = null;
+            Utils.pushDeviceToken = null;
         }
     }
     else if (Ti.Platform.name === 'android') {
@@ -114,7 +116,7 @@ function checkPushNotifications() {
                 return;
             }
         }
-        if (pushNotificationsEnabled) {
+        if (Utils.pushNotificationsEnabled) {
             // Need to retrieve the device token before enabling push
             androidPushModule.retrieveDeviceToken({
                 success: deviceTokenSuccess,
@@ -124,16 +126,16 @@ function checkPushNotifications() {
         else {
             androidPushModule.enabled = false;
             androidPushModule.removeEventListener('callback', receivePush);
-            pushDeviceToken = null;
+            Utils.pushDeviceToken = null;
         }
     }
 }
 
 function deviceTokenSuccess(e) {
-    pushDeviceToken = e.deviceToken;
-    pushToken = pushDeviceToken; 
-    alert('Device token is retrieved: ' + pushDeviceToken);
-    Ti.API.info('Device Token: ' + pushDeviceToken);
+    Utils.pushDeviceToken = e.deviceToken;
+    Utils.pushToken = Utils.pushDeviceToken; 
+    alert('Device token is retrieved: ' + Utils.pushDeviceToken);
+    Ti.API.info('Device Token: ' + Utils.pushDeviceToken);
     if (androidPushModule) {
         androidPushModule.enabled = true;
         androidPushModule.addEventListener('callback', receivePush);

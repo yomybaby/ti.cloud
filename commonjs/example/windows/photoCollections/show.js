@@ -1,8 +1,12 @@
-windowFunctions['Show Photo Collection'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Show Photo Collection'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
     var content = Ti.UI.createScrollView({
-        top: offset + u,
+        top: 0,
         contentHeight: 'auto',
         layout: 'vertical'
     });
@@ -10,7 +14,7 @@ windowFunctions['Show Photo Collection'] = function (evt) {
 
     var status = Ti.UI.createLabel({
         text: 'Loading, please wait...', textAlign: 'left',
-        height: 30 + u, left: 20 + u, right: 20 + u
+        height: 30 + Utils.u, left: 20 + Utils.u, right: 20 + Utils.u
     });
     content.add(status);
 
@@ -26,52 +30,52 @@ windowFunctions['Show Photo Collection'] = function (evt) {
             if (collection.counts.photos) {
                 var showPhotos = Ti.UI.createButton({
                     title: 'Show Photos',
-                    top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-                    height: 40 + u
+                    top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+                    height: 40 + Utils.u
                 });
                 showPhotos.addEventListener('click', function () {
-                    handleOpenWindow({ target: 'Show Collection\'s Photos', id: evt.id });
+                    WindowManager.handleOpenWindow({ target: 'Show Collection\'s Photos', id: evt.id });
                 });
                 content.add(showPhotos);
             }
             if (collection.counts.subcollections) {
                 var showSubcollections = Ti.UI.createButton({
                     title: 'Show Subcollections',
-                    top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-                    height: 40 + u
+                    top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+                    height: 40 + Utils.u
                 });
                 showSubcollections.addEventListener('click', function () {
-                    handleOpenWindow({ target: 'Show Subcollections', id: evt.id });
+                    WindowManager.handleOpenWindow({ target: 'Show Subcollections', id: evt.id });
                 });
                 content.add(showSubcollections);
             }
 
             var update = Ti.UI.createButton({
                 title: 'Update',
-                top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-                height: 40 + u
+                top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+                height: 40 + Utils.u
             });
             update.addEventListener('click', function () {
-                handleOpenWindow({ target: 'Update Photo Collection', id: evt.id });
+                WindowManager.handleOpenWindow({ target: 'Update Photo Collection', id: evt.id });
             });
             content.add(update);
 
             var remove = Ti.UI.createButton({
                 title: 'Remove',
-                top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-                height: 40 + u
+                top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+                height: 40 + Utils.u
             });
             remove.addEventListener('click', function () {
-                handleOpenWindow({ target: 'Remove Photo Collection', id: evt.id });
+                WindowManager.handleOpenWindow({ target: 'Remove Photo Collection', id: evt.id });
             });
             content.add(remove);
 
-            enumerateProperties(content, collection, 20);
+            Utils.enumerateProperties(content, collection, 20);
         }
         else {
-            error(e);
+            Utils.error(e);
         }
     });
 
-    win.open();
+    return win;
 };

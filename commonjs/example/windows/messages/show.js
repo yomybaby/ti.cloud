@@ -1,8 +1,12 @@
-windowFunctions['Show Message'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Show Message'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
     var content = Ti.UI.createScrollView({
-        top: offset + u,
+        top: 0,
         contentHeight: 'auto',
         layout: 'vertical'
     });
@@ -10,7 +14,7 @@ windowFunctions['Show Message'] = function (evt) {
 
     var status = Ti.UI.createLabel({
         text: 'Loading, please wait...', textAlign: 'left',
-        height: 30 + u, left: 20 + u, right: 20 + u
+        height: 30 + Utils.u, left: 20 + Utils.u, right: 20 + Utils.u
     });
     content.add(status);
 
@@ -22,30 +26,30 @@ windowFunctions['Show Message'] = function (evt) {
 		    if (evt.allowReply) {
 		        var reply = Ti.UI.createButton({
 		            title: 'Reply',
-		            top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-		            height: 40 + u
+		            top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+		            height: 40 + Utils.u
 		        });
 		        reply.addEventListener('click', function () {
-		            handleOpenWindow({ target: 'Reply Message', id: evt.id, subject: e.messages[0].subject });
+		            WindowManager.handleOpenWindow({ target: 'Reply Message', id: evt.id, subject: e.messages[0].subject });
 		        });
 		        content.add(reply);
 		    }
 
 	        var remove = Ti.UI.createButton({
 	            title: 'Remove Message',
-	            top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-	            height: 40 + u
+	            top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+	            height: 40 + Utils.u
 	        });
 	        remove.addEventListener('click', function () {
-	            handleOpenWindow({ target: 'Remove Message', id: evt.id });
+	            WindowManager.handleOpenWindow({ target: 'Remove Message', id: evt.id });
 	        });
 	        content.add(remove);
 
-            enumerateProperties(content, e.messages[0], 20);
+            Utils.enumerateProperties(content, e.messages[0], 20);
         } else {
-            error(e);
+            Utils.error(e);
         }
     });
 
-    win.open();
+    return win;
 };

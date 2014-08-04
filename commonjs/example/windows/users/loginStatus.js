@@ -1,8 +1,12 @@
-windowFunctions['Login Status'] = function () {
-	var win = createWindow();
-	var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Login Status'] = function () {
+	var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
 	var content = Ti.UI.createScrollView({
-		top: offset + u,
+		top: 0,
 		contentHeight: 'auto',
 		layout: 'vertical'
 	});
@@ -10,16 +14,16 @@ windowFunctions['Login Status'] = function () {
 
 	content.add(Ti.UI.createLabel({
 			text: 'accessToken: ' + Cloud.accessToken, textAlign: 'left',
-			height: 40 + u, left: 20 + u, right: 20 + u
+			height: 40 + Utils.u, left: 20 + Utils.u, right: 20 + Utils.u
 	}));
 	content.add(Ti.UI.createLabel({
 			text: 'expiresIn: ' + Cloud.expiresIn, textAlign: 'left',
-			height: 40 + u, left: 20 + u, right: 20 + u
+			height: 40 + Utils.u, left: 20 + Utils.u, right: 20 + Utils.u
 	}));
 	content.add(Ti.UI.createLabel({
 			text: 'sessionId: ' + Cloud.sessionId, textAlign: 'left',
-			height: 40 + u, left: 20 + u, right: 20 + u
+			height: 40 + Utils.u, left: 20 + Utils.u, right: 20 + Utils.u
 	}));
 
-	win.open();
+	return win;
 };

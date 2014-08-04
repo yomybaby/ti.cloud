@@ -1,15 +1,19 @@
-windowFunctions['Create Message'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Create Message'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
     var content = Ti.UI.createScrollView({
-        top: offset + u,
+        top: 0,
         contentHeight: 'auto',
         layout: 'vertical'
     });
     win.add(content);
 
 	var toView = Ti.UI.createView({
-		top: 10 + u, left: 10 + u, right: 10 + u,
+		top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
 		height: Ti.UI.SIZE || 'auto',
 		layout: 'horizontal'
 	});
@@ -19,17 +23,17 @@ windowFunctions['Create Message'] = function (evt) {
 	};
     var toButton = Ti.UI.createButton({
         title: 'To:', 
-        height: 40 + u,
+        height: 40 + Utils.u,
         width: Ti.UI.SIZE || 'auto'
     });
     toButton.addEventListener('click', function (e) {
-	    handleOpenWindow({ target: 'Select Users for Message', toSet: toSet });
+	    WindowManager.handleOpenWindow({ target: 'Select Users for Message', toSet: toSet });
     });
     toView.add(toButton);
 
 	var toNames = Ti.UI.createTextField({
-		left: 10 + u, right: 0,
-		height: 40 + u,
+		left: 10 + Utils.u, right: 0,
+		height: 40 + Utils.u,
 		borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
 		editable: false,
 		ellipsize: true
@@ -39,8 +43,8 @@ windowFunctions['Create Message'] = function (evt) {
 
 	var subject = Ti.UI.createTextField({
 		hintText: 'Subject',
-		top: 10 + u, left: 10 + u, right: 10 + u,
-		height: 40 + u,
+		top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+		height: 40 + Utils.u,
 		borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
 		autocorrect: false
 	});
@@ -48,8 +52,8 @@ windowFunctions['Create Message'] = function (evt) {
 
 	var body = Ti.UI.createTextArea({
 		hintText: 'Body',
-		top: 10 + u, left: 10 + u, right: 10 + u,
-		height: 120 + u,
+		top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+		height: 120 + Utils.u,
       	borderWidth: 2,
       	borderColor: '#bbb',
       	borderRadius: 5,
@@ -59,8 +63,8 @@ windowFunctions['Create Message'] = function (evt) {
 
     var createButton = Ti.UI.createButton({
         title: 'Create',
-        top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     createButton.addEventListener('click', function (evt) {
     	createButton.hide();
@@ -75,7 +79,7 @@ windowFunctions['Create Message'] = function (evt) {
 	            toSet.ids = [];
 	            toSet.names = [];
             } else {
-                error(e);
+                Utils.error(e);
             }
             createButton.show();
         });
@@ -88,5 +92,5 @@ windowFunctions['Create Message'] = function (evt) {
 	win.addEventListener('focus', function () {
         toNames.value = toSet.names.join(',');
     });
-    win.open();
+    return win;
 };

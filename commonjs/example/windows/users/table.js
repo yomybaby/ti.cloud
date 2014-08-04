@@ -1,28 +1,34 @@
-Ti.include(
-    'loginStatus.js',
-    'create.js',
-    'login.js',
-    'logout.js',
-    'query.js',
-    'remove.js',
-    'requestResetPassword.js',
-    'resendConfirmation.js',
-    'search.js',
-    'show.js',
-    'showMe.js',
-    'update.js'
-);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+WindowManager.include(
 
-windowFunctions['Users'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+    '/windows/users/loginStatus',
+    '/windows/users/create',
+    '/windows/users/login',
+    '/windows/users/logout',
+    '/windows/users/query',
+    '/windows/users/remove',
+    '/windows/users/requestResetPassword',
+    '/windows/users/resendConfirmation',
+    '/windows/users/search',
+    '/windows/users/show',
+    '/windows/users/showMe',
+    '/windows/users/update',
+	'/windows/users/secureIdentity'
+);
+exports['Users'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
     var table = Ti.UI.createTableView({
         backgroundColor: '#fff',
-        top: offset + u,
-        data: createRows([
+        top: 0,
+        data: Utils.createRows([
             'Login Status',
             'Create User',
             'Login User',
+	        'Secure Identity',
             'Request Reset Password',
             'Resend Confirmation',
             'Show Current User',
@@ -33,7 +39,7 @@ windowFunctions['Users'] = function (evt) {
             'Search User'
         ])
     });
-    table.addEventListener('click', handleOpenWindow);
+    table.addEventListener('click', WindowManager.handleOpenWindow);
     win.add(table);
-    win.open();
+    return win;
 };

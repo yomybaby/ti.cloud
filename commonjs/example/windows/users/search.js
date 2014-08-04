@@ -1,29 +1,33 @@
-windowFunctions['Search User'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Search User'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
 
     var search = Ti.UI.createTextField({
         hintText: 'Full Text Search',
-        top: offset + 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED
     });
     win.add(search);
 
     var button = Ti.UI.createButton({
         title: 'Search',
-        top: offset + 60 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u
+        top: 60 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     win.add(button);
 
     var table = Ti.UI.createTableView({
         backgroundColor: '#fff',
-        top: offset + 110 + u, bottom: 0
+        top: 110 + Utils.u, bottom: 0
     });
     table.addEventListener('click', function (evt) {
         if (evt.row.id) {
-            handleOpenWindow({ target: 'Show User', id: evt.row.id });
+            WindowManager.handleOpenWindow({ target: 'Show User', id: evt.row.id });
         }
     });
     win.add(table);
@@ -58,7 +62,7 @@ windowFunctions['Search User'] = function (evt) {
                     }
                 }
                 else {
-                    error(e);
+                    Utils.error(e);
                 }
             }
         );
@@ -70,5 +74,5 @@ windowFunctions['Search User'] = function (evt) {
     win.addEventListener('open', function () {
         search.focus();
     });
-    win.open();
+    return win;
 };

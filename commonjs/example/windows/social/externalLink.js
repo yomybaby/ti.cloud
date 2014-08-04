@@ -1,8 +1,13 @@
-windowFunctions['External Link'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['External Link'] = function (evt) {
+    var Facebook = Ti.Facebook ? Ti.Facebook : require('facebook');
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
     var content = Ti.UI.createScrollView({
-        top: offset + u,
+        top: 0,
         contentHeight: 'auto',
         layout: 'vertical'
     });
@@ -14,7 +19,7 @@ windowFunctions['External Link'] = function (evt) {
 
     var label = Ti.UI.createLabel({
         textAlign: 'center',
-        top: 10 + u, right: 10 + u, left: 10 + u,
+        top: 10 + Utils.u, right: 10 + Utils.u, left: 10 + Utils.u,
         height: 'auto'
     });
     content.add(label);
@@ -30,7 +35,7 @@ windowFunctions['External Link'] = function (evt) {
                     alert('Linked!');
                 }
                 else {
-                    error(e);
+                    Utils.error(e);
                 }
             });
         }
@@ -40,7 +45,7 @@ windowFunctions['External Link'] = function (evt) {
     }
 
     content.add(Facebook.createLoginButton({
-        top: 10 + u,
+        top: 10 + Utils.u,
         style: Ti.Platform.name == 'iPhone OS'
             ? Facebook.BUTTON_STYLE_WIDE
             : 'wide'
@@ -56,5 +61,5 @@ windowFunctions['External Link'] = function (evt) {
     	Facebook.removeEventListener('logout', updateLoginStatus);       	
     });
 
-    win.open();
+    return win;
 };

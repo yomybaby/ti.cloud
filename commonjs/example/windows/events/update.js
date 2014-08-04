@@ -1,8 +1,12 @@
-windowFunctions['Update Event'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Update Event'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
     var content = Ti.UI.createScrollView({
-        top: offset + u,
+        top: 0,
         contentHeight: 'auto',
         layout: 'vertical'
     });
@@ -10,32 +14,32 @@ windowFunctions['Update Event'] = function (evt) {
 
     var name = Ti.UI.createTextField({
         hintText: 'Name',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED
     });
     content.add(name);
 
     var date = Ti.UI.createTextField({
         hintText: 'Date',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED
     });
     content.add(date);
 
     var time = Ti.UI.createTextField({
         hintText: 'Time',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED
     });
     content.add(time);
 
     var duration = Ti.UI.createTextField({
         hintText: 'Duration (seconds)',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
 	    keyboardType: Ti.UI.KEYBOARD_NUMBER_PAD
     });
@@ -43,8 +47,8 @@ windowFunctions['Update Event'] = function (evt) {
 
 	var recurring = Ti.UI.createTextField({
 		hintText: 'Recurring',
-		top: 10 + u, left: 10 + u, right: 10 + u,
-		height: 40 + u,
+		top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+		height: 40 + Utils.u,
 		borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
 		autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE
 	});
@@ -52,8 +56,8 @@ windowFunctions['Update Event'] = function (evt) {
 
     var recurringCount = Ti.UI.createTextField({
         hintText: 'Recurring Count (0-1000)',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
         keyboardType: Ti.UI.KEYBOARD_NUMBER_PAD
     });
@@ -61,8 +65,8 @@ windowFunctions['Update Event'] = function (evt) {
 
     var button = Ti.UI.createButton({
         title: 'Update',
-        top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     content.add(button);
 
@@ -103,7 +107,7 @@ windowFunctions['Update Event'] = function (evt) {
             if (e.success) {
                 alert('Updated!');
             } else {
-                error(e);
+                Utils.error(e);
             }
             button.show();
         });
@@ -117,7 +121,7 @@ windowFunctions['Update Event'] = function (evt) {
 
 	var status = Ti.UI.createLabel({
 		text: 'Loading, please wait...', textAlign: 'center',
-		top: offset + u, right: 0, bottom: 0, left: 0,
+		top: 0, right: 0, bottom: 0, left: 0,
 		backgroundColor: '#fff', zIndex: 2
 	});
     win.add(status);
@@ -129,7 +133,7 @@ windowFunctions['Update Event'] = function (evt) {
 	         status.hide();
 	         if (e.success) {
 	             var event = e.events[0];
-		         var datetime = convertISOToDate(event.start_time);
+		         var datetime = Utils.convertISOToDate(event.start_time);
 	             name.value = event.name;
 		         date.value = datetime.toLocaleDateString();
 		         time.value = datetime.toLocaleTimeString();
@@ -142,9 +146,9 @@ windowFunctions['Update Event'] = function (evt) {
 		         }
 	             name.focus();
 	         } else {
-	             error(e);
+	             Utils.error(e);
 	         }
 	     });
 	 });
-    win.open();
+    return win;
 };

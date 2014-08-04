@@ -1,16 +1,20 @@
-// Be sure to include the "facebook" module when running this app. It is now separate from the sdk.
-var Facebook = Ti.Facebook ? Ti.Facebook : require('facebook');
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
 
-Ti.include(
-    'externalLink.js',
-    'externalLogin.js',
-    'externalUnlink.js',
-    'searchFacebookFriends.js'
+WindowManager.include(
+    '/windows/social/externalLink',
+    '/windows/social/externalLogin',
+    '/windows/social/externalUnlink',
+    '/windows/social/searchFacebookFriends'
 );
 
-windowFunctions['Social'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+exports['Social'] = function (evt) {
+    // Be sure to include the "facebook" module when running this app. It is now separate from the sdk.
+    var Facebook = Ti.Facebook ? Ti.Facebook : require('facebook');
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
     var rows = [
         'Search Facebook Friends'
     ];
@@ -30,10 +34,10 @@ windowFunctions['Social'] = function (evt) {
     }
     var table = Ti.UI.createTableView({
         backgroundColor: '#fff',
-        top: offset + u,
-        data: createRows(rows)
+        top: 0,
+        data: Utils.createRows(rows)
     });
-    table.addEventListener('click', handleOpenWindow);
+    table.addEventListener('click', WindowManager.handleOpenWindow);
     win.add(table);
-    win.open();
+    return win;
 };

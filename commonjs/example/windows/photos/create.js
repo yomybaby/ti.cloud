@@ -1,10 +1,14 @@
-windowFunctions['Create Photo'] = function (evt) {
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Create Photo'] = function (evt) {
 
-    var win = createWindow();
-    var offset = addBackButton(win);
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
 
     var content = Ti.UI.createScrollView({
-        top: offset + u,
+        top: 0,
         contentHeight: 'auto',
         layout: 'vertical'
     });
@@ -13,9 +17,9 @@ windowFunctions['Create Photo'] = function (evt) {
 
     if (Ti.UI.createProgressBar) {
         var uploadProgress = Ti.UI.createProgressBar({
-            top: 10 + u, right: 10 + u, left: 10 + u,
+            top: 10 + Utils.u, right: 10 + Utils.u, left: 10 + Utils.u,
             max: 1, min: 0, value: 0,
-            height: 25 + u
+            height: 25 + Utils.u
         });
         content.add(uploadProgress);
         uploadProgress.show();
@@ -26,8 +30,8 @@ windowFunctions['Create Photo'] = function (evt) {
     if (Ti.Media.openPhotoGallery) {
         var selectPhoto = Ti.UI.createButton({
             title: 'Select Photo from Gallery',
-            top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-            height: 40 + u
+            top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+            height: 40 + Utils.u
         });
         selectPhoto.addEventListener('click', function (evt) {
             Ti.Media.openPhotoGallery({
@@ -41,8 +45,8 @@ windowFunctions['Create Photo'] = function (evt) {
     if (Ti.Media.showCamera) {
         var takePhoto = Ti.UI.createButton({
             title: 'Take Photo with Camera',
-            top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-            height: 40 + u
+            top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+            height: 40 + Utils.u
         });
         takePhoto.addEventListener('click', function (evt) {
             Ti.Media.showCamera({
@@ -57,8 +61,8 @@ windowFunctions['Create Photo'] = function (evt) {
     var collectionID;
     var chooseCollection = Ti.UI.createButton({
         title: 'Choose Collection',
-        top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     chooseCollection.addEventListener('click', function (evt) {
         var table = Ti.UI.createTableView({
@@ -106,7 +110,7 @@ windowFunctions['Create Photo'] = function (evt) {
                 }
                 else {
                     win.remove(table);
-                    error(e);
+                    Utils.error(e);
                 }
             });
         }
@@ -119,7 +123,7 @@ windowFunctions['Create Photo'] = function (evt) {
                 table.setData([
                     { title: (e.error && e.message) || e }
                 ]);
-                error(e);
+                Utils.error(e);
             }
         });
     });
@@ -127,8 +131,8 @@ windowFunctions['Create Photo'] = function (evt) {
 
     var button = Ti.UI.createButton({
         title: 'Create',
-        top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     button.addEventListener('click', function (evt) {
         if (!photo) {
@@ -155,11 +159,11 @@ windowFunctions['Create Photo'] = function (evt) {
                 alert('Uploaded!');
             }
             else {
-                error(e);
+                Utils.error(e);
             }
         });
     });
     content.add(button);
 
-    win.open();
+    return win;
 };

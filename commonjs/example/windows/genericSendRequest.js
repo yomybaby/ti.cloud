@@ -1,9 +1,12 @@
-windowFunctions['Generic Send Request'] = function (evt) {
-    var win = createWindow();
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+
+exports['Generic Send Request'] = function (evt) {
+    var win = WindowManager.createWindow();
     var offset = addBackButton(win);
     var content = Ti.UI.createScrollView({
-        top: offset + u,
-        contentHeight: 'auto',
+        contentHeight: Ti.UI.SIZE,
         layout: 'vertical'
     });
     win.add(content);
@@ -11,8 +14,8 @@ windowFunctions['Generic Send Request'] = function (evt) {
     var url = Ti.UI.createTextField({
         hintText: 'url (users/query.json)',
         value: 'users/query.json',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
         autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
         autocorrect: false
@@ -22,8 +25,8 @@ windowFunctions['Generic Send Request'] = function (evt) {
     var method = Ti.UI.createTextField({
         hintText: 'method (GET)',
         value: 'GET',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
         autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
         autocorrect: false
@@ -33,8 +36,8 @@ windowFunctions['Generic Send Request'] = function (evt) {
     var data = Ti.UI.createTextField({
         hintText: 'data ({"where":{"first_name":"joe"}})',
         value: '{"where":{"first_name":"joe"}}',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
         autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
         autocorrect: false
@@ -43,8 +46,8 @@ windowFunctions['Generic Send Request'] = function (evt) {
 
     var button = Ti.UI.createButton({
         title: 'Send',
-        top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     content.add(button);
 
@@ -84,5 +87,5 @@ windowFunctions['Generic Send Request'] = function (evt) {
     win.addEventListener('open', function () {
         url.focus();
     });
-    win.open();
+    return win;
 };

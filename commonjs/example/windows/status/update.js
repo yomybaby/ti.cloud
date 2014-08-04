@@ -1,9 +1,13 @@
-windowFunctions['Update Status'] = function (evt) {
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Update Status'] = function (evt) {
     var status_id = evt.id;
-    var win = createWindow();
-    var offset = addBackButton(win);
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
     var content = Ti.UI.createScrollView({
-        top: offset + u,
+        top: 0,
         contentHeight: 'auto',
         layout: 'vertical'
     });
@@ -11,8 +15,8 @@ windowFunctions['Update Status'] = function (evt) {
 
     var message = Ti.UI.createTextField({
         hintText: 'Message',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED
     });
     content.add(message);
@@ -22,8 +26,8 @@ windowFunctions['Update Status'] = function (evt) {
     if (Ti.Media.openPhotoGallery) {
         var selectPhoto = Ti.UI.createButton({
             title: 'Select Photo from Gallery',
-            top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-            height: 40 + u
+            top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+            height: 40 + Utils.u
         });
         selectPhoto.addEventListener('click', function (evt) {
             Ti.Media.openPhotoGallery({
@@ -37,8 +41,8 @@ windowFunctions['Update Status'] = function (evt) {
     if (Ti.Media.showCamera) {
         var takePhoto = Ti.UI.createButton({
             title: 'Take Photo with Camera',
-            top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-            height: 40 + u
+            top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+            height: 40 + Utils.u
         });
         takePhoto.addEventListener('click', function (evt) {
             Ti.Media.showCamera({
@@ -52,30 +56,30 @@ windowFunctions['Update Status'] = function (evt) {
 
     var button = Ti.UI.createButton({
         title: 'Update',
-        top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     content.add(button);
     
     var showButton = Ti.UI.createButton({
         title: 'Show',
-        top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     content.add(showButton);
     
     var deleteButton = Ti.UI.createButton({
         title: 'Delete',
-        top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     content.add(deleteButton);
 
     if (Ti.UI.createProgressBar) {
         var uploadProgress = Ti.UI.createProgressBar({
-            top: 10 + u, right: 10 + u, left: 10 + u,
+            top: 10 + Utils.u, right: 10 + Utils.u, left: 10 + Utils.u,
             max: 1, min: 0, value: 0,
-            height: 25 + u
+            height: 25 + Utils.u
         });
         content.add(uploadProgress);
         uploadProgress.show();
@@ -116,18 +120,18 @@ windowFunctions['Update Status'] = function (evt) {
                 alert('Updated!');
             }
             else {
-                error(e);
+                Utils.error(e);
             }
             button.show();
         });
     }
     
     function showStatus(evt) {
-        handleOpenWindow({ target: 'Show Status', id:status_id });
+        WindowManager.handleOpenWindow({ target: 'Show Status', id:status_id });
     }
     
     function deleteStatus(evt) {
-        handleOpenWindow({ target: 'Remove Status', id:status_id });
+        WindowManager.handleOpenWindow({ target: 'Remove Status', id:status_id });
     }
 
     button.addEventListener('click', submitForm);
@@ -141,5 +145,5 @@ windowFunctions['Update Status'] = function (evt) {
     win.addEventListener('open', function () {
         message.focus();
     });
-    win.open();
+    return win;
 };

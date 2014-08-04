@@ -1,17 +1,21 @@
-windowFunctions['Login User'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Login User'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
     var content = Ti.UI.createScrollView({
-        top: offset + u,
-        contentHeight: 'auto',
+        top: 0,
+        contentHeight: Ti.UI.SIZE,
         layout: 'vertical'
     });
     win.add(content);
 
     var login = Ti.UI.createTextField({
         hintText: 'Login',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
         autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
         autocorrect: false
@@ -20,8 +24,8 @@ windowFunctions['Login User'] = function (evt) {
 
     var password = Ti.UI.createTextField({
         hintText: 'Password',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
         passwordMask: true
     });
@@ -29,9 +33,12 @@ windowFunctions['Login User'] = function (evt) {
 
     var button = Ti.UI.createButton({
         title: 'Login User',
-        top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u
     });
+    if(!Utils.blackberry) {
+        button.bottom = 10 + Utils.u;
+    }
     content.add(button);
 
     var fields = [ login, password ];
@@ -56,7 +63,7 @@ windowFunctions['Login User'] = function (evt) {
                 alert('Logged in! You are now logged in as ' + user.id);
             }
             else {
-                error(e);
+                Utils.error(e);
             }
             button.show();
         });
@@ -70,5 +77,5 @@ windowFunctions['Login User'] = function (evt) {
     win.addEventListener('open', function () {
         login.focus();
     });
-    win.open();
+    return win;
 };

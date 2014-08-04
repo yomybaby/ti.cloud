@@ -1,28 +1,32 @@
-windowFunctions['Subscribe Token'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Subscribe Token'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
     var content = Ti.UI.createScrollView({
-        top: offset + u,
+        top: 0,
         contentHeight: 'auto',
         layout: 'vertical'
     });
     win.add(content);
 
-    if (!pushDeviceToken) {
+    if (!Utils.pushDeviceToken) {
         content.add(Ti.UI.createLabel({
             text: 'Please visit Push Notifications > Settings to enable push!',
             textAlign: 'center',
             color: '#000',
             height: 'auto'
         }));
-        win.open();
+        return win;
         return;
     }
 
     var channel = Ti.UI.createTextField({
         hintText: 'Channel',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
         autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
         autocorrect: false
@@ -32,8 +36,8 @@ windowFunctions['Subscribe Token'] = function (evt) {
     if ( Ti.Platform.name === 'android' ) {
         var android_type = Ti.UI.createTextField({
             hintText: 'android type',
-            top: 10 + u, left: 10 + u, right: 10 + u,
-            height: 40 + u,
+            top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+            height: 40 + Utils.u,
             borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
             autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
             autocorrect: false
@@ -43,8 +47,8 @@ windowFunctions['Subscribe Token'] = function (evt) {
 
     var button = Ti.UI.createButton({
         title: 'Subscribe',
-        top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     content.add(button);
 
@@ -69,15 +73,15 @@ windowFunctions['Subscribe Token'] = function (evt) {
 
         Cloud.PushNotifications.subscribeToken({
             channel: channel.value,
-            device_token: pushDeviceToken,
+            device_token: Utils.pushDeviceToken,
             type: type
         }, function (e) {
             if (e.success) {
                 channel.value = '';
-                alert('Subscribed! ' + pushDeviceToken);
+                alert('Subscribed! ' + Utils.pushDeviceToken);
             }
             else {
-                error(e);
+                Utils.error(e);
             }
             button.show();
         });
@@ -91,5 +95,5 @@ windowFunctions['Subscribe Token'] = function (evt) {
     win.addEventListener('open', function () {
         channel.focus();
     });
-    win.open();
+    return win;
 };

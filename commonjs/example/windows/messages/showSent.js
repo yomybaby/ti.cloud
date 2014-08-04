@@ -1,10 +1,14 @@
-windowFunctions['Show Sent'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Show Sent'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
 
     var table = Ti.UI.createTableView({
         backgroundColor: '#fff',
-        top: offset + u, bottom: 0,
+        top: 0, bottom: 0,
         data: [
             { title: 'Loading, please wait...' }
         ]
@@ -12,7 +16,7 @@ windowFunctions['Show Sent'] = function (evt) {
 
     table.addEventListener('click', function (evt) {
         if (evt.row.id) {
-	        handleOpenWindow({ target: 'Show Message', id: evt.row.id, allowReply: false });
+	        WindowManager.handleOpenWindow({ target: 'Show Message', id: evt.row.id, allowReply: false });
         }
     });
     win.add(table);
@@ -40,11 +44,11 @@ windowFunctions['Show Sent'] = function (evt) {
                 table.setData([
                     { title: (e.error && e.message) || e }
                 ]);
-                error(e);
+                Utils.error(e);
             }
         })
     }
 
     win.addEventListener('open', showSent);
-    win.open();
+    return win;
 };

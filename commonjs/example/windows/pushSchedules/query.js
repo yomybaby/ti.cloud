@@ -1,17 +1,21 @@
-windowFunctions['Query Push Schedules'] = function (evt) {
-  var win = createWindow();
-  var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Query Push Schedules'] = function (evt) {
+  var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
 
   var table = Ti.UI.createTableView({
     backgroundColor: '#fff',
-    top: offset + u, bottom: 0,
+    top: 0, bottom: 0,
     data: [
       { title: 'Loading, please wait...' }
     ]
   });
   table.addEventListener('click', function (evt) {
     if (evt.row.id) {
-      handleOpenWindow({ target: 'Remove Push Schedules', id: evt.row.id });
+      WindowManager.handleOpenWindow({ target: 'Remove Push Schedules', id: evt.row.id });
     }
   });
   win.add(table);
@@ -29,16 +33,16 @@ windowFunctions['Query Push Schedules'] = function (evt) {
             data.push(Ti.UI.createTableViewRow({
               title: JSON.stringify(e.push_schedules[i]),
               id: e.push_schedules[i].id,
-              font: { fontSize: 12 + u }
+              font: { fontSize: 12 + Utils.u }
             }));
           }
           table.setData(data);
         }
       } else {
-        error(e);
+        Utils.error(e);
       }
     });
   });
 
-  win.open();
+  return win;
 };

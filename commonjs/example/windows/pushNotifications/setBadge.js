@@ -1,8 +1,12 @@
-windowFunctions['Set Badge'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Set Badge'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
     var content = Ti.UI.createScrollView({
-        top: offset + u,
+        top: 0,
         contentHeight: 'auto',
         layout: 'vertical'
     });
@@ -10,8 +14,8 @@ windowFunctions['Set Badge'] = function (evt) {
 
     var device_token = Ti.UI.createTextField({
         hintText: 'Device Token',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
         autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
         autocorrect: false
@@ -20,8 +24,8 @@ windowFunctions['Set Badge'] = function (evt) {
 
     var badge_number = Ti.UI.createTextField({
         hintText: 'Badge Number',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
         autocapitalization: Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
         autocorrect: false
@@ -30,8 +34,8 @@ windowFunctions['Set Badge'] = function (evt) {
 
     var button = Ti.UI.createButton({
         title: 'Set Badge',
-        top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     content.add(button);
 
@@ -48,7 +52,7 @@ windowFunctions['Set Badge'] = function (evt) {
                 alert('Badge Set!');
             }
             else {
-                error(e);
+                Utils.error(e);
             }
             button.show();
         });
@@ -62,5 +66,5 @@ windowFunctions['Set Badge'] = function (evt) {
     win.addEventListener('open', function () {
         device_token.focus();
     });
-    win.open();
+    return win;
 };

@@ -1,8 +1,12 @@
-windowFunctions['Create Photo Collection'] = function (evt) {
-    var win = createWindow();
-    var offset = addBackButton(win);
+var WindowManager = require('helper/WindowManager');
+var Utils = require('helper/Utils');
+var Cloud = require('ti.cloud');
+exports['Create Photo Collection'] = function (evt) {
+    var win = WindowManager.createWindow({
+        backgroundColor: 'white'
+    });
     var content = Ti.UI.createScrollView({
-        top: offset + u,
+        top: 0,
         contentHeight: 'auto',
         layout: 'vertical'
     });
@@ -10,8 +14,8 @@ windowFunctions['Create Photo Collection'] = function (evt) {
 
     var name = Ti.UI.createTextField({
         hintText: 'Name',
-        top: 10 + u, left: 10 + u, right: 10 + u,
-        height: 40 + u,
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u,
+        height: 40 + Utils.u,
         borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED
     });
     content.add(name);
@@ -19,8 +23,8 @@ windowFunctions['Create Photo Collection'] = function (evt) {
     var parentCollectionID;
     var chooseCollection = Ti.UI.createButton({
         title: 'Choose Parent Collection',
-        top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     chooseCollection.addEventListener('click', function () {
         var table = Ti.UI.createTableView({
@@ -66,7 +70,7 @@ windowFunctions['Create Photo Collection'] = function (evt) {
                 }
                 else {
                     win.remove(table);
-                    error(e);
+                    Utils.error(e);
                 }
             });
         }
@@ -79,7 +83,7 @@ windowFunctions['Create Photo Collection'] = function (evt) {
                 table.setData([
                     { title: (e.error && e.message) || e }
                 ]);
-                error(e);
+                Utils.error(e);
             }
         });
     });
@@ -87,8 +91,8 @@ windowFunctions['Create Photo Collection'] = function (evt) {
 
     var button = Ti.UI.createButton({
         title: 'Create',
-        top: 10 + u, left: 10 + u, right: 10 + u, bottom: 10 + u,
-        height: 40 + u
+        top: 10 + Utils.u, left: 10 + Utils.u, right: 10 + Utils.u, bottom: 10 + Utils.u,
+        height: 40 + Utils.u
     });
     content.add(button);
 
@@ -113,7 +117,7 @@ windowFunctions['Create Photo Collection'] = function (evt) {
                 parentCollectionID = null;
             }
             else {
-                error(e);
+                Utils.error(e);
             }
             button.show();
         });
@@ -128,5 +132,5 @@ windowFunctions['Create Photo Collection'] = function (evt) {
     win.addEventListener('open', function () {
         name.focus();
     });
-    win.open();
+    return win;
 };
