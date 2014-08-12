@@ -299,7 +299,8 @@ BedFrame.build(Cloud, {
             property: 'Likes',
             children: [
                 { method: 'create', verb: 'POST' },
-                { method: 'remove', restMethod: 'delete', verb: 'DELETE' }
+                { method: 'remove', restMethod: 'delete', verb: 'DELETE' },
+                { method: 'query', executor: dataOptionalExecutor}
             ]
         },
         {
@@ -407,7 +408,7 @@ BedFrame.build(Cloud, {
                 { method: 'externalAccountLink', restMethod: 'external_account_link', verb: 'POST' },
                 { method: 'externalAccountUnlink', restMethod: 'external_account_unlink', verb: 'DELETE' },
                 { method: 'searchFacebookFriends', restNamespace: 'social', restMethod: 'facebook/search_friends',
-                    executor: dataExcludedExecutor
+                    executor: dataOptionalExecutor
                 }
             ]
         },
